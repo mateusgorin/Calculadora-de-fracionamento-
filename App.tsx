@@ -99,9 +99,9 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* SEGUNDO: Medicamento Total */}
+              {/* SEGUNDO: Medicamento Total -> Quantas MG tem na ampola? */}
               <div className="space-y-2">
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Medicamento Total (MG)</label>
+                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Quantas MG tem na ampola?</label>
                 <div className="relative group">
                   <input
                     type="text"
@@ -114,9 +114,9 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* TERCEIRO: Líquido Total */}
+              {/* TERCEIRO: Líquido Total -> Quantas ML ? */}
               <div className="space-y-2">
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Líquido Total (ML)</label>
+                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Quantas ML ?</label>
                 <div className="relative group">
                   <input
                     type="text"
@@ -162,7 +162,7 @@ const App: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
               <div>
-                <p className="text-slate-400 text-[10px] font-black uppercase mb-3 tracking-wider">Aspirar até a marca:</p>
+                <p className="text-slate-400 text-[10px] font-black uppercase mb-3 tracking-wider">Aspirar até a mark:</p>
                 <div className="flex items-baseline gap-3">
                   <span className="text-7xl font-black text-orange-400 leading-none">{result.units}</span>
                   <div className="flex flex-col">
@@ -196,36 +196,4 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <div className="lg:col-span-5 flex justify-center w-full">
-          <div className="sticky top-24 w-full max-w-[340px]">
-            <Syringe capacity={syringeCapacity} currentUI={result.units} />
-            
-            <div className="mt-8 p-6 bg-slate-900/5 backdrop-blur-sm rounded-3xl border border-slate-200">
-              <p className="text-[9px] text-slate-400 leading-relaxed uppercase font-black text-center tracking-tighter italic">
-                Aviso Médico: Esta é uma ferramenta de apoio visual baseada no padrão U-100. Confirme sempre com um profissional de saúde.
-              </p>
-            </div>
-          </div>
-        </div>
-
-      </main>
-
-      <footer className="max-w-5xl mx-auto px-4 mt-8 text-center">
-        <div className="flex flex-col items-center gap-4">
-          <a 
-            href="https://www.gorinsolucoes.com.br" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="group flex items-center px-6 py-2 bg-white border border-slate-200 rounded-full hover:border-orange-200 hover:shadow-md transition-all duration-300"
-          >
-            <span className="text-[11px] font-black uppercase tracking-widest text-slate-400 group-hover:text-orange-500 transition-colors">
-              Desenvolvido por <span className="text-slate-600 group-hover:text-orange-600">Gorin soluções</span>
-            </span>
-          </a>
-        </div>
-      </footer>
-    </div>
-  );
-};
-
-export default App;
+        <
