@@ -6,7 +6,9 @@ import {
   Calculator, 
   Info, 
   Droplet, 
-  Syringe as SyringeIcon
+  Syringe as SyringeIcon,
+  X,
+  HelpCircle
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -14,6 +16,7 @@ const App: React.FC = () => {
   const [totalMg, setTotalMg] = useState<string>("15");
   const [totalVolumeMl, setTotalVolumeMl] = useState<string>("0.5");
   const [targetDoseMg, setTargetDoseMg] = useState<string>("2.5");
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   const result = useMemo<CalculationResult>(() => {
     const tMg = parseFloat(totalMg) || 0;
@@ -28,16 +31,12 @@ const App: React.FC = () => {
     const volumeNeeded = dMg / concentration; // ml
     const exactUnits = volumeNeeded * 100; // UI reais
     
-    // Lógica de arredondamento baseada nos traços reais da seringa (Padrão U-100)
     let roundedUnits;
     if (syringeCapacity === 30) {
-      // Seringas de 30UI permitem precisão de meio traço (0.5 UI)
       roundedUnits = Math.round(exactUnits * 2) / 2;
     } else if (syringeCapacity === 100) {
-      // Seringas de 100UI geralmente são graduadas de 2 em 2 unidades
       roundedUnits = Math.round(exactUnits / 2) * 2;
     } else {
-      // Seringas de 50UI são graduadas de 1 em 1 unidade
       roundedUnits = Math.round(exactUnits);
     }
     
@@ -50,7 +49,6 @@ const App: React.FC = () => {
     };
   }, [syringeCapacity, totalMg, totalVolumeMl, targetDoseMg]);
 
-  // Valor do traço para o guia de contagem (mantido para referência visual)
   const tickValue = syringeCapacity === 100 ? 2 : (syringeCapacity === 30 ? 0.5 : 1);
   const totalTicks = result.units / tickValue;
 
@@ -102,37 +100,50 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* SEGUNDO E TERCEIRO LADO A LADO: MG da ampola e ML com separador / */}
-              <div className="flex items-end gap-3 sm:gap-4">
-                <div className="flex-1 space-y-2">
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">MG na ampola?</label>
-                  <div className="relative group">
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      value={totalMg}
-                      onChange={(e) => setTotalMg(e.target.value.replace(',', '.'))}
-                      className="w-full pl-4 pr-10 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700 text-sm md:text-base"
-                    />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[9px]">MG</span>
+              {/* SEGUNDO E TERCEIRO LADO A LADO */}
+              <div className="space-y-3">
+                <div className="flex items-end gap-3 sm:gap-4">
+                  <div className="flex-1 space-y-2">
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">MG na ampola?</label>
+                    <div className="relative group">
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        value={totalMg}
+                        onChange={(e) => setTotalMg(e.target.value.replace(',', '.'))}
+                        className="w-full pl-4 pr-10 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700 text-sm md:text-base"
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[9px]">MG</span>
+                    </div>
+                  </div>
+
+                  <div className="pb-4 text-slate-300 font-black text-2xl select-none">/</div>
+
+                  <div className="flex-1 space-y-2">
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">Por quantas ML?</label>
+                    <div className="relative group">
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        value={totalVolumeMl}
+                        onChange={(e) => setTotalVolumeMl(e.target.value.replace(',', '.'))}
+                        className="w-full pl-4 pr-10 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700 text-sm md:text-base"
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[9px]">ML</span>
+                    </div>
                   </div>
                 </div>
-
-                <div className="pb-4 text-slate-300 font-black text-2xl select-none">/</div>
-
-                <div className="flex-1 space-y-2">
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">Quantas ML?</label>
-                  <div className="relative group">
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      value={totalVolumeMl}
-                      onChange={(e) => setTotalVolumeMl(e.target.value.replace(',', '.'))}
-                      className="w-full pl-4 pr-10 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700 text-sm md:text-base"
-                    />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[9px]">ML</span>
-                  </div>
-                </div>
+                
+                {/* Link de Ajuda */}
+                <button 
+                  onClick={() => setIsHelpModalOpen(true)}
+                  className="flex items-center gap-1.5 text-left group"
+                >
+                  <HelpCircle size={14} className="text-orange-500" />
+                  <span className="text-[11px] font-medium text-slate-500 group-hover:text-orange-600 transition-colors underline decoration-slate-300 underline-offset-2">
+                    Ficou em dúvida? Clique aqui e veja como verificar a MG e ML do seu medicamento.
+                  </span>
+                </button>
               </div>
 
               {/* ÚLTIMO: Capacidade da Seringa */}
@@ -157,6 +168,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
+          {/* Resultado Card */}
           <div className="bg-slate-900 p-8 rounded-[2rem] shadow-2xl text-white relative overflow-hidden">
             <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none text-orange-400">
               <Droplet size={140} />
@@ -202,19 +214,75 @@ const App: React.FC = () => {
           </div>
         </div>
 
+        {/* Visualização da Seringa */}
         <div className="lg:col-span-5 flex justify-center w-full">
           <div className="sticky top-24 w-full max-w-[340px]">
             <Syringe capacity={syringeCapacity} currentUI={result.units} />
-            
-            <div className="mt-8 p-6 bg-slate-900/5 backdrop-blur-sm rounded-3xl border border-slate-200">
-              <p className="text-[9px] text-slate-400 leading-relaxed uppercase font-black text-center tracking-tighter italic">
+            <div className="mt-8 p-6 bg-slate-900/5 backdrop-blur-sm rounded-3xl border border-slate-200 text-center">
+              <p className="text-[9px] text-slate-400 leading-relaxed uppercase font-black tracking-tighter italic">
                 Aviso Médico: Esta é uma ferramenta de apoio visual baseada no padrão U-100. Confirme sempre com um profissional de saúde.
               </p>
             </div>
           </div>
         </div>
-
       </main>
+
+      {/* Modal de Ajuda */}
+      {isHelpModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-300">
+          <div 
+            className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setIsHelpModalOpen(false)}
+              className="absolute top-6 right-6 p-2 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors z-10"
+            >
+              <X size={20} className="text-slate-600" />
+            </button>
+
+            <div className="p-8 pb-4">
+              <h3 className="text-xl font-black text-slate-800 mb-6 flex items-center gap-2">
+                <HelpCircle className="text-orange-500" /> 
+                Como identificar MG e ML?
+              </h3>
+              
+              <div className="rounded-2xl overflow-hidden border border-slate-100 shadow-inner bg-slate-50 aspect-video flex items-center justify-center">
+                 <img 
+                  src="https://i.ibb.co/Ndfy3dYr/image.png" 
+                  alt="Exemplo de Medicamento" 
+                  className="w-full h-full object-contain"
+                  onError={(e) => {
+                    // Fallback se a imagem direta falhar (ImgBB as vezes precisa de link direto)
+                    (e.target as HTMLImageElement).src = "https://img.icons8.com/clouds/500/pill.png";
+                  }}
+                 />
+              </div>
+            </div>
+
+            <div className="p-8 pt-4 overflow-y-auto">
+              <div className="space-y-4 text-slate-600 leading-relaxed text-sm">
+                <p>
+                  Veja que no medicamento ele informa que tem <span className="font-bold text-orange-600">15MG</span> a cada <span className="font-bold text-orange-600">0.5ML</span> da ampola.
+                </p>
+                <div className="bg-slate-50 p-4 rounded-2xl border-l-4 border-orange-500 font-medium italic">
+                  "Ou seja, uma ampola de 2ML contém 60mg do medicamento."
+                </div>
+                <p className="font-bold text-slate-800">
+                  Se o seu medicamento tem 15mg por 0.5ml, você deve colocar esses exatos números nos campos MG e ML da calculadora.
+                </p>
+              </div>
+              
+              <button 
+                onClick={() => setIsHelpModalOpen(false)}
+                className="w-full mt-8 py-4 bg-orange-600 text-white font-black rounded-2xl shadow-lg shadow-orange-100 hover:bg-orange-700 transition-all uppercase tracking-widest text-xs"
+              >
+                Entendi, voltar ao cálculo
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="max-w-5xl mx-auto px-4 mt-8 text-center">
         <div className="flex flex-col items-center gap-4">
