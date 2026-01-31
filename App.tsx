@@ -247,13 +247,12 @@ const App: React.FC = () => {
                 Como identificar MG e ML?
               </h3>
               
-              <div className="rounded-2xl overflow-hidden border border-slate-100 shadow-inner bg-slate-50 aspect-video flex items-center justify-center">
+              <div className="rounded-3xl overflow-hidden border-2 border-slate-100 shadow-inner bg-slate-50 aspect-video flex items-center justify-center relative">
                  <img 
                   src="https://i.ibb.co/Ndfy3dYr/image.png" 
                   alt="Exemplo de Medicamento" 
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain scale-[1.35] transition-transform duration-500"
                   onError={(e) => {
-                    // Fallback se a imagem direta falhar (ImgBB as vezes precisa de link direto)
                     (e.target as HTMLImageElement).src = "https://img.icons8.com/clouds/500/pill.png";
                   }}
                  />
