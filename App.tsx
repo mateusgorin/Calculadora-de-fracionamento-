@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
-import { MedicationConfig, CalculationResult, SyringeCapacity } from './types';
-import Syringe from './components/Syringe';
+import { MedicationConfig, CalculationResult, SyringeCapacity } from './types.ts';
+import Syringe from './components/Syringe.tsx';
 import { 
   Calculator, 
   Info, 
