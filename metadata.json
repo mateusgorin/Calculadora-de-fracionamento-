@@ -1,5 +1,5 @@
 {
-  "name": "Calculadora de Fracionamento de Seringa",
+  "name": "Calculadora de fracionamento",
   "description": "Uma ferramenta visual para calcular e visualizar dosagens de medicamentos em seringas de insulina (UI) baseada na concentração de mg/ml.",
   "requestFramePermissions": []
 }

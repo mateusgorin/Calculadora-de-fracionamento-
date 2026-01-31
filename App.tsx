@@ -56,12 +56,14 @@ const App: React.FC = () => {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="bg-orange-600 p-2 rounded-lg shadow-lg shadow-orange-100">
+            <div className="bg-orange-600 p-2 rounded-xl shadow-lg shadow-orange-100 flex items-center justify-center">
               <SyringeIcon className="text-white" size={24} />
             </div>
-            <h1 className="text-xl font-black text-slate-800 tracking-tight">
-              Calculadora de Fracionamento
-            </h1>
+            <div className="flex flex-col">
+              <h1 className="text-xl font-black text-slate-800 tracking-tight leading-none">
+                Calculadora de fracionamento
+              </h1>
+            </div>
           </div>
           <div className="hidden sm:flex items-center gap-2">
             <div className="bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200 text-[10px] font-black uppercase text-slate-500 tracking-widest">
