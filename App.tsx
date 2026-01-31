@@ -28,26 +28,17 @@ const App: React.FC = () => {
     const volumeNeeded = dMg / concentration; // ml
     const exactUnits = volumeNeeded * 100; // UI reais sem arredondamento
     
-    let roundedUnits;
-    if (syringeCapacity === 30) {
-      // Seringas de 30UI permitem precisão de meio traço (0.5 UI)
-      roundedUnits = Math.round(exactUnits * 2) / 2;
-    } else if (syringeCapacity === 100) {
-      // Seringas de 100UI geralmente são graduadas de 2 em 2 unidades
-      roundedUnits = Math.round(exactUnits / 2) * 2;
-    } else {
-      // Seringas de 50UI são graduadas de 1 em 1 unidade
-      roundedUnits = Math.round(exactUnits);
-    }
+    // Removida a lógica de arredondamento conforme solicitado para mostrar o valor exato
+    const finalUnits = Math.min(exactUnits, syringeCapacity);
     
     return {
-      units: Math.min(roundedUnits, syringeCapacity),
+      units: parseFloat(finalUnits.toFixed(2)), // Mantemos 2 casas decimais para o "16.66"
       volumeMl: volumeNeeded,
       concentrationMgMl: concentration
     };
   }, [syringeCapacity, totalMg, totalVolumeMl, targetDoseMg]);
 
-  // Definição técnica do valor de cada traço (tick) baseado no padrão U-100 de mercado
+  // Valor do traço para o guia de contagem (mantido para referência visual)
   const tickValue = syringeCapacity === 100 ? 2 : (syringeCapacity === 30 ? 0.5 : 1);
   const totalTicks = result.units / tickValue;
 
@@ -99,7 +90,7 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* SEGUNDO: Medicamento Total -> Quantas MG tem na ampola? */}
+              {/* SEGUNDO: Quantas MG tem na ampola? */}
               <div className="space-y-2">
                 <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Quantas MG tem na ampola?</label>
                 <div className="relative group">
@@ -114,7 +105,7 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* TERCEIRO: Líquido Total -> Quantas ML ? */}
+              {/* TERCEIRO: Quantas ML ? */}
               <div className="space-y-2">
                 <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Quantas ML ?</label>
                 <div className="relative group">
@@ -162,7 +153,7 @@ const App: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
               <div>
-                <p className="text-slate-400 text-[10px] font-black uppercase mb-3 tracking-wider">Aspirar até a mark:</p>
+                <p className="text-slate-400 text-[10px] font-black uppercase mb-3 tracking-wider">Aspirar até a marca:</p>
                 <div className="flex items-baseline gap-3">
                   <span className="text-7xl font-black text-orange-400 leading-none">{result.units}</span>
                   <div className="flex flex-col">
@@ -179,7 +170,7 @@ const App: React.FC = () => {
               <div className="space-y-4 md:border-l md:border-slate-800 md:pl-10">
                 <div className="flex justify-between items-center group">
                   <span className="text-slate-500 text-[10px] font-black uppercase tracking-wider">Total de Traços:</span>
-                  <span className="font-mono text-orange-200 font-black text-lg">{totalTicks.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</span>
+                  <span className="font-mono text-orange-200 font-black text-lg">{totalTicks.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}</span>
                 </div>
                 <div className="flex justify-between items-center group">
                   <span className="text-slate-500 text-[10px] font-black uppercase tracking-wider">Volume (ML):</span>
@@ -196,4 +187,36 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <
+        <div className="lg:col-span-5 flex justify-center w-full">
+          <div className="sticky top-24 w-full max-w-[340px]">
+            <Syringe capacity={syringeCapacity} currentUI={result.units} />
+            
+            <div className="mt-8 p-6 bg-slate-900/5 backdrop-blur-sm rounded-3xl border border-slate-200">
+              <p className="text-[9px] text-slate-400 leading-relaxed uppercase font-black text-center tracking-tighter italic">
+                Aviso Médico: Esta é uma ferramenta de apoio visual baseada no padrão U-100. Confirme sempre com um profissional de saúde.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <footer className="max-w-5xl mx-auto px-4 mt-8 text-center">
+        <div className="flex flex-col items-center gap-4">
+          <a 
+            href="https://www.gorinsolucoes.com.br" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="group flex items-center px-6 py-2 bg-white border border-slate-200 rounded-full hover:border-orange-200 hover:shadow-md transition-all duration-300"
+          >
+            <span className="text-[11px] font-black uppercase tracking-widest text-slate-400 group-hover:text-orange-500 transition-colors">
+              Desenvolvido por <span className="text-slate-600 group-hover:text-orange-600">Gorin soluções</span>
+            </span>
+          </a>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
