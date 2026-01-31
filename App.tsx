@@ -28,7 +28,7 @@ const App: React.FC = () => {
     const volumeNeeded = dMg / concentration; // ml
     const exactUnits = volumeNeeded * 100; // UI reais
     
-    // Lógica de arredondamento baseada nos traços reais da seringa
+    // Lógica de arredondamento baseada nos traços reais da seringa (Padrão U-100)
     let roundedUnits;
     if (syringeCapacity === 30) {
       // Seringas de 30UI permitem precisão de meio traço (0.5 UI)
@@ -85,9 +85,9 @@ const App: React.FC = () => {
               <h2 className="text-xl font-black text-slate-800">Parâmetros</h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 gap-8">
               {/* PRIMEIRO: Dose Prescrita */}
-              <div className="col-span-1 md:col-span-2 space-y-2">
+              <div className="space-y-2">
                 <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Dose Prescrita (MG desejado)</label>
                 <div className="relative">
                   <input
@@ -102,38 +102,41 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* SEGUNDO: Quantas MG tem na ampola? */}
-              <div className="space-y-2">
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Quantas MG tem na ampola?</label>
-                <div className="relative group">
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    value={totalMg}
-                    onChange={(e) => setTotalMg(e.target.value.replace(',', '.'))}
-                    className="w-full pl-4 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700"
-                  />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[10px]">MG</span>
+              {/* SEGUNDO E TERCEIRO LADO A LADO: MG da ampola e ML com separador / */}
+              <div className="flex items-end gap-3 sm:gap-4">
+                <div className="flex-1 space-y-2">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">MG na ampola?</label>
+                  <div className="relative group">
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={totalMg}
+                      onChange={(e) => setTotalMg(e.target.value.replace(',', '.'))}
+                      className="w-full pl-4 pr-10 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700 text-sm md:text-base"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[9px]">MG</span>
+                  </div>
                 </div>
-              </div>
 
-              {/* TERCEIRO: Quantas ML ? */}
-              <div className="space-y-2">
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Quantas ML ?</label>
-                <div className="relative group">
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    value={totalVolumeMl}
-                    onChange={(e) => setTotalVolumeMl(e.target.value.replace(',', '.'))}
-                    className="w-full pl-4 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700"
-                  />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[10px]">ML</span>
+                <div className="pb-4 text-slate-300 font-black text-2xl select-none">/</div>
+
+                <div className="flex-1 space-y-2">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">Quantas ML?</label>
+                  <div className="relative group">
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={totalVolumeMl}
+                      onChange={(e) => setTotalVolumeMl(e.target.value.replace(',', '.'))}
+                      className="w-full pl-4 pr-10 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700 text-sm md:text-base"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[9px]">ML</span>
+                  </div>
                 </div>
               </div>
 
               {/* ÚLTIMO: Capacidade da Seringa */}
-              <div className="col-span-1 md:col-span-2">
+              <div>
                 <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-3">Capacidade da Seringa</label>
                 <div className="grid grid-cols-3 gap-4">
                   {[30, 50, 100].map((cap) => (
