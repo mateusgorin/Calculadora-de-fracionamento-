@@ -83,6 +83,53 @@ const App: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* PRIMEIRO: Dose Prescrita */}
+              <div className="col-span-1 md:col-span-2 space-y-2">
+                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Dose Prescrita (MG desejado)</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={targetDoseMg}
+                    onChange={(e) => setTargetDoseMg(e.target.value.replace(',', '.'))}
+                    className="w-full pl-14 pr-14 py-5 bg-orange-50 border-2 border-orange-200 rounded-[1.5rem] focus:border-orange-600 outline-none transition-all text-3xl font-black text-orange-900 shadow-inner"
+                  />
+                  <Calculator className="absolute left-5 top-1/2 -translate-y-1/2 text-orange-500" size={24} />
+                  <span className="absolute right-5 top-1/2 -translate-y-1/2 text-orange-600 font-black text-xs">MG</span>
+                </div>
+              </div>
+
+              {/* SEGUNDO: Medicamento Total */}
+              <div className="space-y-2">
+                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Medicamento Total (MG)</label>
+                <div className="relative group">
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={totalMg}
+                    onChange={(e) => setTotalMg(e.target.value.replace(',', '.'))}
+                    className="w-full pl-4 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700"
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[10px]">MG</span>
+                </div>
+              </div>
+
+              {/* TERCEIRO: Líquido Total */}
+              <div className="space-y-2">
+                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Líquido Total (ML)</label>
+                <div className="relative group">
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={totalVolumeMl}
+                    onChange={(e) => setTotalVolumeMl(e.target.value.replace(',', '.'))}
+                    className="w-full pl-4 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700"
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[10px]">ML</span>
+                </div>
+              </div>
+
+              {/* ÚLTIMO: Capacidade da Seringa */}
               <div className="col-span-1 md:col-span-2">
                 <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-3">Capacidade da Seringa</label>
                 <div className="grid grid-cols-3 gap-4">
@@ -99,49 +146,6 @@ const App: React.FC = () => {
                       {cap} UI
                     </button>
                   ))}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Medicamento Total (MG)</label>
-                <div className="relative group">
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    value={totalMg}
-                    onChange={(e) => setTotalMg(e.target.value.replace(',', '.'))}
-                    className="w-full pl-4 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700"
-                  />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[10px]">MG</span>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Líquido Total (ML)</label>
-                <div className="relative group">
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    value={totalVolumeMl}
-                    onChange={(e) => setTotalVolumeMl(e.target.value.replace(',', '.'))}
-                    className="w-full pl-4 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700"
-                  />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[10px]">ML</span>
-                </div>
-              </div>
-
-              <div className="col-span-1 md:col-span-2 space-y-2">
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Dose Prescrita (MG desejado)</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    value={targetDoseMg}
-                    onChange={(e) => setTargetDoseMg(e.target.value.replace(',', '.'))}
-                    className="w-full pl-14 pr-14 py-5 bg-orange-50 border-2 border-orange-200 rounded-[1.5rem] focus:border-orange-600 outline-none transition-all text-3xl font-black text-orange-900 shadow-inner"
-                  />
-                  <Calculator className="absolute left-5 top-1/2 -translate-y-1/2 text-orange-500" size={24} />
-                  <span className="absolute right-5 top-1/2 -translate-y-1/2 text-orange-600 font-black text-xs">MG</span>
                 </div>
               </div>
             </div>
