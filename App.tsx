@@ -26,13 +26,25 @@ const App: React.FC = () => {
     
     const concentration = tMg / tVol; // mg/ml
     const volumeNeeded = dMg / concentration; // ml
-    const exactUnits = volumeNeeded * 100; // UI reais sem arredondamento
+    const exactUnits = volumeNeeded * 100; // UI reais
     
-    // Removida a lógica de arredondamento conforme solicitado para mostrar o valor exato
-    const finalUnits = Math.min(exactUnits, syringeCapacity);
+    // Lógica de arredondamento baseada nos traços reais da seringa
+    let roundedUnits;
+    if (syringeCapacity === 30) {
+      // Seringas de 30UI permitem precisão de meio traço (0.5 UI)
+      roundedUnits = Math.round(exactUnits * 2) / 2;
+    } else if (syringeCapacity === 100) {
+      // Seringas de 100UI geralmente são graduadas de 2 em 2 unidades
+      roundedUnits = Math.round(exactUnits / 2) * 2;
+    } else {
+      // Seringas de 50UI são graduadas de 1 em 1 unidade
+      roundedUnits = Math.round(exactUnits);
+    }
+    
+    const finalUnits = Math.min(roundedUnits, syringeCapacity);
     
     return {
-      units: parseFloat(finalUnits.toFixed(2)), // Mantemos 2 casas decimais para o "16.66"
+      units: finalUnits,
       volumeMl: volumeNeeded,
       concentrationMgMl: concentration
     };
@@ -170,7 +182,7 @@ const App: React.FC = () => {
               <div className="space-y-4 md:border-l md:border-slate-800 md:pl-10">
                 <div className="flex justify-between items-center group">
                   <span className="text-slate-500 text-[10px] font-black uppercase tracking-wider">Total de Traços:</span>
-                  <span className="font-mono text-orange-200 font-black text-lg">{totalTicks.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}</span>
+                  <span className="font-mono text-orange-200 font-black text-lg">{totalTicks.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</span>
                 </div>
                 <div className="flex justify-between items-center group">
                   <span className="text-slate-500 text-[10px] font-black uppercase tracking-wider">Volume (ML):</span>
