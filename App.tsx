@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { MedicationConfig, CalculationResult, SyringeCapacity } from './types.ts';
 import Syringe from './components/Syringe.tsx';
 import { 
@@ -8,7 +8,9 @@ import {
   Droplet, 
   Syringe as SyringeIcon,
   X,
-  HelpCircle
+  HelpCircle,
+  AlertTriangle,
+  CheckCircle2
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -17,6 +19,25 @@ const App: React.FC = () => {
   const [totalVolumeMl, setTotalVolumeMl] = useState<string>("0.5");
   const [targetDoseMg, setTargetDoseMg] = useState<string>("2.5");
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  
+  // Estados para o Modal de Aviso Inicial
+  const [isEntryModalOpen, setIsEntryModalOpen] = useState(false);
+  const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
+
+  // Verificar se o usuário já aceitou os termos anteriormente
+  useEffect(() => {
+    const accepted = localStorage.getItem('calc_fracionamento_accepted');
+    if (!accepted) {
+      setIsEntryModalOpen(true);
+    }
+  }, []);
+
+  const handleAcceptTerms = () => {
+    if (hasAcceptedTermsCheckbox) {
+      localStorage.setItem('calc_fracionamento_accepted', 'true');
+      setIsEntryModalOpen(false);
+    }
+  };
 
   const result = useMemo<CalculationResult>(() => {
     const tMg = parseFloat(totalMg) || 0;
@@ -227,7 +248,74 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      {/* Modal de Ajuda */}
+      {/* Banner de Aviso Inicial (Estilo Cookie/Aviso de Rodapé) */}
+      {isEntryModalOpen && (
+        <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/40 backdrop-blur-sm p-0 md:p-4 transition-all duration-500">
+          <div className="bg-white w-full max-w-4xl rounded-t-[2.5rem] md:rounded-[2.5rem] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.3)] border-t border-slate-100 relative overflow-hidden flex flex-col p-6 md:p-10 animate-in slide-in-from-bottom duration-500">
+            
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
+              {/* Ícone Lateral */}
+              <div className="hidden md:flex w-16 h-16 bg-orange-50 rounded-2xl items-center justify-center shrink-0">
+                <AlertTriangle className="text-orange-600" size={32} />
+              </div>
+
+              <div className="flex-1">
+                <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight mb-4 flex items-center gap-2 justify-center md:justify-start">
+                  <AlertTriangle className="text-orange-600 md:hidden" size={24} />
+                  Aviso Importante
+                </h2>
+
+                <div className="space-y-3 text-slate-600 text-xs md:text-sm leading-relaxed max-h-[35vh] overflow-y-auto pr-2 custom-scrollbar">
+                  <p className="font-bold text-slate-800">Este site tem finalidade exclusivamente informativa.</p>
+                  <p>Não vendemos, não indicamos, não prescrevemos e não comercializamos qualquer medicamento.</p>
+                  <p>As informações aqui apresentadas não substituem consulta médica. Qualquer decisão relacionada ao uso de medicamentos deve ser feita somente com orientação e acompanhamento de um médico.</p>
+                  <p>Não nos responsabilizamos pelo uso das informações deste site. O visitante assume total responsabilidade por suas escolhas e ações.</p>
+                </div>
+              </div>
+
+              {/* Lado Direito: Aceite e Ação */}
+              <div className="w-full md:w-80 flex flex-col gap-4">
+                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <div className="relative mt-0.5 shrink-0">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only" 
+                        checked={hasAcceptedTermsCheckbox}
+                        onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
+                      />
+                      <div className={`w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center ${
+                        hasAcceptedTermsCheckbox 
+                        ? 'bg-orange-600 border-orange-600' 
+                        : 'bg-white border-slate-200 group-hover:border-orange-400'
+                      }`}>
+                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={14} className="text-white" />}
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-bold text-slate-500 select-none leading-tight">
+                      Li, compreendo e concordo integralmente com os termos informados.
+                    </span>
+                  </label>
+                </div>
+
+                <button 
+                  disabled={!hasAcceptedTermsCheckbox}
+                  onClick={handleAcceptTerms}
+                  className={`w-full py-4 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all shadow-lg ${
+                    hasAcceptedTermsCheckbox 
+                    ? 'bg-orange-600 text-white shadow-orange-100 hover:bg-orange-700 active:scale-[0.98]' 
+                    : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200'
+                  }`}
+                >
+                  Concordar e Continuar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Ajuda (MG e ML) */}
       {isHelpModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-300">
           <div 
@@ -249,7 +337,7 @@ const App: React.FC = () => {
               
               <div className="rounded-3xl overflow-hidden border-2 border-slate-100 shadow-inner bg-slate-50 aspect-video flex items-center justify-center relative">
                  <img 
-                  src="https://i.ibb.co/Ndfy3dYr/image.png" 
+                  src="https://i.postimg.cc/zvTRZnJg/IMG-20260201-WA0049.jpg" 
                   alt="Exemplo de Medicamento" 
                   className="w-full h-full object-contain scale-[1.35] transition-transform duration-500"
                   onError={(e) => {
@@ -257,6 +345,9 @@ const App: React.FC = () => {
                   }}
                  />
               </div>
+              <p className="text-[10px] text-slate-400 mt-2 text-center font-medium italic">
+                Medicamento meramente ilustrativo
+              </p>
             </div>
 
             <div className="p-8 pt-4 overflow-y-auto">
