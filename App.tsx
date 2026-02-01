@@ -261,28 +261,28 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      {/* Seção Chamativa do Desenvolvedor */}
-      <section className="max-w-5xl mx-auto px-4 mt-16">
-        <div className="bg-white rounded-[2.5rem] border-2 border-orange-100 shadow-xl shadow-orange-50/50 overflow-hidden relative">
-          <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none text-orange-500">
+      {/* Seção Chamativa do Desenvolvedor - Ajustada para Responsividade */}
+      <section className="max-w-5xl mx-auto px-4 mt-16 overflow-hidden">
+        <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] border-2 border-orange-100 shadow-xl shadow-orange-50/50 overflow-hidden relative">
+          <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none text-orange-500 hidden sm:block">
             <Heart size={120} />
           </div>
           
-          <div className="p-8 md:p-12">
-            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-              <div className="w-20 h-20 bg-orange-600 rounded-3xl flex items-center justify-center shrink-0 shadow-lg shadow-orange-200">
-                <Smartphone className="text-white" size={36} />
+          <div className="p-6 md:p-12">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-orange-600 rounded-2xl md:rounded-3xl flex items-center justify-center shrink-0 shadow-lg shadow-orange-200">
+                <Smartphone className="text-white" size={28} />
               </div>
               
-              <div className="flex-1 space-y-6 text-center md:text-left">
+              <div className="flex-1 space-y-5 text-center md:text-left">
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-black text-slate-800 tracking-tight">Olá, pessoal!</h2>
-                  <p className="text-slate-600 font-medium leading-relaxed">
+                  <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight">Olá, pessoal!</h2>
+                  <p className="text-slate-600 font-medium leading-relaxed text-sm md:text-base">
                     Me chamo <span className="text-orange-600 font-black">Mateus Miranda</span>, sou o desenvolvedor do aplicativo Calculadora de Fracionamento.
                   </p>
                 </div>
 
-                <div className="space-y-4 text-slate-600 leading-relaxed text-sm md:text-base">
+                <div className="space-y-4 text-slate-600 leading-relaxed text-xs md:text-sm lg:text-base">
                   <p>
                     O aplicativo ainda está em fase de testes e, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.
                   </p>
@@ -296,21 +296,23 @@ const App: React.FC = () => {
 
                 <div className="pt-4 flex flex-col items-center md:items-start gap-4">
                   <p className="text-[10px] font-black uppercase tracking-widest text-orange-500">Sua contribuição faz a diferença:</p>
-                  <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-                    <div className="bg-slate-50 border-2 border-slate-100 px-6 py-4 rounded-2xl flex items-center gap-4 group hover:border-orange-200 transition-all w-full sm:w-auto">
-                      <div className="flex flex-col text-left">
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Minha chave pix</span>
-                        <span className="text-sm font-black text-slate-700">{pixKey}</span>
+                  
+                  <div className="w-full flex justify-center md:justify-start">
+                    <div className="bg-slate-50 border-2 border-slate-100 p-3 md:p-4 rounded-2xl flex items-center justify-between gap-3 group hover:border-orange-200 transition-all w-full max-w-[340px] sm:max-w-md">
+                      <div className="flex flex-col text-left overflow-hidden">
+                        <span className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-tighter">Minha chave pix</span>
+                        <span className="text-[11px] md:text-sm font-black text-slate-700 truncate break-all">{pixKey}</span>
                       </div>
                       <button 
                         onClick={copyPix}
-                        className="p-3 bg-white border border-slate-200 rounded-xl hover:bg-orange-50 hover:border-orange-200 transition-all text-slate-400 hover:text-orange-600"
+                        className="p-2 md:p-3 bg-white border border-slate-200 rounded-xl hover:bg-orange-50 hover:border-orange-200 transition-all text-slate-400 hover:text-orange-600 shrink-0"
                         title="Copiar chave Pix"
                       >
-                        {pixCopied ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}
+                        {pixCopied ? <Check size={16} className="text-green-500 md:size-18" /> : <Copy size={16} className="md:size-18" />}
                       </button>
                     </div>
                   </div>
+                  
                   {pixCopied && (
                     <p className="text-[10px] font-black text-green-600 uppercase animate-bounce">Chave copiada com sucesso!</p>
                   )}
