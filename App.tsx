@@ -219,8 +219,8 @@ const App: React.FC = () => {
           <div className="sticky top-24 w-full max-w-[340px]">
             <Syringe capacity={syringeCapacity} currentUI={result.units} />
             <div className="mt-8 p-6 bg-slate-900/5 backdrop-blur-sm rounded-3xl border border-slate-200 text-center">
-              <p className="text-[9px] text-slate-400 leading-relaxed uppercase font-black tracking-tighter italic">
-                Aviso Médico: Esta é uma ferramenta de apoio visual baseada no padrão U-100. Confirme sempre com um profissional de saúde.
+              <p className="text-[10px] text-slate-400 leading-relaxed uppercase font-black tracking-tighter italic">
+                Aviso: Esta é uma ferramenta de apoio visual. Confirme sempre com um profissional de saúde.
               </p>
             </div>
           </div>
