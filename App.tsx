@@ -87,8 +87,8 @@ const App: React.FC = () => {
   const totalTicks = result.units / tickValue;
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-12">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+    <div className="min-h-screen bg-slate-50 pb-12 w-full overflow-x-hidden">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm w-full">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-orange-600 p-2 rounded-xl shadow-lg shadow-orange-100 flex items-center justify-center">
@@ -110,8 +110,8 @@ const App: React.FC = () => {
 
       <main className="max-w-5xl mx-auto px-4 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        <div className="lg:col-span-7 space-y-6">
-          <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-200">
+        <div className="lg:col-span-7 space-y-6 w-full">
+          <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
             <div className="flex items-center gap-2 mb-8 border-b border-slate-100 pb-4">
               <SyringeIcon className="text-orange-500" size={22} />
               <h2 className="text-xl font-black text-slate-800">Parâmetros</h2>
@@ -203,7 +203,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Resultado Card */}
-          <div className="bg-slate-900 p-8 rounded-[2rem] shadow-2xl text-white relative overflow-hidden">
+          <div className="bg-slate-900 p-8 rounded-[2rem] shadow-2xl text-white relative overflow-hidden w-full">
             <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none text-orange-400">
               <Droplet size={140} />
             </div>
@@ -216,13 +216,13 @@ const App: React.FC = () => {
               <div>
                 <p className="text-slate-400 text-[10px] font-black uppercase mb-3 tracking-wider">Aspirar até a marca:</p>
                 <div className="flex items-baseline gap-3">
-                  <span className="text-7xl font-black text-orange-400 leading-none">{result.units}</span>
+                  <span className="text-5xl md:text-7xl font-black text-orange-400 leading-none">{result.units}</span>
                   <div className="flex flex-col">
-                    <span className="text-2xl font-black text-slate-100 leading-tight">UI</span>
+                    <span className="text-xl md:text-2xl font-black text-slate-100 leading-tight">UI</span>
                   </div>
                 </div>
                 <div className="mt-4 inline-flex items-center gap-2 bg-orange-900/40 px-3 py-1.5 rounded-full border border-orange-800/50">
-                   <span className="text-xs font-black text-orange-200 uppercase tracking-tighter">
+                   <span className="text-[10px] md:text-xs font-black text-orange-200 uppercase tracking-tighter">
                      Escala de {tickValue} UI por traço
                    </span>
                 </div>
@@ -262,8 +262,8 @@ const App: React.FC = () => {
       </main>
 
       {/* Seção Chamativa do Desenvolvedor - Ajustada para Responsividade */}
-      <section className="max-w-5xl mx-auto px-4 mt-16 overflow-hidden">
-        <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] border-2 border-orange-100 shadow-xl shadow-orange-50/50 overflow-hidden relative">
+      <section className="max-w-5xl mx-auto px-4 mt-16 w-full">
+        <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] border-2 border-orange-100 shadow-xl shadow-orange-50/50 overflow-hidden relative w-full">
           <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none text-orange-500 hidden sm:block">
             <Heart size={120} />
           </div>
@@ -274,11 +274,11 @@ const App: React.FC = () => {
                 <Smartphone className="text-white" size={28} />
               </div>
               
-              <div className="flex-1 space-y-5 text-center md:text-left">
+              <div className="flex-1 space-y-5 text-center md:text-left w-full">
                 <div className="space-y-2">
                   <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight">Olá, pessoal!</h2>
                   <p className="text-slate-600 font-medium leading-relaxed text-sm md:text-base">
-                    Me chamo <span className="text-orange-600 font-black">Mateus Miranda</span>, sou o desenvolvedor do aplicativo Calculadora de Fracionamento.
+                    Me chamo <span className="text-orange-600 font-black">Mateus Miranda</span> e sou o desenvolvedor do aplicativo Calculadora de Fracionamento.
                   </p>
                 </div>
 
@@ -287,21 +287,22 @@ const App: React.FC = () => {
                     O aplicativo ainda está em fase de testes e, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.
                   </p>
                   <p>
-                    No momento, ele ainda não possui um domínio próprio. Se você gostou do aplicativo e quiser colaborar com qualquer valor para ajudar no seu desenvolvimento, toda contribuição via Pix, de qualquer quantia, será recebida com muita gratidão.
+                    No momento, ele não possui um domínio próprio. Se você gostou do aplicativo e quiser colaborar com qualquer valor para ajudar no seu desenvolvimento, toda contribuição via Pix, de qualquer quantia, será recebida com muita gratidão.
                   </p>
                   <p className="italic text-slate-500">
                     A ideia é hospedar o aplicativo em um servidor de qualidade, registrar um domínio para facilitar o acesso e seguir evoluindo o projeto.
                   </p>
+                  <p className="font-bold text-orange-600">
+                    Sua contribuição faz a diferença.
+                  </p>
                 </div>
 
-                <div className="pt-4 flex flex-col items-center md:items-start gap-4">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-orange-500">Sua contribuição faz a diferença:</p>
-                  
+                <div className="pt-4 flex flex-col items-center md:items-start gap-4 w-full">
                   <div className="w-full flex justify-center md:justify-start">
-                    <div className="bg-slate-50 border-2 border-slate-100 p-3 md:p-4 rounded-2xl flex items-center justify-between gap-3 group hover:border-orange-200 transition-all w-full max-w-[340px] sm:max-w-md">
-                      <div className="flex flex-col text-left overflow-hidden">
+                    <div className="bg-slate-50 border-2 border-slate-100 p-3 md:p-4 rounded-2xl flex items-center justify-between gap-3 group hover:border-orange-200 transition-all w-full max-w-full sm:max-w-md">
+                      <div className="flex flex-col text-left overflow-hidden w-full">
                         <span className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-tighter">Minha chave pix</span>
-                        <span className="text-[11px] md:text-sm font-black text-slate-700 truncate break-all">{pixKey}</span>
+                        <span className="text-[10px] md:text-sm font-black text-slate-700 truncate block w-full">{pixKey}</span>
                       </div>
                       <button 
                         onClick={copyPix}
@@ -450,7 +451,7 @@ const App: React.FC = () => {
       )}
 
       <footer className="max-w-5xl mx-auto px-4 mt-8 text-center">
-        {/* Footer link removed as requested */}
+        {/* Footer content removed as requested previously */}
       </footer>
     </div>
   );
