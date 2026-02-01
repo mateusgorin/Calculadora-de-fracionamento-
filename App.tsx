@@ -10,7 +10,11 @@ import {
   X,
   HelpCircle,
   AlertTriangle,
-  CheckCircle2
+  CheckCircle2,
+  Heart,
+  Smartphone,
+  Copy,
+  Check
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -19,10 +23,13 @@ const App: React.FC = () => {
   const [totalVolumeMl, setTotalVolumeMl] = useState<string>("0.5");
   const [targetDoseMg, setTargetDoseMg] = useState<string>("2.5");
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [pixCopied, setPixCopied] = useState(false);
   
   // Estados para o Modal de Aviso Inicial
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(false);
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
+
+  const pixKey = "mateusmirandaamaral@gmail.com";
 
   // Verificar se o usuário já aceitou os termos anteriormente
   useEffect(() => {
@@ -37,6 +44,12 @@ const App: React.FC = () => {
       localStorage.setItem('calc_fracionamento_accepted', 'true');
       setIsEntryModalOpen(false);
     }
+  };
+
+  const copyPix = () => {
+    navigator.clipboard.writeText(pixKey);
+    setPixCopied(true);
+    setTimeout(() => setPixCopied(false), 2000);
   };
 
   const result = useMemo<CalculationResult>(() => {
@@ -248,6 +261,66 @@ const App: React.FC = () => {
         </div>
       </main>
 
+      {/* Seção Chamativa do Desenvolvedor */}
+      <section className="max-w-5xl mx-auto px-4 mt-16">
+        <div className="bg-white rounded-[2.5rem] border-2 border-orange-100 shadow-xl shadow-orange-50/50 overflow-hidden relative">
+          <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none text-orange-500">
+            <Heart size={120} />
+          </div>
+          
+          <div className="p-8 md:p-12">
+            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+              <div className="w-20 h-20 bg-orange-600 rounded-3xl flex items-center justify-center shrink-0 shadow-lg shadow-orange-200">
+                <Smartphone className="text-white" size={36} />
+              </div>
+              
+              <div className="flex-1 space-y-6 text-center md:text-left">
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-black text-slate-800 tracking-tight">Olá, pessoal!</h2>
+                  <p className="text-slate-600 font-medium leading-relaxed">
+                    Me chamo <span className="text-orange-600 font-black">Mateus Miranda</span>, sou o desenvolvedor do aplicativo Calculadora de Fracionamento.
+                  </p>
+                </div>
+
+                <div className="space-y-4 text-slate-600 leading-relaxed text-sm md:text-base">
+                  <p>
+                    O aplicativo ainda está em fase de testes e, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.
+                  </p>
+                  <p>
+                    No momento, ele ainda não possui um domínio próprio. Se você gostou do aplicativo e quiser colaborar com qualquer valor para ajudar no seu desenvolvimento, toda contribuição via Pix, de qualquer quantia, será recebida com muita gratidão.
+                  </p>
+                  <p className="italic text-slate-500">
+                    A ideia é hospedar o aplicativo em um servidor de qualidade, registrar um domínio para facilitar o acesso e seguir evoluindo o projeto.
+                  </p>
+                </div>
+
+                <div className="pt-4 flex flex-col items-center md:items-start gap-4">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-orange-500">Sua contribuição faz a diferença:</p>
+                  <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                    <div className="bg-slate-50 border-2 border-slate-100 px-6 py-4 rounded-2xl flex items-center gap-4 group hover:border-orange-200 transition-all w-full sm:w-auto">
+                      <div className="flex flex-col text-left">
+                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Minha chave pix</span>
+                        <span className="text-sm font-black text-slate-700">{pixKey}</span>
+                      </div>
+                      <button 
+                        onClick={copyPix}
+                        className="p-3 bg-white border border-slate-200 rounded-xl hover:bg-orange-50 hover:border-orange-200 transition-all text-slate-400 hover:text-orange-600"
+                        title="Copiar chave Pix"
+                      >
+                        {pixCopied ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}
+                      </button>
+                    </div>
+                  </div>
+                  {pixCopied && (
+                    <p className="text-[10px] font-black text-green-600 uppercase animate-bounce">Chave copiada com sucesso!</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Banner de Aviso Inicial (Estilo Cookie/Aviso de Rodapé) */}
       {isEntryModalOpen && (
         <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/40 backdrop-blur-sm p-0 md:p-4 transition-all duration-500">
@@ -375,18 +448,7 @@ const App: React.FC = () => {
       )}
 
       <footer className="max-w-5xl mx-auto px-4 mt-8 text-center">
-        <div className="flex flex-col items-center gap-4">
-          <a 
-            href="https://www.gorinsolucoes.com.br" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="group flex items-center px-6 py-2 bg-white border border-slate-200 rounded-full hover:border-orange-200 hover:shadow-md transition-all duration-300"
-          >
-            <span className="text-[11px] font-black uppercase tracking-widest text-slate-400 group-hover:text-orange-500 transition-colors">
-              Desenvolvido por <span className="text-slate-600 group-hover:text-orange-600">Gorin soluções</span>
-            </span>
-          </a>
-        </div>
+        {/* Footer link removed as requested */}
       </footer>
     </div>
   );
