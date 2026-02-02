@@ -322,52 +322,50 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Banner de Aviso Inicial - Bottom Sheet Persistente */}
+      {/* Banner de Aviso Inicial - Bottom Sheet Persistente (Metade da tela, texto total) */}
       {isEntryModalOpen && (
         <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/40 backdrop-blur-[4px] p-0 transition-opacity duration-300">
-          <div className="bg-white w-full max-w-5xl h-[75vh] md:h-auto rounded-t-[2.5rem] md:rounded-[2.5rem] md:mb-8 md:mx-4 shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)] border-t border-slate-100 flex flex-col p-6 md:p-10 transform transition-transform duration-500 ease-out translate-y-0">
+          <div className="bg-white w-full max-w-5xl h-auto max-h-[65vh] rounded-t-[2.5rem] md:rounded-[2.5rem] md:mb-8 md:mx-4 shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)] border-t border-slate-100 flex flex-col p-6 md:p-10 transform transition-transform duration-500 ease-out translate-y-0 overflow-hidden">
             
-            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:gap-12 flex-1 overflow-hidden">
-              <div className="hidden lg:flex w-20 h-20 bg-orange-50 rounded-[1.5rem] items-center justify-center shrink-0">
-                <AlertTriangle className="text-orange-600" size={40} />
+            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-12 flex-1 overflow-hidden">
+              <div className="hidden lg:flex w-16 h-16 bg-orange-50 rounded-[1.2rem] items-center justify-center shrink-0">
+                <AlertTriangle className="text-orange-600" size={32} />
               </div>
 
               <div className="flex-1 w-full flex flex-col overflow-hidden">
-                <h2 className="text-2xl font-black text-slate-800 tracking-tight mb-4 flex items-center gap-3 justify-center lg:justify-start shrink-0">
-                  <AlertTriangle className="text-orange-600 lg:hidden" size={28} />
+                <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight mb-3 flex items-center gap-3 justify-center lg:justify-start shrink-0">
+                  <AlertTriangle className="text-orange-600 lg:hidden" size={24} />
                   Aviso Importante
                 </h2>
 
-                <div className="space-y-4 text-slate-600 text-sm md:text-base leading-relaxed overflow-y-auto pr-3 custom-scrollbar text-center lg:text-left">
-                  <p className="font-extrabold text-slate-900 text-base">Este aplicativo tem finalidade exclusivamente informativa.</p>
-                  <div className="space-y-2">
-                    <p>Não vendemos, não indicamos, não prescrevemos e não comercializamos qualquer medicamento.</p>
-                    <p>As informações apresentadas não substituem consulta médica. Qualquer decisão deve ser feita somente com orientação de um médico.</p>
-                    <p>O visitante assume total responsabilidade por suas escolhas. Não nos responsabilizamos pelo uso indevido das informações deste aplicativo.</p>
-                  </div>
+                <div className="space-y-3 text-slate-600 text-[13px] md:text-base leading-snug md:leading-relaxed overflow-y-auto pr-2 custom-scrollbar text-center lg:text-left">
+                  <p className="font-extrabold text-slate-900">Este aplicativo tem finalidade exclusivamente informativa.</p>
+                  <p>Não vendemos, não indicamos e não prescrevemos qualquer medicamento.</p>
+                  <p>As informações apresentadas não substituem consulta médica. Qualquer decisão deve ser feita somente com orientação de um médico.</p>
+                  <p>O visitante assume total responsabilidade por suas escolhas. Não nos responsabilizamos pelo uso indevido das informações deste aplicativo.</p>
                 </div>
               </div>
 
-              <div className="w-full lg:w-[400px] flex flex-col gap-5 pt-4 lg:pt-0 shrink-0">
-                <div className="bg-slate-50 p-5 rounded-3xl border-2 border-slate-100 group transition-all hover:border-orange-100">
-                  <label className="flex items-start gap-4 cursor-pointer">
-                    <div className="relative mt-1 shrink-0">
+              <div className="w-full lg:w-[380px] flex flex-col gap-4 pt-4 lg:pt-0 shrink-0">
+                <div className="bg-slate-50 p-4 rounded-2xl border-2 border-slate-100 group transition-all hover:border-orange-100">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <div className="relative mt-0.5 shrink-0">
                       <input 
                         type="checkbox" 
                         className="sr-only" 
                         checked={hasAcceptedTermsCheckbox}
                         onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
                       />
-                      <div className={`w-7 h-7 rounded-lg border-2 transition-all flex items-center justify-center ${
+                      <div className={`w-6 h-6 rounded-lg border-2 transition-all flex items-center justify-center ${
                         hasAcceptedTermsCheckbox 
                         ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-100' 
                         : 'bg-white border-slate-300 group-hover:border-orange-400'
                       }`}>
-                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={18} className="text-white" />}
+                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
                       </div>
                     </div>
-                    <span className="text-[12px] md:text-sm font-bold text-slate-600 select-none leading-tight text-left">
-                      Li, compreendo e concordo integralmente com os termos informados para utilizar a ferramenta.
+                    <span className="text-[11px] md:text-sm font-bold text-slate-600 select-none leading-tight text-left">
+                      Li, compreendo e concordo integralmente com os termos informados.
                     </span>
                   </label>
                 </div>
@@ -375,7 +373,7 @@ const App: React.FC = () => {
                 <button 
                   disabled={!hasAcceptedTermsCheckbox}
                   onClick={handleAcceptTerms}
-                  className={`w-full py-5 rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl ${
+                  className={`w-full py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs transition-all shadow-xl ${
                     hasAcceptedTermsCheckbox 
                     ? 'bg-orange-600 text-white shadow-orange-100 hover:bg-orange-700 active:scale-[0.98]' 
                     : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200'
