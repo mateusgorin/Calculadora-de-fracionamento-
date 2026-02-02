@@ -25,19 +25,17 @@ const App: React.FC = () => {
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [pixCopied, setPixCopied] = useState(false);
   
-  // Estados para o Aviso Inicial (Estilo Banner de Rodapé / Bottom Sheet)
-  const [isEntryModalOpen, setIsEntryModalOpen] = useState(false);
+  // Estado inicial verifica o localStorage imediatamente para evitar que o site apareça antes do aviso
+  const [isEntryModalOpen, setIsEntryModalOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return !localStorage.getItem('calc_fracionamento_accepted');
+    }
+    return true;
+  });
+  
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
 
   const pixKey = "mateusmirandaamaral@gmail.com";
-
-  // Verificar se o usuário já aceitou os termos anteriormente
-  useEffect(() => {
-    const accepted = localStorage.getItem('calc_fracionamento_accepted');
-    if (!accepted) {
-      setIsEntryModalOpen(true);
-    }
-  }, []);
 
   const handleAcceptTerms = () => {
     if (hasAcceptedTermsCheckbox) {
@@ -87,7 +85,7 @@ const App: React.FC = () => {
   const totalTicks = result.units / tickValue;
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-12 w-full overflow-x-hidden">
+    <div className={`min-h-screen bg-slate-50 pb-12 w-full overflow-x-hidden ${isEntryModalOpen ? 'max-h-screen overflow-hidden' : ''}`}>
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm w-full">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -261,7 +259,7 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      {/* Seção Chamativa do Desenvolvedor - Texto Atualizado */}
+      {/* Seção do Desenvolvedor */}
       <section className="max-w-5xl mx-auto px-4 mt-16 w-full">
         <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] border-2 border-orange-100 shadow-xl shadow-orange-50/50 overflow-hidden relative w-full">
           <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none text-orange-500 hidden sm:block">
@@ -324,10 +322,10 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Banner de Aviso Inicial - Estilo Bottom Sheet (Ocupando metade da tela no mobile) */}
+      {/* Banner de Aviso Inicial - Bottom Sheet Persistente */}
       {isEntryModalOpen && (
-        <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/40 backdrop-blur-[2px] p-0 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-5xl h-[70vh] md:h-auto rounded-t-[2.5rem] md:rounded-[2.5rem] md:mb-8 md:mx-4 shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)] border-t border-slate-100 flex flex-col p-6 md:p-10 animate-in slide-in-from-bottom duration-500">
+        <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/40 backdrop-blur-[4px] p-0 transition-opacity duration-300">
+          <div className="bg-white w-full max-w-5xl h-[75vh] md:h-auto rounded-t-[2.5rem] md:rounded-[2.5rem] md:mb-8 md:mx-4 shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)] border-t border-slate-100 flex flex-col p-6 md:p-10 transform transition-transform duration-500 ease-out translate-y-0">
             
             <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:gap-12 flex-1 overflow-hidden">
               <div className="hidden lg:flex w-20 h-20 bg-orange-50 rounded-[1.5rem] items-center justify-center shrink-0">
@@ -350,7 +348,6 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* Lado Direito: Aceite e Ação */}
               <div className="w-full lg:w-[400px] flex flex-col gap-5 pt-4 lg:pt-0 shrink-0">
                 <div className="bg-slate-50 p-5 rounded-3xl border-2 border-slate-100 group transition-all hover:border-orange-100">
                   <label className="flex items-start gap-4 cursor-pointer">
@@ -450,10 +447,6 @@ const App: React.FC = () => {
           </div>
         </div>
       )}
-
-      <footer className="max-w-5xl mx-auto px-4 mt-8 text-center">
-        {/* Footer content removed */}
-      </footer>
     </div>
   );
 };
