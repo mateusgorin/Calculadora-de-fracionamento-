@@ -25,7 +25,7 @@ const App: React.FC = () => {
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [pixCopied, setPixCopied] = useState(false);
   
-  // Estados para o Modal de Aviso Inicial
+  // Estados para o Aviso Inicial (Estilo Banner de Rodapé / Bottom Sheet)
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(false);
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
 
@@ -261,7 +261,7 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      {/* Seção Chamativa do Desenvolvedor - Ajustada para Responsividade */}
+      {/* Seção Chamativa do Desenvolvedor - Texto Atualizado */}
       <section className="max-w-5xl mx-auto px-4 mt-16 w-full">
         <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] border-2 border-orange-100 shadow-xl shadow-orange-50/50 overflow-hidden relative w-full">
           <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none text-orange-500 hidden sm:block">
@@ -274,7 +274,7 @@ const App: React.FC = () => {
                 <Smartphone className="text-white" size={28} />
               </div>
               
-              <div className="flex-1 space-y-5 text-center md:text-left w-full">
+              <div className="flex-1 space-y-5 text-center md:text-left w-full overflow-hidden">
                 <div className="space-y-2">
                   <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight">Olá, pessoal!</h2>
                   <p className="text-slate-600 font-medium leading-relaxed text-sm md:text-base">
@@ -324,52 +324,53 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Banner de Aviso Inicial (Estilo Cookie/Aviso de Rodapé) */}
+      {/* Banner de Aviso Inicial - Estilo Bottom Sheet (Ocupando metade da tela no mobile) */}
       {isEntryModalOpen && (
-        <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/40 backdrop-blur-sm p-0 md:p-4 transition-all duration-500">
-          <div className="bg-white w-full max-w-4xl rounded-t-[2.5rem] md:rounded-[2.5rem] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.3)] border-t border-slate-100 relative overflow-hidden flex flex-col p-6 md:p-10 animate-in slide-in-from-bottom duration-500">
+        <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/40 backdrop-blur-[2px] p-0 animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-5xl h-[70vh] md:h-auto rounded-t-[2.5rem] md:rounded-[2.5rem] md:mb-8 md:mx-4 shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)] border-t border-slate-100 flex flex-col p-6 md:p-10 animate-in slide-in-from-bottom duration-500">
             
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
-              {/* Ícone Lateral */}
-              <div className="hidden md:flex w-16 h-16 bg-orange-50 rounded-2xl items-center justify-center shrink-0">
-                <AlertTriangle className="text-orange-600" size={32} />
+            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:gap-12 flex-1 overflow-hidden">
+              <div className="hidden lg:flex w-20 h-20 bg-orange-50 rounded-[1.5rem] items-center justify-center shrink-0">
+                <AlertTriangle className="text-orange-600" size={40} />
               </div>
 
-              <div className="flex-1">
-                <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight mb-4 flex items-center gap-2 justify-center md:justify-start">
-                  <AlertTriangle className="text-orange-600 md:hidden" size={24} />
+              <div className="flex-1 w-full flex flex-col overflow-hidden">
+                <h2 className="text-2xl font-black text-slate-800 tracking-tight mb-4 flex items-center gap-3 justify-center lg:justify-start shrink-0">
+                  <AlertTriangle className="text-orange-600 lg:hidden" size={28} />
                   Aviso Importante
                 </h2>
 
-                <div className="space-y-3 text-slate-600 text-xs md:text-sm leading-relaxed max-h-[35vh] overflow-y-auto pr-2 custom-scrollbar">
-                  <p className="font-bold text-slate-800">Este site tem finalidade exclusivamente informativa.</p>
-                  <p>Não vendemos, não indicamos, não prescrevemos e não comercializamos qualquer medicamento.</p>
-                  <p>As informações aqui apresentadas não substituem consulta médica. Qualquer decisão relacionada ao uso de medicamentos deve ser feita somente com orientação e acompanhamento de um médico.</p>
-                  <p>Não nos responsabilizamos pelo uso das informações deste site. O visitante assume total responsabilidade por suas escolhas e ações.</p>
+                <div className="space-y-4 text-slate-600 text-sm md:text-base leading-relaxed overflow-y-auto pr-3 custom-scrollbar text-center lg:text-left">
+                  <p className="font-extrabold text-slate-900 text-base">Este aplicativo tem finalidade exclusivamente informativa.</p>
+                  <div className="space-y-2">
+                    <p>Não vendemos, não indicamos, não prescrevemos e não comercializamos qualquer medicamento.</p>
+                    <p>As informações apresentadas não substituem consulta médica. Qualquer decisão deve ser feita somente com orientação de um médico.</p>
+                    <p>O visitante assume total responsabilidade por suas escolhas. Não nos responsabilizamos pelo uso indevido das informações deste aplicativo.</p>
+                  </div>
                 </div>
               </div>
 
               {/* Lado Direito: Aceite e Ação */}
-              <div className="w-full md:w-80 flex flex-col gap-4">
-                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                  <label className="flex items-start gap-3 cursor-pointer group">
-                    <div className="relative mt-0.5 shrink-0">
+              <div className="w-full lg:w-[400px] flex flex-col gap-5 pt-4 lg:pt-0 shrink-0">
+                <div className="bg-slate-50 p-5 rounded-3xl border-2 border-slate-100 group transition-all hover:border-orange-100">
+                  <label className="flex items-start gap-4 cursor-pointer">
+                    <div className="relative mt-1 shrink-0">
                       <input 
                         type="checkbox" 
                         className="sr-only" 
                         checked={hasAcceptedTermsCheckbox}
                         onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
                       />
-                      <div className={`w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center ${
+                      <div className={`w-7 h-7 rounded-lg border-2 transition-all flex items-center justify-center ${
                         hasAcceptedTermsCheckbox 
-                        ? 'bg-orange-600 border-orange-600' 
-                        : 'bg-white border-slate-200 group-hover:border-orange-400'
+                        ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-100' 
+                        : 'bg-white border-slate-300 group-hover:border-orange-400'
                       }`}>
-                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={14} className="text-white" />}
+                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={18} className="text-white" />}
                       </div>
                     </div>
-                    <span className="text-[11px] font-bold text-slate-500 select-none leading-tight">
-                      Li, compreendo e concordo integralmente com os termos informados.
+                    <span className="text-[12px] md:text-sm font-bold text-slate-600 select-none leading-tight text-left">
+                      Li, compreendo e concordo integralmente com os termos informados para utilizar a ferramenta.
                     </span>
                   </label>
                 </div>
@@ -377,7 +378,7 @@ const App: React.FC = () => {
                 <button 
                   disabled={!hasAcceptedTermsCheckbox}
                   onClick={handleAcceptTerms}
-                  className={`w-full py-4 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all shadow-lg ${
+                  className={`w-full py-5 rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl ${
                     hasAcceptedTermsCheckbox 
                     ? 'bg-orange-600 text-white shadow-orange-100 hover:bg-orange-700 active:scale-[0.98]' 
                     : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200'
@@ -451,7 +452,7 @@ const App: React.FC = () => {
       )}
 
       <footer className="max-w-5xl mx-auto px-4 mt-8 text-center">
-        {/* Footer content removed as requested previously */}
+        {/* Footer content removed */}
       </footer>
     </div>
   );
