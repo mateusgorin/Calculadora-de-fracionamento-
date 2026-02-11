@@ -1,5 +1,4 @@
-
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { CalculationResult, SyringeCapacity } from './types.ts';
 import Syringe from './components/Syringe.tsx';
 import { 
@@ -13,7 +12,8 @@ import {
   CheckCircle2,
   Smartphone,
   Copy,
-  Check
+  Check,
+  Loader2
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -26,8 +26,21 @@ const App: React.FC = () => {
   const [pixCopied, setPixCopied] = useState(false);
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(true);
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
 
   const pixKey = "mateusmirandaamaral@gmail.com";
+
+  const referenceImageUrl = "https://i.postimg.cc/zvTRZnJg/IMG-20260201-WA0049.jpg";
+  const syringeGuideUrl = "https://i.postimg.cc/bvXN2Sj4/file-0000000094b871f5bf0a8a73aa2e41f6-(1).png";
+
+  // Pré-carregamento das imagens para evitar atrasos na abertura dos modais
+  useEffect(() => {
+    const preloadImages = [referenceImageUrl, syringeGuideUrl];
+    preloadImages.forEach((url) => {
+      const img = new Image();
+      img.src = url;
+    });
+  }, []);
 
   const handleAcceptTerms = () => {
     if (hasAcceptedTermsCheckbox) {
@@ -152,7 +165,10 @@ const App: React.FC = () => {
                 </div>
                 
                 <button 
-                  onClick={() => setIsHelpModalOpen(true)}
+                  onClick={() => {
+                    setImageLoading(true);
+                    setIsHelpModalOpen(true);
+                  }}
                   className="flex items-center gap-2 group ml-1"
                 >
                   <div className="p-1 bg-orange-50 rounded-md group-hover:bg-orange-100 transition-colors">
@@ -183,7 +199,10 @@ const App: React.FC = () => {
                 </div>
                 
                 <button 
-                  onClick={() => setIsSyringeHelpModalOpen(true)}
+                  onClick={() => {
+                    setImageLoading(true);
+                    setIsSyringeHelpModalOpen(true);
+                  }}
                   className="flex items-center gap-2 group ml-1"
                 >
                   <div className="p-1 bg-orange-50 rounded-md group-hover:bg-orange-100 transition-colors">
@@ -281,7 +300,7 @@ const App: React.FC = () => {
 
                 <div className="space-y-4 text-slate-600 leading-relaxed text-sm md:text-base max-w-3xl font-medium">
                   <p>
-                    O aplicativo ainda está em desenvolvimento, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.
+                    O aplicativo ainda está em desenvolvimento e, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.
                   </p>
                   <p>
                     No momento, ele não possui um domínio próprio. Se você gostou do aplicativo e quiser colaborar com qualquer valor para ajudar no seu desenvolvimento, toda contribuição via Pix, de qualquer quantia, será recebida com muita gratidão.
@@ -322,7 +341,7 @@ const App: React.FC = () => {
 
       {isEntryModalOpen && (
         <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/60 backdrop-blur-md p-0 transition-opacity duration-500">
-          <div className="bg-white w-full max-w-6xl h-auto max-h-[50vh] md:max-h-[55vh] rounded-t-[3rem] shadow-[0_-30px_100px_-20px_rgba(0,0,0,0.5)] border-t border-slate-100 flex flex-col p-6 md:p-14 transform transition-transform duration-500 translate-y-0 overflow-hidden relative">
+          <div className="bg-white w-full max-w-6xl h-auto max-h-[60vh] rounded-t-[3rem] shadow-[0_-30px_100px_-20px_rgba(0,0,0,0.5)] border-t border-slate-100 flex flex-col p-6 md:p-14 transform transition-transform duration-500 translate-y-0 overflow-hidden relative">
             
             <div className="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-4 shrink-0 md:mb-8"></div>
 
@@ -337,15 +356,15 @@ const App: React.FC = () => {
                   Termos e Responsabilidades
                 </h2>
 
-                <div className="space-y-2 md:space-y-4 text-slate-500 text-[10px] md:text-sm lg:text-base leading-tight md:leading-relaxed overflow-hidden text-center lg:text-left font-medium">
-                  <p className="font-black text-slate-900 text-xs md:text-lg">Esta ferramenta possui fins estritamente educacionais e informativos.</p>
+                <div className="space-y-3 md:space-y-5 text-slate-500 text-[11px] md:text-[15px] lg:text-[16px] leading-snug md:leading-relaxed overflow-hidden text-center lg:text-left font-medium">
+                  <p className="font-black text-slate-900 text-sm md:text-xl">Esta ferramenta possui fins estritamente educacionais e informativos.</p>
                   <p>Não prestamos assessoria médica, não vendemos e não indicamos substâncias.</p>
                   <p>A precisão dos cálculos depende da exatidão dos valores inseridos pelo usuário. Sempre valide os resultados com a orientação de um profissional de saúde qualificado antes de qualquer procedimento.</p>
                   <p>Ao utilizar este sistema, você declara estar ciente de que o desenvolvedor não se responsabiliza por eventuais erros de aplicação ou interpretação dos dados.</p>
                 </div>
               </div>
 
-              <div className="w-full lg:w-[400px] flex flex-col gap-4 md:gap-6 pt-2 lg:pt-0 shrink-0">
+              <div className="w-full lg:w-[400px] flex flex-col gap-4 md:gap-6 pt-4 lg:pt-0 shrink-0">
                 <div className="bg-slate-50/50 p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-slate-100 group transition-all hover:bg-white hover:shadow-xl">
                   <label className="flex items-center gap-3 md:gap-4 cursor-pointer">
                     <div className="relative shrink-0">
@@ -363,7 +382,7 @@ const App: React.FC = () => {
                         {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
                       </div>
                     </div>
-                    <span className="text-[10px] md:text-sm font-black text-slate-600 select-none leading-tight">
+                    <span className="text-[11px] md:text-sm font-black text-slate-600 select-none leading-tight">
                       Confirmo que li e aceito os termos.
                     </span>
                   </label>
@@ -372,7 +391,7 @@ const App: React.FC = () => {
                 <button 
                   disabled={!hasAcceptedTermsCheckbox}
                   onClick={handleAcceptTerms}
-                  className={`w-full py-4 md:py-6 rounded-[1rem] md:rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] md:text-xs transition-all shadow-2xl ${
+                  className={`w-full py-4 md:py-6 rounded-[1rem] md:rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] md:text-xs transition-all shadow-2xl ${
                     hasAcceptedTermsCheckbox 
                     ? 'bg-orange-600 text-white shadow-orange-200 hover:bg-orange-700 hover:scale-[1.02] active:scale-[0.98]' 
                     : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200'
@@ -405,12 +424,19 @@ const App: React.FC = () => {
                 Guia de Referência
               </h3>
               
-              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl bg-slate-50 aspect-video flex items-center justify-center relative group">
+              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl bg-slate-50 aspect-video flex items-center justify-center relative group min-h-[200px]">
+                 {imageLoading && (
+                   <div className="absolute inset-0 flex items-center justify-center bg-slate-50 z-10">
+                     <Loader2 className="animate-spin text-orange-500" size={32} />
+                   </div>
+                 )}
                  <img 
-                  src="https://i.postimg.cc/zvTRZnJg/IMG-20260201-WA0049.jpg" 
+                  src={referenceImageUrl}
                   alt="Referência" 
-                  className="w-full h-full object-contain scale-[1.25] group-hover:scale-[1.3] transition-transform duration-700"
+                  className={`w-full h-full object-contain scale-[1.25] group-hover:scale-[1.3] transition-all duration-700 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
+                  onLoad={() => setImageLoading(false)}
                   onError={(e) => {
+                    setImageLoading(false);
                     (e.target as HTMLImageElement).src = "https://img.icons8.com/clouds/500/pill.png";
                   }}
                  />
@@ -464,12 +490,19 @@ const App: React.FC = () => {
                 Qual é a sua seringa?
               </h3>
               
-              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl bg-slate-50 aspect-[4/5] flex items-center justify-center relative group">
+              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl bg-slate-50 aspect-[4/5] flex items-center justify-center relative group min-h-[250px]">
+                 {imageLoading && (
+                   <div className="absolute inset-0 flex items-center justify-center bg-slate-50 z-10">
+                     <Loader2 className="animate-spin text-orange-500" size={32} />
+                   </div>
+                 )}
                  <img 
-                  src="https://i.postimg.cc/bvXN2Sj4/file-0000000094b871f5bf0a8a73aa2e41f6-(1).png" 
+                  src={syringeGuideUrl}
                   alt="Guia de Seringas" 
-                  className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700"
+                  className={`w-full h-full object-contain p-4 group-hover:scale-105 transition-all duration-700 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
+                  onLoad={() => setImageLoading(false)}
                   onError={(e) => {
+                    setImageLoading(false);
                     (e.target as HTMLImageElement).src = "https://img.icons8.com/clouds/500/syringe.png";
                   }}
                  />
