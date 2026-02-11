@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { CalculationResult, SyringeCapacity } from './types.ts';
 import Syringe from './components/Syringe.tsx';
@@ -321,49 +322,49 @@ const App: React.FC = () => {
 
       {isEntryModalOpen && (
         <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/60 backdrop-blur-md p-0 transition-opacity duration-500">
-          <div className="bg-white w-full max-w-6xl h-auto max-h-[70vh] rounded-t-[3rem] shadow-[0_-30px_100px_-20px_rgba(0,0,0,0.5)] border-t border-slate-100 flex flex-col p-8 md:p-14 transform transition-transform duration-500 translate-y-0 overflow-hidden relative">
+          <div className="bg-white w-full max-w-6xl h-auto max-h-[55vh] md:max-h-[60vh] rounded-t-[3rem] shadow-[0_-30px_100px_-20px_rgba(0,0,0,0.5)] border-t border-slate-100 flex flex-col p-6 md:p-14 transform transition-transform duration-500 translate-y-0 overflow-hidden relative">
             
-            <div className="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-10 shrink-0"></div>
+            <div className="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-6 shrink-0 md:mb-10"></div>
 
-            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-16 flex-1 overflow-hidden">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:gap-16 flex-1 overflow-hidden">
               <div className="hidden lg:flex w-20 h-20 bg-orange-50 rounded-[2rem] items-center justify-center shrink-0">
                 <AlertTriangle className="text-orange-600" size={36} />
               </div>
 
               <div className="flex-1 w-full flex flex-col overflow-hidden">
-                <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight mb-6 flex items-center gap-4 justify-center lg:justify-start">
-                  <AlertTriangle className="text-orange-600 lg:hidden" size={28} />
+                <h2 className="text-xl md:text-3xl font-black text-slate-800 tracking-tight mb-4 md:mb-6 flex items-center gap-4 justify-center lg:justify-start">
+                  <AlertTriangle className="text-orange-600 lg:hidden" size={24} />
                   Termos e Responsabilidades
                 </h2>
 
-                <div className="space-y-4 text-slate-500 text-sm md:text-lg leading-relaxed overflow-y-auto pr-4 custom-scrollbar text-center lg:text-left font-medium">
-                  <p className="font-black text-slate-900 text-base md:text-xl">Esta ferramenta possui fins estritamente educacionais e informativos.</p>
+                <div className="space-y-3 md:space-y-4 text-slate-500 text-[11px] md:text-base leading-snug md:leading-relaxed overflow-y-auto pr-2 custom-scrollbar text-center lg:text-left font-medium">
+                  <p className="font-black text-slate-900 text-xs md:text-lg">Esta ferramenta possui fins estritamente educacionais e informativos.</p>
                   <p>Não prestamos assessoria médica, não vendemos e não indicamos substâncias.</p>
                   <p>A precisão dos cálculos depende da exatidão dos valores inseridos pelo usuário. Sempre valide os resultados com a orientação de um profissional de saúde qualificado antes de qualquer procedimento.</p>
                   <p>Ao utilizar este sistema, você declara estar ciente de que o desenvolvedor não se responsabiliza por eventuais erros de aplicação ou interpretação dos dados.</p>
                 </div>
               </div>
 
-              <div className="w-full lg:w-[420px] flex flex-col gap-6 pt-6 lg:pt-0 shrink-0">
-                <div className="bg-slate-50/50 p-6 rounded-[2rem] border border-slate-100 group transition-all hover:bg-white hover:shadow-xl hover:shadow-slate-100">
-                  <label className="flex items-start gap-4 cursor-pointer">
-                    <div className="relative mt-1 shrink-0">
+              <div className="w-full lg:w-[400px] flex flex-col gap-4 md:gap-6 pt-4 lg:pt-0 shrink-0">
+                <div className="bg-slate-50/50 p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-slate-100 group transition-all hover:bg-white hover:shadow-xl">
+                  <label className="flex items-center gap-3 md:gap-4 cursor-pointer">
+                    <div className="relative shrink-0">
                       <input 
                         type="checkbox" 
                         className="sr-only" 
                         checked={hasAcceptedTermsCheckbox}
                         onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
                       />
-                      <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center ${
+                      <div className={`w-6 h-6 md:w-7 md:h-7 rounded-lg md:rounded-xl border-2 transition-all flex items-center justify-center ${
                         hasAcceptedTermsCheckbox 
                         ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-100' 
                         : 'bg-white border-slate-300'
                       }`}>
-                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={18} className="text-white" />}
+                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
                       </div>
                     </div>
-                    <span className="text-[12px] md:text-sm font-black text-slate-600 select-none leading-tight">
-                      Confirmo que li, entendi e aceito integralmente os termos acima.
+                    <span className="text-[10px] md:text-sm font-black text-slate-600 select-none leading-tight">
+                      Confirmo que li e aceito os termos.
                     </span>
                   </label>
                 </div>
@@ -371,7 +372,7 @@ const App: React.FC = () => {
                 <button 
                   disabled={!hasAcceptedTermsCheckbox}
                   onClick={handleAcceptTerms}
-                  className={`w-full py-6 rounded-[1.5rem] font-black uppercase tracking-widest text-xs transition-all shadow-2xl ${
+                  className={`w-full py-4 md:py-6 rounded-[1rem] md:rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] md:text-xs transition-all shadow-2xl ${
                     hasAcceptedTermsCheckbox 
                     ? 'bg-orange-600 text-white shadow-orange-200 hover:bg-orange-700 hover:scale-[1.02] active:scale-[0.98]' 
                     : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200'
