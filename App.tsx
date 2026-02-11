@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { CalculationResult, SyringeCapacity } from './types.ts';
 import Syringe from './components/Syringe.tsx';
@@ -11,7 +10,6 @@ import {
   HelpCircle,
   AlertTriangle,
   CheckCircle2,
-  Heart,
   Smartphone,
   Copy,
   Check
@@ -23,6 +21,7 @@ const App: React.FC = () => {
   const [totalVolumeMl, setTotalVolumeMl] = useState<string>("0.5");
   const [targetDoseMg, setTargetDoseMg] = useState<string>("2.5");
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [isSyringeHelpModalOpen, setIsSyringeHelpModalOpen] = useState(false);
   const [pixCopied, setPixCopied] = useState(false);
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(true);
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
@@ -181,6 +180,18 @@ const App: React.FC = () => {
                     </button>
                   ))}
                 </div>
+                
+                <button 
+                  onClick={() => setIsSyringeHelpModalOpen(true)}
+                  className="flex items-center gap-2 group ml-1"
+                >
+                  <div className="p-1 bg-orange-50 rounded-md group-hover:bg-orange-100 transition-colors">
+                    <HelpCircle size={14} className="text-orange-500" />
+                  </div>
+                  <span className="text-[11px] font-bold text-slate-400 group-hover:text-orange-600 transition-colors">
+                    Dúvidas de qual é a sua seringa, clique aqui
+                  </span>
+                </button>
               </div>
             </div>
           </div>
@@ -269,7 +280,7 @@ const App: React.FC = () => {
 
                 <div className="space-y-4 text-slate-600 leading-relaxed text-sm md:text-base max-w-3xl font-medium">
                   <p>
-                    O aplicativo ainda está em fase de testes e, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.
+                    O aplicativo ainda está em desenvolvimento, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.
                   </p>
                   <p>
                     No momento, ele não possui um domínio próprio. Se você gostou do aplicativo e quiser colaborar com qualquer valor para ajudar no seu desenvolvimento, toda contribuição via Pix, de qualquer quantia, será recebida com muita gratidão.
@@ -424,6 +435,61 @@ const App: React.FC = () => {
               
               <button 
                 onClick={() => setIsHelpModalOpen(false)}
+                className="w-full mt-10 py-5 bg-slate-900 text-white font-black rounded-2xl shadow-xl hover:bg-slate-800 transition-all uppercase tracking-[0.2em] text-[10px]"
+              >
+                Voltar ao Cálculo
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isSyringeHelpModalOpen && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-xl transition-all duration-300">
+          <div 
+            className="bg-white w-full max-w-xl rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] relative overflow-hidden flex flex-col max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setIsSyringeHelpModalOpen(false)}
+              className="absolute top-8 right-8 p-3 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors z-20"
+            >
+              <X size={20} className="text-slate-600" />
+            </button>
+
+            <div className="p-10 pb-6">
+              <h3 className="text-2xl font-black text-slate-800 mb-8 flex items-center gap-3">
+                <HelpCircle className="text-orange-500" /> 
+                Qual é a sua seringa?
+              </h3>
+              
+              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl bg-slate-50 aspect-[4/5] flex items-center justify-center relative group">
+                 <img 
+                  src="https://i.postimg.cc/bvXN2Sj4/file-0000000094b871f5bf0a8a73aa2e41f6-(1).png" 
+                  alt="Guia de Seringas" 
+                  className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://img.icons8.com/clouds/500/syringe.png";
+                  }}
+                 />
+              </div>
+              <p className="text-[10px] text-slate-400 mt-4 text-center font-black uppercase tracking-widest italic leading-relaxed">
+                Compare o bico e as graduações para identificar seu modelo
+              </p>
+            </div>
+
+            <div className="p-10 pt-4 overflow-y-auto">
+              <div className="space-y-4 text-slate-600 font-medium leading-relaxed">
+                <p>
+                  As seringas de insulina variam em capacidade total e na escala dos traços. Identificar corretamente o modelo garante que a dosagem aspirada corresponda ao cálculo.
+                </p>
+                <div className="bg-orange-50/50 p-6 rounded-[1.5rem] border-l-4 border-orange-500 italic font-bold text-slate-700">
+                  Observe se sua seringa é de 30 UI, 50 UI ou 100 UI e selecione a opção correspondente no aplicativo.
+                </div>
+              </div>
+              
+              <button 
+                onClick={() => setIsSyringeHelpModalOpen(false)}
                 className="w-full mt-10 py-5 bg-slate-900 text-white font-black rounded-2xl shadow-xl hover:bg-slate-800 transition-all uppercase tracking-[0.2em] text-[10px]"
               >
                 Voltar ao Cálculo
