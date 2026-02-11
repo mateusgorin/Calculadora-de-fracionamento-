@@ -322,22 +322,22 @@ const App: React.FC = () => {
 
       {isEntryModalOpen && (
         <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/60 backdrop-blur-md p-0 transition-opacity duration-500">
-          <div className="bg-white w-full max-w-6xl h-auto max-h-[55vh] md:max-h-[60vh] rounded-t-[3rem] shadow-[0_-30px_100px_-20px_rgba(0,0,0,0.5)] border-t border-slate-100 flex flex-col p-6 md:p-14 transform transition-transform duration-500 translate-y-0 overflow-hidden relative">
+          <div className="bg-white w-full max-w-6xl h-auto max-h-[50vh] md:max-h-[55vh] rounded-t-[3rem] shadow-[0_-30px_100px_-20px_rgba(0,0,0,0.5)] border-t border-slate-100 flex flex-col p-6 md:p-14 transform transition-transform duration-500 translate-y-0 overflow-hidden relative">
             
-            <div className="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-6 shrink-0 md:mb-10"></div>
+            <div className="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-4 shrink-0 md:mb-8"></div>
 
-            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:gap-16 flex-1 overflow-hidden">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-16 flex-1 overflow-hidden">
               <div className="hidden lg:flex w-20 h-20 bg-orange-50 rounded-[2rem] items-center justify-center shrink-0">
                 <AlertTriangle className="text-orange-600" size={36} />
               </div>
 
               <div className="flex-1 w-full flex flex-col overflow-hidden">
-                <h2 className="text-xl md:text-3xl font-black text-slate-800 tracking-tight mb-4 md:mb-6 flex items-center gap-4 justify-center lg:justify-start">
+                <h2 className="text-xl md:text-3xl font-black text-slate-800 tracking-tight mb-3 md:mb-6 flex items-center gap-4 justify-center lg:justify-start">
                   <AlertTriangle className="text-orange-600 lg:hidden" size={24} />
                   Termos e Responsabilidades
                 </h2>
 
-                <div className="space-y-3 md:space-y-4 text-slate-500 text-[11px] md:text-base leading-snug md:leading-relaxed overflow-y-auto pr-2 custom-scrollbar text-center lg:text-left font-medium">
+                <div className="space-y-2 md:space-y-4 text-slate-500 text-[10px] md:text-sm lg:text-base leading-tight md:leading-relaxed overflow-hidden text-center lg:text-left font-medium">
                   <p className="font-black text-slate-900 text-xs md:text-lg">Esta ferramenta possui fins estritamente educacionais e informativos.</p>
                   <p>Não prestamos assessoria médica, não vendemos e não indicamos substâncias.</p>
                   <p>A precisão dos cálculos depende da exatidão dos valores inseridos pelo usuário. Sempre valide os resultados com a orientação de um profissional de saúde qualificado antes de qualquer procedimento.</p>
@@ -345,7 +345,7 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              <div className="w-full lg:w-[400px] flex flex-col gap-4 md:gap-6 pt-4 lg:pt-0 shrink-0">
+              <div className="w-full lg:w-[400px] flex flex-col gap-4 md:gap-6 pt-2 lg:pt-0 shrink-0">
                 <div className="bg-slate-50/50 p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-slate-100 group transition-all hover:bg-white hover:shadow-xl">
                   <label className="flex items-center gap-3 md:gap-4 cursor-pointer">
                     <div className="relative shrink-0">
