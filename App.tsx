@@ -1,6 +1,6 @@
 
-import React, { useState, useMemo, useEffect } from 'react';
-import { MedicationConfig, CalculationResult, SyringeCapacity } from './types.ts';
+import React, { useState, useMemo } from 'react';
+import { CalculationResult, SyringeCapacity } from './types.ts';
 import Syringe from './components/Syringe.tsx';
 import { 
   Calculator, 
@@ -24,22 +24,13 @@ const App: React.FC = () => {
   const [targetDoseMg, setTargetDoseMg] = useState<string>("2.5");
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [pixCopied, setPixCopied] = useState(false);
-  
-  // Estado inicial verifica o localStorage imediatamente para evitar que o site apareça antes do aviso
-  const [isEntryModalOpen, setIsEntryModalOpen] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return !localStorage.getItem('calc_fracionamento_accepted');
-    }
-    return true;
-  });
-  
+  const [isEntryModalOpen, setIsEntryModalOpen] = useState(true);
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
 
   const pixKey = "mateusmirandaamaral@gmail.com";
 
   const handleAcceptTerms = () => {
     if (hasAcceptedTermsCheckbox) {
-      localStorage.setItem('calc_fracionamento_accepted', 'true');
       setIsEntryModalOpen(false);
     }
   };
@@ -59,9 +50,9 @@ const App: React.FC = () => {
       return { units: 0, volumeMl: 0, concentrationMgMl: 0 };
     }
     
-    const concentration = tMg / tVol; // mg/ml
-    const volumeNeeded = dMg / concentration; // ml
-    const exactUnits = volumeNeeded * 100; // UI reais
+    const concentration = tMg / tVol;
+    const volumeNeeded = dMg / concentration;
+    const exactUnits = volumeNeeded * 100;
     
     let roundedUnits;
     if (syringeCapacity === 30) {
@@ -85,111 +76,105 @@ const App: React.FC = () => {
   const totalTicks = result.units / tickValue;
 
   return (
-    <div className={`min-h-screen bg-slate-50 pb-12 w-full overflow-x-hidden ${isEntryModalOpen ? 'max-h-screen overflow-hidden' : ''}`}>
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm w-full">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-orange-600 p-2 rounded-xl shadow-lg shadow-orange-100 flex items-center justify-center">
-              <SyringeIcon className="text-white" size={24} />
+    <div className={`min-h-screen bg-[#fcfdfe] pb-20 w-full overflow-x-hidden ${isEntryModalOpen ? 'max-h-screen overflow-hidden' : ''}`}>
+      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50 w-full">
+        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-2.5 rounded-2xl shadow-lg shadow-orange-200/50 flex items-center justify-center">
+              <SyringeIcon className="text-white" size={22} />
             </div>
-            <div className="flex flex-col">
-              <h1 className="text-xl font-black text-slate-800 tracking-tight leading-none">
-                Calculadora de fracionamento
-              </h1>
-            </div>
+            <h1 className="text-xl font-black text-slate-800 tracking-tight">
+              Calculadora de fracionamento
+            </h1>
           </div>
-          <div className="hidden sm:flex items-center gap-2">
-            <div className="bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200 text-[10px] font-black uppercase text-slate-500 tracking-widest">
-              Padrão U-100
+          <div className="hidden sm:block">
+            <div className="bg-slate-50 px-4 py-2 rounded-full border border-slate-100 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+              Standard U-100 Scale
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <main className="max-w-6xl mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         
-        <div className="lg:col-span-7 space-y-6 w-full">
-          <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
-            <div className="flex items-center gap-2 mb-8 border-b border-slate-100 pb-4">
-              <SyringeIcon className="text-orange-500" size={22} />
-              <h2 className="text-xl font-black text-slate-800">Parâmetros</h2>
+        <div className="lg:col-span-7 space-y-8 w-full">
+          <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 relative overflow-hidden">
+            <div className="flex items-center gap-3 mb-10 border-b border-slate-50 pb-6">
+              <div className="w-1.5 h-6 bg-orange-500 rounded-full"></div>
+              <h2 className="text-xl font-black text-slate-800">Parâmetros do Cálculo</h2>
             </div>
 
-            <div className="grid grid-cols-1 gap-8">
-              {/* PRIMEIRO: Dose Prescrita */}
-              <div className="space-y-2">
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-400">Dose Prescrita (MG desejado)</label>
-                <div className="relative">
+            <div className="grid grid-cols-1 gap-10">
+              <div className="space-y-3">
+                <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">Dose Prescrita (MG desejado)</label>
+                <div className="relative group">
                   <input
                     type="text"
                     inputMode="decimal"
                     value={targetDoseMg}
                     onChange={(e) => setTargetDoseMg(e.target.value.replace(',', '.'))}
-                    className="w-full pl-14 pr-14 py-5 bg-orange-50 border-2 border-orange-200 rounded-[1.5rem] focus:border-orange-600 outline-none transition-all text-3xl font-black text-orange-900 shadow-inner"
+                    className="w-full pl-16 pr-16 py-6 bg-slate-50/50 border-2 border-slate-100 rounded-[1.8rem] focus:border-orange-500 focus:bg-white focus:shadow-xl focus:shadow-orange-50 outline-none transition-all text-4xl font-black text-slate-800"
                   />
-                  <Calculator className="absolute left-5 top-1/2 -translate-y-1/2 text-orange-500" size={24} />
-                  <span className="absolute right-5 top-1/2 -translate-y-1/2 text-orange-600 font-black text-xs">MG</span>
+                  <Calculator className="absolute left-6 top-1/2 -translate-y-1/2 text-orange-500/50 group-focus-within:text-orange-500 transition-colors" size={28} />
+                  <span className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-300 font-black text-xs uppercase tracking-widest">mg</span>
                 </div>
               </div>
 
-              {/* SEGUNDO E TERCEIRO LADO A LADO */}
-              <div className="space-y-3">
-                <div className="flex items-end gap-3 sm:gap-4">
-                  <div className="flex-1 space-y-2">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">MG na ampola?</label>
-                    <div className="relative group">
+              <div className="space-y-4">
+                <div className="flex items-end gap-4">
+                  <div className="flex-1 space-y-3">
+                    <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">MG na ampola</label>
+                    <div className="relative">
                       <input
                         type="text"
                         inputMode="decimal"
                         value={totalMg}
                         onChange={(e) => setTotalMg(e.target.value.replace(',', '.'))}
-                        className="w-full pl-4 pr-10 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700 text-sm md:text-base"
+                        className="w-full px-6 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700"
                       />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[9px]">MG</span>
                     </div>
                   </div>
 
-                  <div className="pb-4 text-slate-300 font-black text-2xl select-none">/</div>
+                  <div className="pb-4 text-slate-200 font-light text-4xl">/</div>
 
-                  <div className="flex-1 space-y-2">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">Por quantas ML?</label>
-                    <div className="relative group">
+                  <div className="flex-1 space-y-3">
+                    <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">Total em ML</label>
+                    <div className="relative">
                       <input
                         type="text"
                         inputMode="decimal"
                         value={totalVolumeMl}
                         onChange={(e) => setTotalVolumeMl(e.target.value.replace(',', '.'))}
-                        className="w-full pl-4 pr-10 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all font-bold text-slate-700 text-sm md:text-base"
+                        className="w-full px-6 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700"
                       />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-black text-[9px]">ML</span>
                     </div>
                   </div>
                 </div>
                 
-                {/* Link de Ajuda */}
                 <button 
                   onClick={() => setIsHelpModalOpen(true)}
-                  className="flex items-center gap-1.5 text-left group"
+                  className="flex items-center gap-2 group ml-1"
                 >
-                  <HelpCircle size={14} className="text-orange-500" />
-                  <span className="text-[11px] font-medium text-slate-500 group-hover:text-orange-600 transition-colors underline decoration-slate-300 underline-offset-2">
-                    Ficou em dúvida? Clique aqui e veja como verificar a MG e ML do seu medicamento.
+                  <div className="p-1 bg-orange-50 rounded-md group-hover:bg-orange-100 transition-colors">
+                    <HelpCircle size={14} className="text-orange-500" />
+                  </div>
+                  <span className="text-[11px] font-bold text-slate-400 group-hover:text-orange-600 transition-colors">
+                    Dúvida sobre os valores da ampola? Clique para ajuda visual.
                   </span>
                 </button>
               </div>
 
-              {/* ÚLTIMO: Capacidade da Seringa */}
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-3">Capacidade da Seringa</label>
+              <div className="space-y-4">
+                <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">Capacidade da Seringa (UI)</label>
                 <div className="grid grid-cols-3 gap-4">
                   {[30, 50, 100].map((cap) => (
                     <button
                       key={cap}
                       onClick={() => setSyringeCapacity(cap as SyringeCapacity)}
-                      className={`py-4 px-2 rounded-2xl border-2 transition-all text-sm font-black ${
+                      className={`py-5 rounded-[1.2rem] border-2 transition-all text-sm font-black tracking-widest ${
                         syringeCapacity === cap 
-                        ? 'border-orange-600 bg-orange-600 text-white shadow-xl shadow-orange-200' 
-                        : 'border-slate-100 bg-slate-50 text-slate-400 hover:border-slate-200'
+                        ? 'border-orange-500 bg-orange-500 text-white shadow-lg shadow-orange-100' 
+                        : 'border-slate-100 bg-slate-50/50 text-slate-400 hover:border-slate-200'
                       }`}
                     >
                       {cap} UI
@@ -200,45 +185,53 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Resultado Card */}
-          <div className="bg-slate-900 p-8 rounded-[2rem] shadow-2xl text-white relative overflow-hidden w-full">
-            <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none text-orange-400">
-              <Droplet size={140} />
+          <div className="bg-gradient-to-br from-slate-900 to-slate-950 p-10 rounded-[3rem] shadow-2xl text-white relative overflow-hidden group">
+            <div className="absolute -top-10 -right-10 opacity-[0.03] text-orange-500 transition-transform duration-1000 group-hover:scale-110">
+              <Droplet size={260} />
             </div>
             
-            <h3 className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
-              <span className="text-orange-500"><Droplet size={14} /></span> Resultado da Conversão
-            </h3>
+            <div className="flex items-center justify-between mb-12">
+              <h3 className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-3">
+                <span className="w-8 h-[1px] bg-orange-500/50"></span>
+                Resultado da Conversão
+              </h3>
+              <div className="bg-orange-500/10 border border-orange-500/20 px-3 py-1 rounded-full">
+                <span className="text-orange-400 text-[9px] font-black uppercase tracking-widest">Cálculo Preciso</span>
+              </div>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div>
-                <p className="text-slate-400 text-[10px] font-black uppercase mb-3 tracking-wider">Aspirar até a marca:</p>
-                <div className="flex items-baseline gap-3">
-                  <span className="text-5xl md:text-7xl font-black text-orange-400 leading-none">{result.units}</span>
-                  <div className="flex flex-col">
-                    <span className="text-xl md:text-2xl font-black text-slate-100 leading-tight">UI</span>
-                  </div>
+                <p className="text-slate-400 text-[10px] font-black uppercase mb-4 tracking-widest">Aspirar até a marca:</p>
+                <div className="flex items-baseline gap-4">
+                  <span className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-400 to-orange-600 leading-none drop-shadow-sm">
+                    {result.units}
+                  </span>
+                  <span className="text-2xl font-black text-slate-400 uppercase tracking-tighter">UI</span>
                 </div>
-                <div className="mt-4 inline-flex items-center gap-2 bg-orange-900/40 px-3 py-1.5 rounded-full border border-orange-800/50">
-                   <span className="text-[10px] md:text-xs font-black text-orange-200 uppercase tracking-tighter">
+                <div className="mt-8 flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
+                   <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
+                   <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wide">
                      Escala de {tickValue} UI por traço
                    </span>
                 </div>
               </div>
               
-              <div className="space-y-4 md:border-l md:border-slate-800 md:pl-10">
-                <div className="flex justify-between items-center group">
-                  <span className="text-slate-500 text-[10px] font-black uppercase tracking-wider">Total de Traços:</span>
-                  <span className="font-mono text-orange-200 font-black text-lg">{totalTicks.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</span>
+              <div className="space-y-5 md:border-l md:border-white/10 md:pl-12">
+                <div className="flex justify-between items-center group/item">
+                  <span className="text-slate-500 text-[10px] font-black uppercase tracking-widest group-hover/item:text-slate-400 transition-colors">Traços Físicos:</span>
+                  <span className="font-mono text-orange-300 font-black text-2xl">{totalTicks.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</span>
                 </div>
-                <div className="flex justify-between items-center group">
-                  <span className="text-slate-500 text-[10px] font-black uppercase tracking-wider">Volume (ML):</span>
-                  <span className="font-mono text-orange-200 font-black text-sm">{result.volumeMl.toFixed(3)} ml</span>
+                <div className="flex justify-between items-center group/item">
+                  <span className="text-slate-500 text-[10px] font-black uppercase tracking-widest group-hover/item:text-slate-400 transition-colors">Volume Exato:</span>
+                  <span className="font-mono text-slate-300 font-black text-base">{result.volumeMl.toFixed(3)} <span className="text-[10px] text-slate-500">ml</span></span>
                 </div>
-                <div className="pt-4 mt-2 border-t border-slate-800">
-                  <div className="flex items-center gap-2 text-orange-400/80">
-                    <span className="text-orange-400"><Info size={14} /></span>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-orange-400/80">Conferência Visual Obrigatória</span>
+                <div className="pt-6 mt-2 border-t border-white/5">
+                  <div className="flex items-center gap-3 text-orange-400/60">
+                    <Info size={16} />
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] leading-tight">
+                      Confirme visualmente na seringa ao lado
+                    </span>
                   </div>
                 </div>
               </div>
@@ -246,74 +239,67 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Visualização da Seringa */}
         <div className="lg:col-span-5 flex justify-center w-full">
-          <div className="sticky top-24 w-full max-w-[340px]">
+          <div className="sticky top-28 w-full max-w-[360px]">
             <Syringe capacity={syringeCapacity} currentUI={result.units} />
-            <div className="mt-8 p-6 bg-slate-900/5 backdrop-blur-sm rounded-3xl border border-slate-200 text-center">
-              <p className="text-[10px] text-slate-400 leading-relaxed uppercase font-black tracking-tighter italic">
-                Aviso: Esta é uma ferramenta de apoio visual. Confirme sempre com um profissional de saúde.
+            <div className="mt-8 p-8 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm text-center">
+              <p className="text-[10px] text-slate-400 leading-relaxed uppercase font-black tracking-wider italic">
+                Representação visual auxiliar. Confirme a dosagem com o seu médico ou farmacêutico.
               </p>
             </div>
           </div>
         </div>
       </main>
 
-      {/* Seção do Desenvolvedor */}
-      <section className="max-w-5xl mx-auto px-4 mt-16 w-full">
-        <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] border-2 border-orange-100 shadow-xl shadow-orange-50/50 overflow-hidden relative w-full">
-          <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none text-orange-500 hidden sm:block">
-            <Heart size={120} />
-          </div>
-          
-          <div className="p-6 md:p-12">
-            <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-orange-600 rounded-2xl md:rounded-3xl flex items-center justify-center shrink-0 shadow-lg shadow-orange-200">
-                <Smartphone className="text-white" size={28} />
+      <section className="max-w-6xl mx-auto px-6 mt-20 w-full">
+        <div className="bg-white rounded-[3rem] border border-slate-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] overflow-hidden relative w-full">
+          <div className="p-8 md:p-14">
+            <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start">
+              <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-orange-500 to-orange-700 rounded-3xl flex items-center justify-center shrink-0 shadow-2xl shadow-orange-200">
+                <Smartphone className="text-white" size={32} />
               </div>
               
-              <div className="flex-1 space-y-5 text-center md:text-left w-full overflow-hidden">
+              <div className="flex-1 space-y-6 text-center md:text-left">
                 <div className="space-y-2">
-                  <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight">Olá, pessoal!</h2>
-                  <p className="text-slate-600 font-medium leading-relaxed text-sm md:text-base">
-                    Me chamo <span className="text-orange-600 font-black">Mateus Miranda</span> e sou o desenvolvedor do aplicativo Calculadora de Fracionamento.
+                  <h2 className="text-2xl font-black text-slate-800 tracking-tight">Olá, pessoal!</h2>
+                  <p className="text-slate-500 font-medium">
+                    Me chamo <span className="text-orange-600 font-black uppercase tracking-wider">Mateus Miranda</span> e sou o desenvolvedor do aplicativo Calculadora de Fracionamento.
                   </p>
                 </div>
 
-                <div className="space-y-4 text-slate-600 leading-relaxed text-xs md:text-sm lg:text-base">
+                <div className="space-y-4 text-slate-600 leading-relaxed text-sm md:text-base max-w-3xl font-medium">
                   <p>
                     O aplicativo ainda está em fase de testes e, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.
                   </p>
                   <p>
                     No momento, ele não possui um domínio próprio. Se você gostou do aplicativo e quiser colaborar com qualquer valor para ajudar no seu desenvolvimento, toda contribuição via Pix, de qualquer quantia, será recebida com muita gratidão.
                   </p>
-                  <p className="italic text-slate-500">
+                  <p>
                     A ideia é hospedar o aplicativo em um servidor de qualidade, registrar um domínio para facilitar o acesso e seguir evoluindo o projeto.
                   </p>
-                  <p className="font-bold text-orange-600">
+                  <p className="font-black text-orange-600">
                     Sua contribuição faz a diferença.
                   </p>
                 </div>
 
-                <div className="pt-4 flex flex-col items-center md:items-start gap-4 w-full">
+                <div className="pt-6 flex flex-col items-center md:items-start gap-5">
                   <div className="w-full flex justify-center md:justify-start">
-                    <div className="bg-slate-50 border-2 border-slate-100 p-3 md:p-4 rounded-2xl flex items-center justify-between gap-3 group hover:border-orange-200 transition-all w-full max-w-full sm:max-w-md">
-                      <div className="flex flex-col text-left overflow-hidden w-full">
-                        <span className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-tighter">Minha chave pix</span>
-                        <span className="text-[10px] md:text-sm font-black text-slate-700 truncate block w-full">{pixKey}</span>
+                    <div className="bg-slate-50 border border-slate-100 p-4 rounded-[1.5rem] flex items-center justify-between gap-6 group hover:border-orange-200 hover:bg-white hover:shadow-xl transition-all w-full max-w-md">
+                      <div className="flex flex-col text-left overflow-hidden">
+                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Chave Pix de Apoio</span>
+                        <span className="text-sm font-black text-slate-700 truncate">{pixKey}</span>
                       </div>
                       <button 
                         onClick={copyPix}
-                        className="p-2 md:p-3 bg-white border border-slate-200 rounded-xl hover:bg-orange-50 hover:border-orange-200 transition-all text-slate-400 hover:text-orange-600 shrink-0"
-                        title="Copiar chave Pix"
+                        className="p-4 bg-white border border-slate-200 rounded-2xl hover:bg-orange-600 hover:border-orange-600 hover:text-white transition-all text-slate-400 shadow-sm"
                       >
-                        {pixCopied ? <Check size={16} className="text-green-500 md:size-18" /> : <Copy size={16} className="md:size-18" />}
+                        {pixCopied ? <Check size={18} className="text-green-500 group-hover:text-white" /> : <Copy size={18} />}
                       </button>
                     </div>
                   </div>
                   
                   {pixCopied && (
-                    <p className="text-[10px] font-black text-green-600 uppercase animate-bounce">Chave copiada com sucesso!</p>
+                    <p className="text-[10px] font-black text-green-600 uppercase tracking-widest animate-pulse">Copiado com sucesso!</p>
                   )}
                 </div>
               </div>
@@ -322,50 +308,51 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Banner de Aviso Inicial - Bottom Sheet Persistente (Metade da tela, texto total) */}
       {isEntryModalOpen && (
-        <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/40 backdrop-blur-[4px] p-0 transition-opacity duration-300">
-          <div className="bg-white w-full max-w-5xl h-auto max-h-[65vh] rounded-t-[2.5rem] md:rounded-[2.5rem] md:mb-8 md:mx-4 shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)] border-t border-slate-100 flex flex-col p-6 md:p-10 transform transition-transform duration-500 ease-out translate-y-0 overflow-hidden">
+        <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/60 backdrop-blur-md p-0 transition-opacity duration-500">
+          <div className="bg-white w-full max-w-6xl h-auto max-h-[70vh] rounded-t-[3rem] shadow-[0_-30px_100px_-20px_rgba(0,0,0,0.5)] border-t border-slate-100 flex flex-col p-8 md:p-14 transform transition-transform duration-500 translate-y-0 overflow-hidden relative">
             
-            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-12 flex-1 overflow-hidden">
-              <div className="hidden lg:flex w-16 h-16 bg-orange-50 rounded-[1.2rem] items-center justify-center shrink-0">
-                <AlertTriangle className="text-orange-600" size={32} />
+            <div className="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-10 shrink-0"></div>
+
+            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-16 flex-1 overflow-hidden">
+              <div className="hidden lg:flex w-20 h-20 bg-orange-50 rounded-[2rem] items-center justify-center shrink-0">
+                <AlertTriangle className="text-orange-600" size={36} />
               </div>
 
               <div className="flex-1 w-full flex flex-col overflow-hidden">
-                <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight mb-3 flex items-center gap-3 justify-center lg:justify-start shrink-0">
-                  <AlertTriangle className="text-orange-600 lg:hidden" size={24} />
-                  Aviso Importante
+                <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight mb-6 flex items-center gap-4 justify-center lg:justify-start">
+                  <AlertTriangle className="text-orange-600 lg:hidden" size={28} />
+                  Termos e Responsabilidades
                 </h2>
 
-                <div className="space-y-3 text-slate-600 text-[13px] md:text-base leading-snug md:leading-relaxed overflow-y-auto pr-2 custom-scrollbar text-center lg:text-left">
-                  <p className="font-extrabold text-slate-900">Este aplicativo tem finalidade exclusivamente informativa.</p>
-                  <p>Não vendemos, não indicamos e não prescrevemos qualquer medicamento.</p>
-                  <p>As informações apresentadas não substituem consulta médica. Qualquer decisão deve ser feita somente com orientação de um médico.</p>
-                  <p>O visitante assume total responsabilidade por suas escolhas. Não nos responsabilizamos pelo uso indevido das informações deste aplicativo.</p>
+                <div className="space-y-4 text-slate-500 text-sm md:text-lg leading-relaxed overflow-y-auto pr-4 custom-scrollbar text-center lg:text-left font-medium">
+                  <p className="font-black text-slate-900 text-base md:text-xl">Esta ferramenta possui fins estritamente educacionais e informativos.</p>
+                  <p>Não prestamos assessoria médica, não vendemos e não indicamos substâncias.</p>
+                  <p>A precisão dos cálculos depende da exatidão dos valores inseridos pelo usuário. Sempre valide os resultados com a orientação de um profissional de saúde qualificado antes de qualquer procedimento.</p>
+                  <p>Ao utilizar este sistema, você declara estar ciente de que o desenvolvedor não se responsabiliza por eventuais erros de aplicação ou interpretação dos dados.</p>
                 </div>
               </div>
 
-              <div className="w-full lg:w-[380px] flex flex-col gap-4 pt-4 lg:pt-0 shrink-0">
-                <div className="bg-slate-50 p-4 rounded-2xl border-2 border-slate-100 group transition-all hover:border-orange-100">
-                  <label className="flex items-start gap-3 cursor-pointer">
-                    <div className="relative mt-0.5 shrink-0">
+              <div className="w-full lg:w-[420px] flex flex-col gap-6 pt-6 lg:pt-0 shrink-0">
+                <div className="bg-slate-50/50 p-6 rounded-[2rem] border border-slate-100 group transition-all hover:bg-white hover:shadow-xl hover:shadow-slate-100">
+                  <label className="flex items-start gap-4 cursor-pointer">
+                    <div className="relative mt-1 shrink-0">
                       <input 
                         type="checkbox" 
                         className="sr-only" 
                         checked={hasAcceptedTermsCheckbox}
                         onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
                       />
-                      <div className={`w-6 h-6 rounded-lg border-2 transition-all flex items-center justify-center ${
+                      <div className={`w-7 h-7 rounded-xl border-2 transition-all flex items-center justify-center ${
                         hasAcceptedTermsCheckbox 
                         ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-100' 
-                        : 'bg-white border-slate-300 group-hover:border-orange-400'
+                        : 'bg-white border-slate-300'
                       }`}>
-                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
+                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={18} className="text-white" />}
                       </div>
                     </div>
-                    <span className="text-[11px] md:text-sm font-bold text-slate-600 select-none leading-tight text-left">
-                      Li, compreendo e concordo integralmente com os termos informados.
+                    <span className="text-[12px] md:text-sm font-black text-slate-600 select-none leading-tight">
+                      Confirmo que li, entendi e aceito integralmente os termos acima.
                     </span>
                   </label>
                 </div>
@@ -373,13 +360,13 @@ const App: React.FC = () => {
                 <button 
                   disabled={!hasAcceptedTermsCheckbox}
                   onClick={handleAcceptTerms}
-                  className={`w-full py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs transition-all shadow-xl ${
+                  className={`w-full py-6 rounded-[1.5rem] font-black uppercase tracking-widest text-xs transition-all shadow-2xl ${
                     hasAcceptedTermsCheckbox 
-                    ? 'bg-orange-600 text-white shadow-orange-100 hover:bg-orange-700 active:scale-[0.98]' 
+                    ? 'bg-orange-600 text-white shadow-orange-200 hover:bg-orange-700 hover:scale-[1.02] active:scale-[0.98]' 
                     : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200'
                   }`}
                 >
-                  Concordar e Continuar
+                  Acessar Ferramenta
                 </button>
               </div>
             </div>
@@ -387,59 +374,59 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Modal de Ajuda (MG e ML) */}
       {isHelpModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-300">
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-xl transition-all duration-300">
           <div 
-            className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]"
+            className="bg-white w-full max-w-xl rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] relative overflow-hidden flex flex-col max-h-[90vh]"
             onClick={(e) => e.stopPropagation()}
           >
             <button 
               onClick={() => setIsHelpModalOpen(false)}
-              className="absolute top-6 right-6 p-2 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors z-10"
+              className="absolute top-8 right-8 p-3 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors z-20"
             >
               <X size={20} className="text-slate-600" />
             </button>
 
-            <div className="p-8 pb-4">
-              <h3 className="text-xl font-black text-slate-800 mb-6 flex items-center gap-2">
+            <div className="p-10 pb-6">
+              <h3 className="text-2xl font-black text-slate-800 mb-8 flex items-center gap-3">
                 <HelpCircle className="text-orange-500" /> 
-                Como identificar MG e ML?
+                Guia de Referência
               </h3>
               
-              <div className="rounded-3xl overflow-hidden border-2 border-slate-100 shadow-inner bg-slate-50 aspect-video flex items-center justify-center relative">
+              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl bg-slate-50 aspect-video flex items-center justify-center relative group">
                  <img 
                   src="https://i.postimg.cc/zvTRZnJg/IMG-20260201-WA0049.jpg" 
-                  alt="Exemplo de Medicamento" 
-                  className="w-full h-full object-contain scale-[1.35] transition-transform duration-500"
+                  alt="Referência" 
+                  className="w-full h-full object-contain scale-[1.25] group-hover:scale-[1.3] transition-transform duration-700"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = "https://img.icons8.com/clouds/500/pill.png";
                   }}
                  />
+                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent pointer-events-none"></div>
               </div>
-              <p className="text-[10px] text-slate-400 mt-2 text-center font-medium italic">
-                Medicamento meramente ilustrativo
+              <p className="text-[10px] text-slate-400 mt-4 text-center font-black uppercase tracking-widest italic">
+                Exemplo meramente ilustrativo para localização de dados
               </p>
             </div>
 
-            <div className="p-8 pt-4 overflow-y-auto">
-              <div className="space-y-4 text-slate-600 leading-relaxed text-sm">
+            <div className="p-10 pt-4 overflow-y-auto">
+              <div className="space-y-6 text-slate-600 font-medium leading-relaxed">
                 <p>
-                  Veja que no medicamento ele informa que tem <span className="font-bold text-orange-600">15MG</span> a cada <span className="font-bold text-orange-600">0.5ML</span> da ampola.
+                  Observe o rótulo do seu medicamento. Geralmente a concentração é expressa como <span className="text-orange-600 font-black">X mg em Y ml</span>.
                 </p>
-                <div className="bg-slate-50 p-4 rounded-2xl border-l-4 border-orange-500 font-medium italic">
-                  "Ou seja, uma ampola de 2ML contém 60mg do medicamento."
+                <div className="bg-orange-50/50 p-6 rounded-[1.5rem] border-l-4 border-orange-500 italic font-bold text-slate-700">
+                  Exemplo: Se o frasco diz "15mg / 0.5ml", você deve inserir 15 no campo MG e 0.5 no campo ML.
                 </div>
-                <p className="font-bold text-slate-800">
-                  Se o seu medicamento tem 15mg por 0.5ml, você deve colocar esses exatos números nos campos MG e ML da calculadora.
+                <p className="text-sm">
+                  Esses dados são cruciais para que o cálculo de UI (Unidades Internacionais) na seringa seja proporcional à dose que você deseja administrar.
                 </p>
               </div>
               
               <button 
                 onClick={() => setIsHelpModalOpen(false)}
-                className="w-full mt-8 py-4 bg-orange-600 text-white font-black rounded-2xl shadow-lg shadow-orange-100 hover:bg-orange-700 transition-all uppercase tracking-widest text-xs"
+                className="w-full mt-10 py-5 bg-slate-900 text-white font-black rounded-2xl shadow-xl hover:bg-slate-800 transition-all uppercase tracking-[0.2em] text-[10px]"
               >
-                Entendi, voltar ao cálculo
+                Voltar ao Cálculo
               </button>
             </div>
           </div>
