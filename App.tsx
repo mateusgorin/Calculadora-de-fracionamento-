@@ -13,7 +13,10 @@ import {
   Smartphone,
   Copy,
   Check,
-  Loader2
+  Loader2,
+  AlertCircle,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -27,6 +30,7 @@ const App: React.FC = () => {
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(true);
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
+  const [isAttentionOpen, setIsAttentionOpen] = useState(false);
 
   const pixKey = "mateusmirandaamaral@gmail.com";
 
@@ -111,6 +115,38 @@ const App: React.FC = () => {
       <main className="max-w-6xl mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         
         <div className="lg:col-span-7 space-y-8 w-full">
+          
+          {/* Seção Leia com Atenção */}
+          <div className="bg-amber-50 border border-amber-200 rounded-[2rem] overflow-hidden shadow-sm transition-all duration-300">
+            <button 
+              onClick={() => setIsAttentionOpen(!isAttentionOpen)}
+              className="w-full flex items-center justify-between p-6 text-left hover:bg-amber-100/50 transition-colors"
+            >
+              <div className="flex items-center gap-4">
+                <div className="bg-amber-100 p-2.5 rounded-xl">
+                  <AlertCircle className="text-amber-600" size={20} />
+                </div>
+                <span className="text-sm font-black text-amber-900 uppercase tracking-widest">
+                  (leia com atenção)
+                </span>
+              </div>
+              {isAttentionOpen ? <ChevronUp className="text-amber-400" /> : <ChevronDown className="text-amber-400" />}
+            </button>
+            
+            {isAttentionOpen && (
+              <div className="px-6 pb-8 pt-2 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                <div className="h-px bg-amber-200 w-full mb-4"></div>
+                <div className="space-y-4 text-amber-800 text-[13px] md:text-sm leading-relaxed font-medium">
+                  <p className="font-bold">Esta calculadora é um auxílio matemático.</p>
+                  <p>A dose prescrita, a concentração do medicamento e a forma de aplicação devem ser confirmadas com um médico ou profissional de saúde.</p>
+                  <p className="font-bold">Não utilize este cálculo como única referência.</p>
+                  <p>Confirme se a quantidade de mg e o volume em mL correspondem exatamente à ampola que você recebeu.</p>
+                  <p>Preencha os dados corretamente na calculadora. Caso tenha dúvidas, clique em <span className="underline decoration-amber-300 decoration-2">“Dúvidas”</span> na calculadora, para visualizar uma imagem explicativa.</p>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 relative overflow-hidden">
             <div className="flex items-center gap-3 mb-10 border-b border-slate-50 pb-6">
               <div className="w-1.5 h-6 bg-orange-500 rounded-full"></div>
