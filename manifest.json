@@ -7,7 +7,7 @@
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#ea580c",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "https://img.icons8.com/ios-filled/192/ff6600/syringe.png",
@@ -20,12 +20,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "https://img.icons8.com/ios-filled/512/ff6600/syringe.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ]
 }
