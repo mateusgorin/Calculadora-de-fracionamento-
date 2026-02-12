@@ -21,7 +21,7 @@
     <meta property="og:image:height" content="512">
     <meta property="og:type" content="website">
 
-    <!-- Ícones para Navegador e Atalhos -->
+    <!-- Ícones para Navegador e Atalhos (com padding para evitar zoom) -->
     <link rel="icon" type="image/png" href="https://img.icons8.com/ios-filled/100/ff6600/syringe.png">
     <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/180/ff6600/syringe.png">
     
@@ -29,6 +29,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
+        /* Adicionando um pequeno ajuste para o ícone no manifest não sofrer zoom */
+        :root {
+            --pwa-icon-padding: 20%;
+        }
     </style>
 <script type="importmap">
 {
