@@ -31,13 +31,13 @@
         body { 
             font-family: 'Inter', sans-serif; 
             /* Firefox Scrollbar */
-            scrollbar-width: thin;
+            scrollbar-width: auto;
             scrollbar-color: #ea580c #f1f5f9;
         }
 
         /* Webkit Browsers (Chrome, Safari, Edge) Scrollbar */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 16px; /* Aumentado para maior visibilidade */
         }
 
         ::-webkit-scrollbar-track {
@@ -47,7 +47,7 @@
         ::-webkit-scrollbar-thumb {
             background: #ea580c;
             border-radius: 10px;
-            border: 3px solid #f1f5f9;
+            border: 4px solid #f1f5f9; /* Aumentado o espaçamento interno (padding fake) */
         }
 
         ::-webkit-scrollbar-thumb:hover {

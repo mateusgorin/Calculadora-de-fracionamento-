@@ -1,6 +1,5 @@
 
 import React from 'react';
-// Import Droplet from lucide-react to fix the reference error on line 220
 import { Droplet } from 'lucide-react';
 import { SyringeCapacity } from '../types';
 
@@ -37,7 +36,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
       else if (!isHalfUnit) tickLength = 12;
       else tickLength = 6;
 
-      // Desenha a linha do traço
       ticks.push(
         <line
           key={`tick-${i}`}
@@ -50,7 +48,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
         />
       );
 
-      // Numeração do traço (1º, 2º, 3º...) conforme solicitado pelo usuário
       if (i > 0 && i <= currentUI) {
         const tickNumber = Math.round(i / tickStep);
         ticks.push(
@@ -70,7 +67,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
         );
       }
 
-      // Rótulos da escala UI (10, 20, 30...)
       if (isLabeled && i > 0) {
         ticks.push(
           <text
@@ -118,7 +114,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
             </linearGradient>
           </defs>
           
-          {/* Agulha */}
           <path
             d={`M ${width/2 - 8} ${barrelYStart} L ${width/2 + 8} ${barrelYStart} L ${width/2 + 6} ${barrelYStart - 14} L ${width/2 - 6} ${barrelYStart - 14} Z`}
             fill="#cbd5e1"
@@ -133,7 +128,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
             strokeLinecap="round"
           />
 
-          {/* Haste do Êmbolo */}
           <rect
             x={width/2 - 5}
             y={barrelYStart + plungerPos}
@@ -144,12 +138,10 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
             className="transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)"
           />
 
-          {/* Finger Flange */}
           <g transform={`translate(0, ${barrelYStart + totalBarrelHeight})`}>
             <rect x={barrelX - 40} y="0" width={barrelWidth + 80} height="10" rx="4" fill="#f1f5f9" stroke="#e2e8f0" />
           </g>
 
-          {/* Líquido */}
           <rect
             x={barrelX + 1}
             y={barrelYStart}
@@ -160,7 +152,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
             className="transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)"
           />
 
-          {/* Cilindro (Barrel) */}
           <rect
             x={barrelX}
             y={barrelYStart}
@@ -173,10 +164,8 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
             rx="2"
           />
 
-          {/* Brilho do Vidro */}
           <rect x={barrelX + 4} y={barrelYStart} width="4" height={totalBarrelHeight} fill="#fff" fillOpacity="0.4" rx="2" />
 
-          {/* Stopper */}
           <g className="transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)" style={{ transform: `translateY(${plungerPos}px)` }}>
              <path
                d={`M ${barrelX + 1} ${barrelYStart + 6} 
@@ -189,7 +178,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
 
           {renderTicks()}
 
-          {/* Plunger Button */}
           <ellipse
             cx={width/2}
             cy={height - 40}
@@ -202,7 +190,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
             style={{ transform: `translateY(${plungerPos}px)`, transformOrigin: 'center top' }}
           />
 
-          {/* Valor Atual Label */}
           {currentUI > 0 && (
             <g className="transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)" style={{ transform: `translateY(${plungerPos}px)` }}>
               <rect x={barrelX - 85} y={stopperCenterY - 14} width="70" height="28" rx="8" fill="#ea580c" className="shadow-lg" />
@@ -216,7 +203,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
       </div>
 
       <div className="mt-8 flex flex-col items-center gap-6 w-full">
-        {/* Guia de Contagem com Evidência Máxima */}
         <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-6 rounded-[2rem] w-full text-center shadow-xl shadow-orange-200 border border-orange-500 relative overflow-hidden group/guide">
           <div className="absolute top-0 right-0 p-4 opacity-10 text-white pointer-events-none group-hover/guide:scale-110 transition-transform duration-500">
             <Droplet size={60} />
@@ -241,11 +227,18 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
           </div>
         </div>
         
-        {/* Detalhe da Seringa */}
-        <div className="flex items-center gap-2 bg-slate-900 px-6 py-3 rounded-2xl shadow-lg border border-slate-800 w-full justify-center">
-          <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">U-100</span>
-          <div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
-          <span className="text-[11px] font-black text-white tracking-widest uppercase">{capacity} UI</span>
+        <div className="flex flex-col items-center gap-4 w-full">
+          {/* Dark Label Block - Pill Shape */}
+          <div className="flex items-center gap-3 bg-slate-900 px-8 py-3 rounded-full shadow-lg border border-slate-800 justify-center w-fit">
+            <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">U-100</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
+            <span className="text-[11px] font-black text-white tracking-widest uppercase">{capacity} UI</span>
+          </div>
+          
+          {/* Disclaimer Text - Outside the dark block but inside the white container */}
+          <p className="text-[9px] text-slate-400 leading-relaxed uppercase font-black tracking-wider italic text-center opacity-80 max-w-[280px]">
+            Representação visual auxiliar. Confirme a dosagem com o seu médico ou farmacêutico.
+          </p>
         </div>
       </div>
     </div>
