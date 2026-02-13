@@ -251,7 +251,7 @@ const App: React.FC = () => {
             
             <div className="flex flex-col items-center text-center gap-8">
               <div>
-                <p className="text-slate-400 text-[10px] font-black uppercase mb-4 tracking-widest">Aspirar até a mark:</p>
+                <p className="text-slate-400 text-[10px] font-black uppercase mb-4 tracking-widest">Aspirar até a marca:</p>
                 <div className="flex items-baseline justify-center gap-4">
                   <span className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-400 to-orange-600 leading-none drop-shadow-sm">
                     {result.units}
@@ -505,11 +505,46 @@ const App: React.FC = () => {
             <button onClick={() => setIsHelpModalOpen(false)} className="absolute top-8 right-8 p-3 bg-slate-100 rounded-full z-20">
               <X size={20} />
             </button>
-            <div className="p-10 pb-6 text-center">
-              <h3 className="text-xl font-black text-slate-800 mb-8 flex items-center justify-center gap-3"><HelpCircle className="text-orange-500" /> Onde ver os valores?</h3>
-              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 bg-slate-50 aspect-video flex items-center justify-center relative min-h-[200px]">
-                 {imageLoading && <div className="absolute inset-0 flex items-center justify-center bg-slate-50 z-10"><Loader2 className="animate-spin text-orange-500" /></div>}
-                 <img src={referenceImageUrl} alt="Reference Guide" className={`w-full h-full object-contain ${imageLoading ? 'opacity-0' : 'opacity-100'}`} onLoad={() => setImageLoading(false)} />
+            <div className="p-10 pb-6 text-center overflow-y-auto">
+              <h3 className="text-xl font-black text-slate-800 mb-8 flex items-center justify-center gap-3">
+                <HelpCircle className="text-orange-500" /> Onde ver os valores?
+              </h3>
+              
+              <div className="rounded-[2.5rem] overflow-hidden bg-slate-50/50 relative min-h-[220px] flex items-center justify-center border border-slate-100/50">
+                 {imageLoading && (
+                   <div className="absolute inset-0 flex items-center justify-center bg-slate-50 z-10">
+                     <Loader2 className="animate-spin text-orange-500" />
+                   </div>
+                 )}
+                 <img 
+                   src={referenceImageUrl} 
+                   alt="Medicamento Exemplo" 
+                   className={`max-w-[85%] max-h-[200px] object-contain block mx-auto transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`} 
+                   onLoad={() => setImageLoading(false)} 
+                 />
+              </div>
+
+              <div className="mt-8 text-left space-y-4 px-2">
+                <div className="space-y-1">
+                  <p className="text-slate-800 text-sm font-black uppercase tracking-tight">Esses dados você encontra na própria caixa do medicamento.</p>
+                  <p className="text-slate-500 text-[13px] font-medium leading-relaxed italic">Verifique as informações na embalagem original.</p>
+                </div>
+                
+                <div className="space-y-3">
+                  <p className="text-slate-700 text-xs md:text-sm font-bold leading-relaxed">
+                    É só olhar o rótulo onde aparece a <span className="text-slate-900 font-black">dosagem (mg)</span> e a <span className="text-slate-900 font-black">concentração (mg/mL)</span>.
+                  </p>
+                  <p className="text-slate-700 text-xs md:text-sm font-medium leading-relaxed">
+                    No exemplo da imagem, está escrito <span className="font-bold text-orange-600">15 mg em 0,5 mL</span>.
+                  </p>
+                </div>
+
+                <div className="bg-orange-50 p-4 rounded-2xl border border-orange-100 flex items-center gap-3">
+                   <span className="text-lg shrink-0">⚠️</span>
+                   <p className="text-orange-900 text-[11px] font-black uppercase leading-tight tracking-tight">
+                     Essas informações são obrigatórias para fazer o cálculo correto.
+                   </p>
+                </div>
               </div>
             </div>
             <div className="p-10 pt-4 text-center">
@@ -525,11 +560,43 @@ const App: React.FC = () => {
             <button onClick={() => setIsSyringeHelpModalOpen(false)} className="absolute top-8 right-8 p-3 bg-slate-100 rounded-full z-20">
               <X size={20} />
             </button>
-            <div className="p-10 pb-6 text-center">
+            <div className="p-10 pb-6 text-center overflow-y-auto">
               <h3 className="text-xl font-black text-slate-800 mb-8 flex items-center justify-center gap-3"><HelpCircle className="text-orange-500" /> Tipos de Seringa</h3>
-              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 bg-slate-50 aspect-[4/5] flex items-center justify-center relative min-h-[250px]">
+              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 bg-slate-50 flex items-center justify-center relative min-h-[250px] p-4">
                  {imageLoading && <div className="absolute inset-0 flex items-center justify-center bg-slate-50 z-10"><Loader2 className="animate-spin text-orange-500" /></div>}
-                 <img src={syringeGuideUrl} alt="Syringe Guide" className={`w-full h-full object-contain p-4 ${imageLoading ? 'opacity-0' : 'opacity-100'}`} onLoad={() => setImageLoading(false)} />
+                 <img src={syringeGuideUrl} alt="Syringe Guide" className={`max-w-full max-h-full block mx-auto object-contain ${imageLoading ? 'opacity-0' : 'opacity-100'}`} onLoad={() => setImageLoading(false)} />
+              </div>
+              
+              <div className="mt-8 text-left space-y-4 px-2">
+                <div className="space-y-1">
+                  <p className="text-slate-800 text-sm font-black uppercase tracking-tight">Olhe para os números impressos na seringa</p>
+                  <p className="text-slate-500 text-[13px] font-medium leading-relaxed italic">Ignore o tamanho físico e foque nos números.</p>
+                </div>
+                
+                <div className="space-y-2">
+                  <p className="text-slate-700 text-xs md:text-sm font-bold leading-relaxed">Veja qual é o <span className="text-orange-600 uppercase font-black">MAIOR</span> número que aparece na escala:</p>
+                  <ul className="space-y-2 text-xs md:text-sm text-slate-700 font-medium">
+                    <li className="flex items-start gap-2">
+                      <span className="shrink-0 text-orange-500">➡️</span>
+                      <span>Se o último número for <span className="font-bold">30</span>: a seringa é de <span className="font-bold text-slate-900">30 unidades (0,3 mL)</span></span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="shrink-0 text-orange-500">➡️</span>
+                      <span>Se o último número for <span className="font-bold">50</span>: a seringa é de <span className="font-bold text-slate-900">50 unidades (0,5 mL)</span></span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="shrink-0 text-orange-500">➡️</span>
+                      <span>Se o último número for <span className="font-bold">100</span>: a seringa é de <span className="font-bold text-slate-900">100 unidades (1 mL)</span></span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-orange-50 p-4 rounded-2xl border border-orange-100 flex items-center gap-3">
+                   <span className="text-lg shrink-0">📌</span>
+                   <p className="text-orange-900 text-[11px] font-black uppercase leading-tight tracking-tight">
+                     O último número sempre indica a capacidade total da seringa.
+                   </p>
+                </div>
               </div>
             </div>
             <div className="p-10 pt-4 text-center">
