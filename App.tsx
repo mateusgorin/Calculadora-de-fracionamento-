@@ -415,7 +415,7 @@ const App: React.FC = () => {
             <div className="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-4 shrink-0"></div>
             <div className="flex flex-col items-center gap-6 flex-1 overflow-hidden">
               <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight text-center flex items-center justify-center gap-3">
-                ⚠️ Termos e Responsabilidades
+                ⚠️ Termos de Uso e Responsabilidades
               </h2>
               <div className="flex-1 overflow-y-auto pr-4 space-y-6 text-slate-600 text-[11px] md:text-[13px] leading-relaxed font-medium pb-8 text-left w-full">
                  <div className="space-y-6">
@@ -423,12 +423,15 @@ const App: React.FC = () => {
                    <p>Ao acessar ou utilizar esta aplicação, o usuário declara que leu, compreendeu e concorda integralmente com os presentes Termos de Uso. Caso não concorde com qualquer condição aqui descrita, não deverá utilizar a ferramenta.</p>
                    
                    <p className="font-black text-slate-800">1. Finalidade da aplicação</p>
-                   <p>Esta aplicação possui finalidade exclusivamente educacional e informativa, atuando como auxílio matemático para cálculos relacionados ao fracionamento de medicamentos. A ferramenta não substitui a avaliação de um médico ou profissional de saúde legalmente habilitado.</p>
+                   <p>Esta aplicação possui finalidade exclusivamente educacional e informativa, atuando como auxílio matemático para cálculos relacionados ao fracionamento de medicamentos.</p>
+                   <p>A ferramenta não substitui, em hipótese alguma, a avaliação, prescrição, orientação ou decisão de um médico ou de qualquer outro profissional de saúde legalmente habilitado.</p>
                    
                    <p className="font-black text-slate-800">2. Não prestação de serviços de saúde</p>
-                   <p>O desenvolvedor não presta serviços médicos, farmacêuticos ou de enfermagem, não realizando diagnóstico ou prescrição. O uso desta aplicação não caracteriza relação profissional de saúde.</p>
+                   <p>O desenvolvedor não presta serviços médicos, farmacêuticos, de enfermagem ou de qualquer outra área da saúde, não realizando diagnóstico, prescrição, indicação de medicamentos ou definição de condutas clínicas.</p>
+                   <p>O uso desta aplicação não caracteriza relação profissional de saúde entre o usuário e o desenvolvedor.</p>
                    
                    <p className="font-black text-slate-800">3. Responsabilidade do usuário</p>
+                   <p>O usuário declara estar ciente de que:</p>
                    <ul className="list-disc pl-5 space-y-2">
                      <li>A dose prescrita, a concentração do medicamento, a forma de aplicação e o volume final devem ser confirmados com um profissional de saúde legalmente habilitado.</li>
                      <li>Os resultados apresentados dependem exclusivamente da exatidão dos dados inseridos.</li>
@@ -437,22 +440,31 @@ const App: React.FC = () => {
                    </ul>
                    
                    <p className="font-black text-slate-800">4. Limitação de responsabilidade</p>
-                   <p>O desenvolvedor não se responsabiliza por: erros decorrentes do preenchimento incorreto; interpretação inadequada dos resultados; uso da ferramenta como única referência para decisões clínicas; ou danos decorrentes do uso da aplicação.</p>
+                   <p>O desenvolvedor não se responsabiliza por:</p>
+                   <ul className="list-disc pl-5 space-y-2">
+                     <li>Erros decorrentes do preenchimento incorreto dos dados pelo usuário.</li>
+                     <li>Interpretação inadequada dos resultados apresentados.</li>
+                     <li>Uso da ferramenta como única referência para decisões clínicas.</li>
+                     <li>Danos diretos, indiretos, incidentais ou consequenciais decorrentes do uso da aplicação.</li>
+                   </ul>
+                   <p>O uso da ferramenta ocorre por conta e risco do usuário, respeitadas as finalidades educacionais aqui descritas.</p>
                    
-                   <p className="font-black text-slate-800">5. Público-alvo</p>
-                   <p>Esta aplicação é destinada exclusivamente a estudantes e profissionais da saúde para fins de estudo, apoio matemático, conferência e organização de cálculos. O uso por pessoas leigas não é recomendado.</p>
+                   <p className="font-black text-slate-800">5. Público-alvo e uso adequado</p>
+                   <p>Esta aplicação é destinada exclusivamente a estudantes e profissionais da área da saúde, para fins de estudo, apoio matemático, conferência e organization de cálculos.</p>
+                   <p>O uso por pessoas leigas, sem acompanhamento profissional, não é recomendado.</p>
                    
                    <p className="font-black text-slate-800">6. Conformidade legal</p>
-                   <p>Esta aplicação não se enquadra como serviço de saúde e não realiza atos privativos de profissionais regulamentados.</p>
+                   <p>Esta aplicação não se enquadra como serviço de saúde, nos termos da legislação brasileira vigente, não realizando atos privativos de profissionais regulamentados, nem substituindo práticas assistenciais.</p>
                    
-                   <p className="font-black text-slate-800">7. Proteção de dados</p>
-                   <p>Esta aplicação não armazena, trata ou comercializa dados pessoais ou sensíveis dos usuários.</p>
+                   <p className="font-black text-slate-800">7. Proteção de dados e privacidade</p>
+                   <p>Esta aplicação não armazena, trata, compartilha ou comercializa dados pessoais ou dados sensíveis dos usuários.</p>
+                   <p>Caso futuras atualizações envolvam coleta de dados, uma Política de Privacidade específica será disponibilizada.</p>
                    
                    <p className="font-black text-slate-800">8. Alterações dos Termos</p>
-                   <p>O desenvolvedor poderá alterar estes Termos a qualquer momento. Recomenda-se a revisão periódica.</p>
+                   <p>O desenvolvedor poderá alterar estes Termos de Uso a qualquer momento. Recomenda-se que o usuário revise periodicamente este conteúdo. A continuidade do uso da aplicação após alterações implica concordância com os novos termos.</p>
                    
-                   <p className="font-black text-slate-800">9. Aceitação</p>
-                   <p>Ao utilizar a aplicação e marcar a opção abaixo, o usuário declara estar plenamente de acordo com todas as condições estabelecidas.</p>
+                   <p className="font-black text-slate-800">9. Aceitação dos Termos</p>
+                   <p>Ao utilizar a aplicação e/ou marcar a opção “Li e aceito os Termos de Uso”, o usuário declara estar plenamente ciente e de acordo com todas as condições estabelecidas.</p>
                  </div>
               </div>
               <div className="w-full flex flex-col gap-4">
@@ -467,7 +479,7 @@ const App: React.FC = () => {
                     <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600' : 'bg-white border-slate-300'}`}>
                       {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
                     </div>
-                    <span className="text-[11px] font-black text-slate-600 uppercase">Li e aceito os Termos</span>
+                    <span className="text-[11px] font-black text-slate-600 uppercase">Li e aceito os Termos de Uso</span>
                   </label>
                 </div>
                 <button 
