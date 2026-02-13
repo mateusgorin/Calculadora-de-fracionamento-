@@ -22,9 +22,9 @@ import {
 
 const App: React.FC = () => {
   const [syringeCapacity, setSyringeCapacity] = useState<SyringeCapacity>(100);
-  const [totalMg, setTotalMg] = useState<string>("15");
-  const [totalVolumeMl, setTotalVolumeMl] = useState<string>("0.5");
-  const [targetDoseMg, setTargetDoseMg] = useState<string>("2.5");
+  const [totalMg, setTotalMg] = useState<string>("");
+  const [totalVolumeMl, setTotalVolumeMl] = useState<string>("");
+  const [targetDoseMg, setTargetDoseMg] = useState<string>("");
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [isSyringeHelpModalOpen, setIsSyringeHelpModalOpen] = useState(false);
   const [pixCopied, setPixCopied] = useState(false);
@@ -153,6 +153,7 @@ const App: React.FC = () => {
                     inputMode="decimal"
                     value={targetDoseMg}
                     onChange={(e) => setTargetDoseMg(e.target.value.replace(',', '.'))}
+                    placeholder="0.0"
                     className="w-full pl-16 pr-16 py-6 bg-slate-50/50 border-2 border-slate-100 rounded-[1.8rem] focus:border-orange-500 focus:bg-white focus:shadow-xl focus:shadow-orange-50 outline-none transition-all text-4xl font-black text-slate-800 text-center"
                   />
                   <Calculator className="absolute left-6 top-1/2 -translate-y-1/2 text-orange-500/50 group-focus-within:text-orange-500 transition-colors" size={28} />
@@ -169,6 +170,7 @@ const App: React.FC = () => {
                       inputMode="decimal"
                       value={totalMg}
                       onChange={(e) => setTotalMg(e.target.value.replace(',', '.'))}
+                      placeholder="0"
                       className="w-full px-6 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700 text-center"
                     />
                   </div>
@@ -180,6 +182,7 @@ const App: React.FC = () => {
                       inputMode="decimal"
                       value={totalVolumeMl}
                       onChange={(e) => setTotalVolumeMl(e.target.value.replace(',', '.'))}
+                      placeholder="0.0"
                       className="w-full px-6 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700 text-center"
                     />
                   </div>
@@ -248,7 +251,7 @@ const App: React.FC = () => {
             
             <div className="flex flex-col items-center text-center gap-8">
               <div>
-                <p className="text-slate-400 text-[10px] font-black uppercase mb-4 tracking-widest">Aspirar até a marca:</p>
+                <p className="text-slate-400 text-[10px] font-black uppercase mb-4 tracking-widest">Aspirar até a mark:</p>
                 <div className="flex items-baseline justify-center gap-4">
                   <span className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-400 to-orange-600 leading-none drop-shadow-sm">
                     {result.units}
