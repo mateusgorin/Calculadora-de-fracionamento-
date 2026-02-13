@@ -4,24 +4,20 @@ import { CalculationResult, SyringeCapacity } from './types.ts';
 import Syringe from './components/Syringe.tsx';
 import { 
   Calculator, 
-  Info, 
   Droplet, 
   Syringe as SyringeIcon,
   X,
   HelpCircle,
-  AlertTriangle,
   CheckCircle2,
-  Smartphone,
   Copy,
   Check,
   Loader2,
   AlertCircle,
   ChevronDown,
   ChevronUp,
-  Milestone,
   BookOpen,
-  Scale,
-  Heart
+  Heart,
+  Activity
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -35,9 +31,9 @@ const App: React.FC = () => {
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(true);
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
-  const [isAttentionOpen, setIsAttentionOpen] = useState(false);
   const [isScienceOpen, setIsScienceOpen] = useState(false);
   const [isSupportOpen, setIsSupportOpen] = useState(false);
+  const [isLegalNoticeOpen, setIsLegalNoticeOpen] = useState(false);
 
   const pixKey = "mateusmirandaamaral@gmail.com";
 
@@ -75,17 +71,9 @@ const App: React.FC = () => {
     
     const concentration = tMg / tVol;
     const volumeNeeded = dMg / concentration;
+    
     const exactUnits = volumeNeeded * 100;
-    
-    let roundedUnits;
-    if (syringeCapacity === 30) {
-      roundedUnits = Math.round(exactUnits * 2) / 2;
-    } else if (syringeCapacity === 100) {
-      roundedUnits = Math.round(exactUnits / 2) * 2;
-    } else {
-      roundedUnits = Math.round(exactUnits);
-    }
-    
+    const roundedUnits = Math.round(exactUnits * 10) / 10;
     const finalUnits = Math.min(roundedUnits, syringeCapacity);
     
     return {
@@ -101,7 +89,7 @@ const App: React.FC = () => {
   return (
     <div className={`min-h-screen bg-[#fcfdfe] pb-20 w-full overflow-x-hidden ${isEntryModalOpen ? 'max-h-screen overflow-hidden' : ''}`}>
       <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50 w-full">
-        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-2.5 rounded-2xl shadow-lg shadow-orange-200/50 flex items-center justify-center">
               <SyringeIcon className="text-white" size={22} />
@@ -118,12 +106,14 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-        <div className="lg:col-span-7 space-y-8 w-full">
-          {/* SEÇÃO DE AVISO LEGAL */}
+      <main className="max-w-4xl mx-auto px-6 mt-12 flex flex-col items-center gap-12">
+        
+        <div className="w-full space-y-8 max-w-2xl">
+          
+          {/* AVISO LEGAL EXPANSÍVEL */}
           <div className="bg-amber-50 border border-amber-200 rounded-[2rem] overflow-hidden shadow-sm transition-all duration-300">
             <button 
-              onClick={() => setIsAttentionOpen(!isAttentionOpen)}
+              onClick={() => setIsLegalNoticeOpen(!isLegalNoticeOpen)}
               className="w-full flex items-center justify-between p-6 text-left hover:bg-amber-100/50 transition-colors"
             >
               <div className="flex items-center gap-4">
@@ -134,19 +124,16 @@ const App: React.FC = () => {
                   Aviso legal
                 </span>
               </div>
-              {isAttentionOpen ? <ChevronUp className="text-amber-400" /> : <ChevronDown className="text-amber-400" />}
+              {isLegalNoticeOpen ? <ChevronUp className="text-amber-400" /> : <ChevronDown className="text-amber-400" />}
             </button>
-            {isAttentionOpen && (
-              <div className="px-6 pb-8 pt-2 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                <div className="h-px bg-amber-200 w-full mb-4"></div>
-                <div className="space-y-4 text-amber-800 text-[13px] md:text-sm leading-relaxed font-medium">
-                  <p>Esta aplicação consiste em um auxílio matemático, de caráter educacional e informativo, destinado ao apoio no cálculo de fracionamento de medicamentos.</p>
-                  <p>A aplicação não realiza diagnóstico, prescrição, indicação terapêutica ou tomada de decisão clínica, nem substitui a avaliação, prescrição ou orientação de um profissional de saúde legalmente habilitado.</p>
-                  <p>A dose prescrita, a concentração do medicamento, a forma de aplicação e o volume final devem ser definidos e confirmados por profissional habilitado, sendo responsabilidade do usuário a verificação da exatidão dos dados inseridos.</p>
-                  <p>Os resultados apresentados não devem ser utilizados como única referência para o preparo ou a administração de medicamentos, devendo sempre ser conferidos por meio de cálculo independente.</p>
-                  <p>Medicamentos podem apresentar variações de concentração, volume e apresentação entre fabricantes e lotes, sendo indispensável a conferência do rótulo, bula e prescrição vigente.</p>
-                  <p>Esta aplicação não se enquadra como serviço de saúde, nos termos da legislação brasileira, e seu uso ocorre por conta e risco do usuário, dentro das finalidades educacionais aqui descritas.</p>
-                </div>
+            {isLegalNoticeOpen && (
+              <div className="px-6 pb-8 pt-2 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300 text-amber-800 text-[12px] md:text-[13px] leading-relaxed font-medium">
+                <p>Esta aplicação consiste em um auxílio matemático, de caráter educacional e informativo, destinado ao apoio no cálculo de fracionamento de medicamentos.</p>
+                <p>A aplicação não realiza diagnóstico, prescrição, indicação terapêutica ou tomada de decisão clínica, nem substitui a avaliação, prescrição ou orientação de um profissional de saúde legalmente habilitado.</p>
+                <p>A dose prescrita, a concentração do medicamento, a forma de aplicação e o volume final devem ser definidos e confirmados por profissional habilitado, sendo responsabilidade do usuário a verificação da exatidão dos dados inseridos.</p>
+                <p>Os resultados apresentados não devem ser utilizados como única referência para o preparo ou a administração de medicamentos, devendo sempre ser conferidos por meio de cálculo independente.</p>
+                <p>Medicamentos podem apresentar variações de concentração, volume e apresentação entre fabricantes e lotes, sendo indispensável a conferência do rótulo, bula e prescrição vigente.</p>
+                <p>Esta aplicação não se enquadra como serviço de saúde, nos termos da legislação brasileira, e seu uso ocorre por conta e risco do usuário, dentro das finalidades educacionais aqui descritas.</p>
               </div>
             )}
           </div>
@@ -158,15 +145,15 @@ const App: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-10">
-              <div className="space-y-3">
+              <div className="space-y-3 text-center">
                 <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">Dose Prescrita (MG desejado)</label>
-                <div className="relative group">
+                <div className="relative group max-w-sm mx-auto">
                   <input
                     type="text"
                     inputMode="decimal"
                     value={targetDoseMg}
                     onChange={(e) => setTargetDoseMg(e.target.value.replace(',', '.'))}
-                    className="w-full pl-16 pr-16 py-6 bg-slate-50/50 border-2 border-slate-100 rounded-[1.8rem] focus:border-orange-500 focus:bg-white focus:shadow-xl focus:shadow-orange-50 outline-none transition-all text-4xl font-black text-slate-800"
+                    className="w-full pl-16 pr-16 py-6 bg-slate-50/50 border-2 border-slate-100 rounded-[1.8rem] focus:border-orange-500 focus:bg-white focus:shadow-xl focus:shadow-orange-50 outline-none transition-all text-4xl font-black text-slate-800 text-center"
                   />
                   <Calculator className="absolute left-6 top-1/2 -translate-y-1/2 text-orange-500/50 group-focus-within:text-orange-500 transition-colors" size={28} />
                   <span className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-300 font-black text-xs uppercase tracking-widest">mg</span>
@@ -174,36 +161,32 @@ const App: React.FC = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-end gap-4">
+                <div className="flex items-end gap-4 max-w-sm mx-auto">
                   <div className="flex-1 space-y-3">
-                    <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">MG na ampola</label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        inputMode="decimal"
-                        value={totalMg}
-                        onChange={(e) => setTotalMg(e.target.value.replace(',', '.'))}
-                        className="w-full px-6 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700"
-                      />
-                    </div>
+                    <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 text-center">MG na ampola</label>
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={totalMg}
+                      onChange={(e) => setTotalMg(e.target.value.replace(',', '.'))}
+                      className="w-full px-6 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700 text-center"
+                    />
                   </div>
                   <div className="pb-4 text-slate-200 font-light text-4xl">/</div>
                   <div className="flex-1 space-y-3">
-                    <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">Total em ML</label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        inputMode="decimal"
-                        value={totalVolumeMl}
-                        onChange={(e) => setTotalVolumeMl(e.target.value.replace(',', '.'))}
-                        className="w-full px-6 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700"
-                      />
-                    </div>
+                    <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 text-center">Total em ML</label>
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={totalVolumeMl}
+                      onChange={(e) => setTotalVolumeMl(e.target.value.replace(',', '.'))}
+                      className="w-full px-6 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700 text-center"
+                    />
                   </div>
                 </div>
                 <button 
                   onClick={() => { setImageLoading(true); setIsHelpModalOpen(true); }}
-                  className="flex items-center gap-2 group ml-1"
+                  className="flex items-center justify-center gap-2 group w-full"
                 >
                   <div className="p-1 bg-orange-50 rounded-md group-hover:bg-orange-100 transition-colors">
                     <HelpCircle size={14} className="text-orange-500" />
@@ -215,8 +198,8 @@ const App: React.FC = () => {
               </div>
 
               <div className="space-y-4">
-                <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">Capacidade da Seringa (UI)</label>
-                <div className="grid grid-cols-3 gap-4">
+                <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 text-center">Capacidade da Seringa (UI)</label>
+                <div className="grid grid-cols-3 gap-4 max-w-sm mx-auto">
                   {[30, 50, 100].map((cap) => (
                     <button
                       key={cap}
@@ -233,12 +216,12 @@ const App: React.FC = () => {
                 </div>
                 <button 
                   onClick={() => { setImageLoading(true); setIsSyringeHelpModalOpen(true); }}
-                  className="flex items-center gap-2 group ml-1"
+                  className="flex items-center justify-center gap-2 group w-full"
                 >
                   <div className="p-1 bg-orange-50 rounded-md group-hover:bg-orange-100 transition-colors">
                     <HelpCircle size={14} className="text-orange-500" />
                   </div>
-                  <span className="text-[11px] font-bold text-slate-400 group-hover:text-orange-600 transition-colors text-left">
+                  <span className="text-[11px] font-bold text-slate-400 group-hover:text-orange-600 transition-colors">
                     Dúvidas de qual é a sua seringa, clique aqui para ajuda visual
                   </span>
                 </button>
@@ -246,31 +229,33 @@ const App: React.FC = () => {
             </div>
           </div>
 
+          {/* RESULTADO DA CONVERSÃO ATUALIZADO */}
           <div className="bg-gradient-to-br from-slate-900 to-slate-950 p-10 rounded-[3rem] shadow-2xl text-white relative overflow-hidden group">
             <div className="absolute -top-10 -right-10 opacity-[0.03] text-orange-500 transition-transform duration-1000 group-hover:scale-110">
               <Droplet size={260} />
             </div>
             
-            <div className="flex items-center justify-between mb-12">
+            <div className="flex flex-col mb-12">
               <h3 className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-3">
                 <span className="w-8 h-[1px] bg-orange-500/50"></span>
                 Resultado da Conversão
               </h3>
-              <div className="bg-orange-500/10 border border-orange-500/20 px-3 py-1 rounded-full">
-                <span className="text-orange-400 text-[9px] font-black uppercase tracking-widest">Cálculo Preciso</span>
+              <div className="flex items-center gap-2 mt-2">
+                <Activity size={14} className="text-orange-500" />
+                <span className="text-[11px] font-black text-orange-200 uppercase tracking-widest">Cálculo Preciso</span>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="flex flex-col items-center text-center gap-8">
               <div>
                 <p className="text-slate-400 text-[10px] font-black uppercase mb-4 tracking-widest">Aspirar até a marca:</p>
-                <div className="flex items-baseline gap-4">
+                <div className="flex items-baseline justify-center gap-4">
                   <span className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-400 to-orange-600 leading-none drop-shadow-sm">
                     {result.units}
                   </span>
                   <span className="text-2xl font-black text-slate-400 uppercase tracking-tighter">UI</span>
                 </div>
-                <div className="mt-8 flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl w-fit">
+                <div className="mt-8 flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-2.5 rounded-2xl w-fit mx-auto">
                    <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wide">
                      Escala de {tickValue} UI por traço
@@ -278,44 +263,45 @@ const App: React.FC = () => {
                 </div>
               </div>
               
-              <div className="space-y-6 md:border-l md:border-white/10 md:pl-12">
-                <div className="bg-white/5 border border-white/10 p-6 rounded-[2rem] flex flex-col items-center justify-center gap-2 group/traços hover:bg-white/10 transition-all duration-300">
-                  <span className="text-orange-400 text-[10px] font-black uppercase tracking-[0.2em]">Traços Físicos</span>
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-white font-black text-6xl leading-none">
+              <div className="w-full max-w-sm grid grid-cols-2 gap-4">
+                <div className="bg-white/5 border border-white/10 p-5 rounded-[2rem] flex flex-col items-center justify-center gap-1 group/traços hover:bg-white/10 transition-all duration-300">
+                  <span className="text-orange-400 text-[9px] font-black uppercase tracking-[0.1em]">Traços Físicos</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-white font-black text-3xl md:text-4xl leading-none">
                       {totalTicks.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}
                     </span>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Contar na seringa</span>
+                  <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">Contar na seringa</span>
                 </div>
 
-                <div className="flex justify-between items-center px-2 group/item">
-                  <span className="text-slate-500 text-[10px] font-black uppercase tracking-widest group-hover/item:text-slate-400 transition-colors">Volume Exato:</span>
-                  <span className="font-mono text-slate-300 font-black text-base">{result.volumeMl.toFixed(3)} <span className="text-[10px] text-slate-500">ml</span></span>
-                </div>
-                
-                <div className="pt-2 px-2">
-                  <div className="flex items-center gap-3 text-orange-400/60">
-                    <Info size={16} />
-                    <span className="text-[9px] font-black uppercase tracking-[0.2em] leading-tight">
-                      Confirme visualmente na seringa
+                <div className="bg-white/5 border border-white/10 p-5 rounded-[2rem] flex flex-col items-center justify-center gap-1 group/volume hover:bg-white/10 transition-all duration-300">
+                  <span className="text-sky-400 text-[9px] font-black uppercase tracking-[0.1em]">Volume Exato</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-white font-black text-xl md:text-2xl leading-none">
+                      {result.volumeMl.toFixed(3)}
                     </span>
+                    <span className="text-[10px] font-black text-slate-500 uppercase">ml</span>
                   </div>
+                  <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">Confirme na seringa</span>
                 </div>
               </div>
+              <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest animate-pulse mt-2">
+                Confirme visualmente na seringa
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="lg:col-span-5 flex justify-center w-full">
-          <div className="sticky top-28 w-full max-w-[360px]">
+        <div className="w-full flex justify-center py-10">
+          <div className="w-full max-w-[360px]">
             <Syringe capacity={syringeCapacity} currentUI={result.units} />
           </div>
         </div>
+
       </main>
 
-      <section className="max-w-6xl mx-auto px-6 mt-20 w-full space-y-12">
-        {/* SEÇÃO DE BASE CIENTÍFICA (MODO COLAPSÁVEL) */}
+      <section className="max-w-2xl mx-auto px-6 mt-20 space-y-12">
+        {/* FUNDAMENTAÇÃO E MÉTODO DE CÁLCULO ATUALIZADO */}
         <div className="bg-indigo-50 border border-indigo-200 rounded-[2rem] overflow-hidden shadow-sm transition-all duration-300">
           <button 
             onClick={() => setIsScienceOpen(!isScienceOpen)}
@@ -326,25 +312,62 @@ const App: React.FC = () => {
                 <BookOpen className="text-indigo-600" size={20} />
               </div>
               <span className="text-sm font-black text-indigo-900 uppercase tracking-widest">
-                Base Científica do Cálculo
+                Fundamentação e método de cálculo
               </span>
             </div>
             {isScienceOpen ? <ChevronUp className="text-indigo-400" /> : <ChevronDown className="text-indigo-400" />}
           </button>
           {isScienceOpen && (
-            <div className="px-6 pb-8 pt-2 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-              <div className="h-px bg-indigo-200 w-full mb-4"></div>
-              <div className="space-y-4 text-indigo-800 text-[13px] md:text-sm leading-relaxed font-medium">
-                <p>Os cálculos realizados por esta aplicação fundamentam-se em princípios matemáticos e farmacológicos amplamente consolidados na prática da área da saúde, especialmente na relação entre dose prescrita, concentration do medicamento e volume a ser administrado.</p>
-                <p>A metodologia utilizada baseia-se na <strong>regra de três simples</strong>, procedimento aritmético universalmente adotado para o fracionamento de medicamentos. Esse método é ensinado de forma padronizada em cursos de formação em enfermagem, farmácia e medicina, além de ser empregado rotineiramente em ambientes assistenciais como apoio ao preparo e conferência de doses.</p>
-                <p>O cálculo considera exclusivamente valores previamente definidos por prescrição profissional, não realizando qualquer interpretação clínica, ajuste terapêutico ou tomada de decisão sobre conduta em saúde. Dessa forma, trata-se de um auxílio matemático, destinado à organização e conferência de informações já estabelecidas por profissional legalmente habilitado.</p>
-                <p className="font-bold text-indigo-900 italic">Ressalta-se que o uso de ferramentas matemáticas não substitui a conferência profissional, sendo obrigatória a validação dos resultados antes de qualquer preparo ou administração de medicamentos.</p>
+            <div className="px-6 pb-8 pt-2 space-y-6 animate-in fade-in slide-in-from-top-2 duration-300 text-[13px] md:text-sm text-indigo-800 leading-relaxed font-medium">
+              <div className="space-y-4">
+                <p>Os cálculos realizados por esta aplicação fundamentam-se em princípios matemáticos e farmacológicos amplamente consolidados na prática da área da saúde, especialmente na relação entre dose prescrita, concentração do medicamento e volume a ser administrado.</p>
+                <p>A metodologia adotada baseia-se na Regra de Três Simples, procedimento aritmético universalmente utilizado para o fracionamento de medicamentos. Esse método é ensinado de forma padronizada em cursos de enfermagem, farmácia e medicina, sendo empregado rotineiramente em ambientes assistenciais como apoio ao preparo e à conferência de doses.</p>
+                <p>O sistema considera exclusivamente valores previamente definidos por prescrição profissional, não realizando qualquer interpretação clínica, ajuste terapêutico ou tomada de decisão em saúde. Trata-se, portanto, de um auxílio matemático, destinado à organização e conferência de informações já estabelecidas por profissional legalmente habilitado.</p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="text-[10px] font-black text-indigo-900 uppercase tracking-widest">Lógica do cálculo</h4>
+                <p>O cálculo utiliza três informações básicas:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Concentração do medicamento (ex: 15 mg em 0,5 mL)</li>
+                  <li>Dose prescrita (ex: 2,5 mg)</li>
+                  <li>Volume necessário, calculado proporcionalmente</li>
+                </ul>
+                <div className="bg-white/40 p-4 rounded-2xl border border-indigo-100 mt-2">
+                  <p className="font-bold mb-1">Exemplo:</p>
+                  <p>Se 15 mg estão em 0,5 mL, então 2,5 mg correspondem a 0,083 mL.</p>
+                  <p className="mt-1">Esse volume é convertido para Unidades Internacionais (UI) conforme o padrão U-100, no qual:</p>
+                  <p className="font-bold">1 mL = 100 UI → Resultado: 8,3 UI.</p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="text-[10px] font-black text-indigo-900 uppercase tracking-widest">Precisão das seringas</h4>
+                <p>A conversão de UI para “traços” respeita as escalas reais das seringas disponíveis no mercado:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Seringa de 100 UI: 2 UI por traço</li>
+                  <li>Seringa de 50 UI: 1 UI por traço</li>
+                  <li>Seringa de 30 UI: 0,5 UI por traço</li>
+                </ul>
+                <p>O sistema ajusta automaticamente os valores conforme o modelo de seringa selecionado.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h4 className="text-[10px] font-black text-indigo-900 uppercase tracking-widest">Arredondamento e segurança</h4>
+                <p>O valor final em UI é arredondado para uma casa decimal, garantindo equilíbrio entre precisão matemática e viabilidade prática, já que valores menores não são passíveis de mensuração visual confiável.</p>
+                <p>O volume exato em mL é exibido com três casas decimais, permitindo conferência detalhada antes do preparo.</p>
+              </div>
+
+              <div className="space-y-3 border-t border-indigo-200 pt-4">
+                <h4 className="text-[10px] font-black text-indigo-900 uppercase tracking-widest">Conclusão</h4>
+                <p>Os cálculos apresentados são matematicamente corretos, seguros e compatíveis com a prática clínica real.</p>
+                <p className="font-bold">Ressalta-se que o uso de ferramentas matemáticas não substitui a conferência profissional, sendo obrigatória a validação dos resultados antes de qualquer preparo ou administração de medicamentos.</p>
               </div>
             </div>
           )}
         </div>
 
-        {/* SEÇÃO DE APOIO AO DESENVOLVEDOR (MODO COLAPSÁVEL) */}
+        {/* APOIO AO DESENVOLVEDOR ATUALIZADO */}
         <div className="bg-orange-50 border border-orange-200 rounded-[2rem] overflow-hidden shadow-sm transition-all duration-300">
           <button 
             onClick={() => setIsSupportOpen(!isSupportOpen)}
@@ -361,165 +384,96 @@ const App: React.FC = () => {
             {isSupportOpen ? <ChevronUp className="text-orange-400" /> : <ChevronDown className="text-orange-400" />}
           </button>
           {isSupportOpen && (
-            <div className="px-6 pb-8 pt-6 space-y-8 animate-in fade-in slide-in-from-top-2 duration-300">
-              <div className="h-px bg-orange-200 w-full"></div>
+            <div className="px-6 pb-8 pt-6 space-y-6 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="text-slate-600 font-medium text-sm space-y-4">
+                <p>Olá, pessoal!</p>
+                <p>Me chamo Mateus Miranda e sou o desenvolvedor do aplicativo Calculadora de Fracionamento.</p>
+                <p>O aplicativo ainda está em desenvolvimento e, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.</p>
+                <p>No momento, ele não possui um domínio próprio. Se você gostou do aplicativo e quiser colaborar com qualquer valor para ajudar no seu desenvolvimento, toda contribuição via Pix será recebida com muita gratidão.</p>
+                <p>A ideia é hospedar o aplicativo em um servidor de qualidade, registrar um domínio para facilitar o acesso e seguir evoluindo o projeto.</p>
+                <p className="font-bold">Sua contribuição faz toda a diferença para o crescimento deste projeto!</p>
+              </div>
               
-              <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-                <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-orange-500 to-orange-700 rounded-3xl flex items-center justify-center shrink-0 shadow-2xl shadow-orange-200">
-                  <Smartphone className="text-white" size={32} />
+              <div className="bg-white border border-orange-200 p-4 rounded-[1.8rem] flex items-center justify-between gap-4">
+                <div className="flex flex-col text-left overflow-hidden">
+                  <span className="text-[9px] font-black text-orange-400 uppercase tracking-widest mb-1">Chave Pix de Apoio</span>
+                  <span className="text-sm font-black text-slate-700 truncate">{pixKey}</span>
                 </div>
-                <div className="flex-1 space-y-6 text-center md:text-left">
-                  <div className="space-y-2">
-                    <h2 className="text-2xl font-black text-slate-800 tracking-tight">Olá, pessoal!</h2>
-                    <p className="text-slate-600 font-medium text-sm md:text-base">
-                      Me chamo <span className="text-orange-600 font-black uppercase tracking-wider">Mateus Miranda</span> e sou o desenvolvedor do aplicativo Calculadora de Fracionamento.
-                    </p>
-                  </div>
-                  <div className="space-y-4 text-slate-600 leading-relaxed text-sm md:text-base font-medium">
-                    <p>O aplicativo ainda está em desenvolvimento e, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.</p>
-                    <p>No momento, ele não possui um domínio próprio. Se você gostou do aplicativo e quiser colaborar com qualquer valor para ajudar no seu desenvolvimento, toda contribuição via Pix será recebida com muita gratidão.</p>
-                    <p>A ideia é hospedar o aplicativo em um servidor de qualidade, registrar um domínio para facilitar o acesso e seguir evoluindo o projeto.</p>
-                    <p className="font-black text-orange-600">Sua contribuição faz toda a diferença para o crescimento deste projeto!</p>
-                  </div>
-                  
-                  <div className="pt-4 flex flex-col items-center md:items-start gap-4">
-                    <div className="w-full max-w-md bg-white border border-orange-200 p-4 rounded-[1.8rem] flex items-center justify-between gap-4 group hover:shadow-xl hover:border-orange-400 transition-all duration-300">
-                      <div className="flex flex-col text-left overflow-hidden ml-2">
-                        <span className="text-[9px] font-black text-orange-400 uppercase tracking-widest mb-1">Chave Pix de Apoio</span>
-                        <span className="text-sm font-black text-slate-700 truncate">{pixKey}</span>
-                      </div>
-                      <button 
-                        onClick={copyPix}
-                        className="p-4 bg-orange-50 border border-orange-100 rounded-2xl hover:bg-orange-600 hover:border-orange-600 hover:text-white transition-all text-orange-600 shadow-sm shrink-0"
-                      >
-                        {pixCopied ? <Check size={18} className="text-green-500 group-hover:text-white" /> : <Copy size={18} />}
-                      </button>
-                    </div>
-                    {pixCopied && (
-                      <span className="text-[10px] font-black text-green-600 uppercase tracking-[0.2em] animate-bounce">
-                        Chave copiada com sucesso!
-                      </span>
-                    )}
-                  </div>
-                </div>
+                <button onClick={copyPix} className="p-4 bg-orange-50 rounded-2xl text-orange-600">
+                  {pixCopied ? <Check size={18} /> : <Copy size={18} />}
+                </button>
               </div>
             </div>
           )}
         </div>
       </section>
 
-      {/* MODAL DE ENTRADA (TERMOS) */}
+      {/* MODAL DE ENTRADA (TERMOS E RESPONSABILIDADES) */}
       {isEntryModalOpen && (
         <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/60 backdrop-blur-md p-0 transition-opacity duration-500">
-          <div className="bg-white w-full max-w-6xl h-auto max-h-[85vh] rounded-t-[3rem] shadow-[0_-30px_100px_-20px_rgba(0,0,0,0.5)] border-t border-slate-100 flex flex-col p-6 md:p-14 transform transition-transform duration-500 translate-y-0 overflow-hidden relative">
-            <div className="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-4 shrink-0 md:mb-8"></div>
-            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-16 flex-1 overflow-hidden">
-              <div className="hidden lg:flex w-20 h-20 bg-orange-50 rounded-[2rem] items-center justify-center shrink-0">
-                <AlertTriangle className="text-orange-600" size={36} />
+          <div className="bg-white w-full max-w-2xl h-auto max-h-[85vh] rounded-t-[3rem] shadow-[0_-30px_100px_-20px_rgba(0,0,0,0.5)] border-t border-slate-100 flex flex-col p-6 md:p-14 transform transition-transform duration-500 translate-y-0 overflow-hidden relative">
+            <div className="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-4 shrink-0"></div>
+            <div className="flex flex-col items-center gap-6 flex-1 overflow-hidden">
+              <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight text-center flex items-center justify-center gap-3">
+                ⚠️ Termos e Responsabilidades
+              </h2>
+              <div className="flex-1 overflow-y-auto pr-4 space-y-6 text-slate-600 text-[11px] md:text-[13px] leading-relaxed font-medium pb-8 text-left w-full">
+                 <div className="space-y-6">
+                   <p className="font-bold uppercase text-[10px] tracking-widest text-slate-400">TERMOS DE USO</p>
+                   <p>Ao acessar ou utilizar esta aplicação, o usuário declara que leu, compreendeu e concorda integralmente com os presentes Termos de Uso. Caso não concorde com qualquer condição aqui descrita, não deverá utilizar a ferramenta.</p>
+                   
+                   <p className="font-black text-slate-800">1. Finalidade da aplicação</p>
+                   <p>Esta aplicação possui finalidade exclusivamente educacional e informativa, atuando como auxílio matemático para cálculos relacionados ao fracionamento de medicamentos. A ferramenta não substitui a avaliação de um médico ou profissional de saúde legalmente habilitado.</p>
+                   
+                   <p className="font-black text-slate-800">2. Não prestação de serviços de saúde</p>
+                   <p>O desenvolvedor não presta serviços médicos, farmacêuticos ou de enfermagem, não realizando diagnóstico ou prescrição. O uso desta aplicação não caracteriza relação profissional de saúde.</p>
+                   
+                   <p className="font-black text-slate-800">3. Responsabilidade do usuário</p>
+                   <ul className="list-disc pl-5 space-y-2">
+                     <li>A dose prescrita, a concentração do medicamento, a forma de aplicação e o volume final devem ser confirmados com um profissional de saúde legalmente habilitado.</li>
+                     <li>Os resultados apresentados dependem exclusivamente da exatidão dos dados inseridos.</li>
+                     <li>É de sua responsabilidade verificar se os valores em mg e mL correspondem exatamente à ampola, frasco ou apresentação do medicamento utilizada.</li>
+                     <li>Qualquer decisão clínica tomada com base nos resultados é de inteira responsabilidade do profissional habilitado.</li>
+                   </ul>
+                   
+                   <p className="font-black text-slate-800">4. Limitação de responsabilidade</p>
+                   <p>O desenvolvedor não se responsabiliza por: erros decorrentes do preenchimento incorreto; interpretação inadequada dos resultados; uso da ferramenta como única referência para decisões clínicas; ou danos decorrentes do uso da aplicação.</p>
+                   
+                   <p className="font-black text-slate-800">5. Público-alvo</p>
+                   <p>Esta aplicação é destinada exclusivamente a estudantes e profissionais da saúde para fins de estudo, apoio matemático, conferência e organização de cálculos. O uso por pessoas leigas não é recomendado.</p>
+                   
+                   <p className="font-black text-slate-800">6. Conformidade legal</p>
+                   <p>Esta aplicação não se enquadra como serviço de saúde e não realiza atos privativos de profissionais regulamentados.</p>
+                   
+                   <p className="font-black text-slate-800">7. Proteção de dados</p>
+                   <p>Esta aplicação não armazena, trata ou comercializa dados pessoais ou sensíveis dos usuários.</p>
+                   
+                   <p className="font-black text-slate-800">8. Alterações dos Termos</p>
+                   <p>O desenvolvedor poderá alterar estes Termos a qualquer momento. Recomenda-se a revisão periódica.</p>
+                   
+                   <p className="font-black text-slate-800">9. Aceitação</p>
+                   <p>Ao utilizar a aplicação e marcar a opção abaixo, o usuário declara estar plenamente de acordo com todas as condições estabelecidas.</p>
+                 </div>
               </div>
-              <div className="flex-1 w-full flex flex-col overflow-hidden h-full">
-                <h2 className="text-xl md:text-3xl font-black text-slate-800 tracking-tight mb-3 md:mb-6 flex items-center gap-4 justify-center lg:justify-start">
-                  <AlertTriangle className="text-orange-600 lg:hidden" size={24} />
-                  Termos e Responsabilidades
-                </h2>
-                <div className="flex-1 overflow-y-auto pr-4 space-y-6 text-slate-600 text-[11px] md:text-[14px] leading-relaxed font-medium pb-8">
-                  <div className="space-y-4">
-                    <h3 className="text-slate-900 font-black uppercase text-sm tracking-wider">TERMOS DE USO</h3>
-                    <p>Ao acessar ou utilizar esta aplicação, o usuário declara que leu, compreendeu e concorda integralmente com os presentes Termos de Uso. Caso não concorde com qualquer condição aqui descrita, não deverá utilizar a ferramenta.</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <p className="font-black text-slate-800 uppercase text-[12px] tracking-wide">1. Finalidade da aplicação</p>
-                    <p>Esta aplicação possui finalidade exclusivamente educacional e informativa, atuando como auxílio matemático para cálculos relacionados ao fracionamento de medicamentos.</p>
-                    <p>A ferramenta não substitui, em hipótese alguma, a avaliação, prescrição, orientação ou decisão de um médico ou de qualquer outro profissional de saúde legalmente habilitado.</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <p className="font-black text-slate-800 uppercase text-[12px] tracking-wide">2. Não prestação de serviços de saúde</p>
-                    <p>O desenvolvedor não presta serviços médicos, farmacêuticos, de enfermagem ou de qualquer outra área da saúde, não realizando diagnóstico, prescrição, indicação de medicamentos ou definition de condutas clínicas.</p>
-                    <p>O uso desta aplicação não caracteriza relação profissional de saúde entre o usuário e o desenvolvedor.</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <p className="font-black text-slate-800 uppercase text-[12px] tracking-wide">3. Responsabilidade do usuário</p>
-                    <p>O usuário declara estar ciente de que:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>A dose prescrita, a concentração do medicamento, a forma de aplicação e o volume final devem ser confirmados com um profissional de saúde legalmente habilitado.</li>
-                      <li>Os resultados apresentados dependem exclusivamente da exatidão dos dados inseridos.</li>
-                      <li>É de sua responsabilidade verificar se os valores em mg e mL correspondem exatamente à ampola, frasco ou apresentação do medicamento utilizada.</li>
-                      <li>Qualquer decisão clínica tomada com base nos resultados é de inteira responsabilidade do profissional habilitado.</li>
-                    </ul>
-                  </div>
-
-                  <div className="space-y-3">
-                    <p className="font-black text-slate-800 uppercase text-[12px] tracking-wide">4. Limitação de responsabilidade</p>
-                    <p>O desenvolvedor não se responsabiliza por:</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Erros decorrentes do preenchimento incorreto dos dados pelo usuário.</li>
-                      <li>Interpretação inadequada dos resultados apresentados.</li>
-                      <li>Uso da ferramenta como única referência para decisões clínicas.</li>
-                      <li>Danos diretos, indiretos, incidentais ou consequenciais decorrentes do uso da aplicação.</li>
-                    </ul>
-                    <p>O uso da ferramenta ocorre por conta e risco do usuário, respeitadas as finalidades educacionais aqui descritas.</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <p className="font-black text-slate-800 uppercase text-[12px] tracking-wide">5. Público-alvo e uso adequado</p>
-                    <p>Esta aplicação é destinada exclusivamente a estudantes e profissionais da área da saúde, para fins de estudo, apoio matemático, conferência e organização de cálculos.</p>
-                    <p>O uso por pessoas leigas, sem acompanhamento profissional, não é recomendado.</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <p className="font-black text-slate-800 uppercase text-[12px] tracking-wide">6. Conformidade legal</p>
-                    <p>Esta aplicação não se enquadra como serviço de saúde, nos termos da legislação brasileira vigente, não realizando atos privativos de profissionais regulamentados, nem substituindo práticas assistenciais.</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <p className="font-black text-slate-800 uppercase text-[12px] tracking-wide">7. Proteção de dados e privacidade</p>
-                    <p>Esta aplicação não armazena, trata, compartilha ou comercializa dados pessoal ou dados sensíveis dos usuários.</p>
-                    <p>Caso futuras atualizações envolvam coleta de dados, uma Política de Privacidade específica será disponibilizada.</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <p className="font-black text-slate-800 uppercase text-[12px] tracking-wide">8. Alterações dos Termos</p>
-                    <p>O desenvolvedor poderá alterar estes Termos de Uso a qualquer momento. Recomenda-se que o usuário revise periodicamente este conteúdo. A continuidade do uso da aplicação após alterações implica concordância com os novos termos.</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <p className="font-black text-slate-800 uppercase text-[12px] tracking-wide">9. Aceitação dos Termos</p>
-                    <p>Ao utilizar a aplicação e/ou marcar a opção “Li e aceito os Termos de Uso”, o usuário declara estar plenamente ciente e de acordo com todas as condições aqui estabelecidas.</p>
-                  </div>
-                </div>
-              </div>
-              <div className="w-full lg:w-[400px] flex flex-col gap-4 md:gap-6 pt-4 lg:pt-0 shrink-0">
-                <div className="bg-slate-50/50 p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-slate-100 group transition-all hover:bg-white hover:shadow-xl">
-                  <label className="flex items-center gap-3 md:gap-4 cursor-pointer">
-                    <div className="relative shrink-0">
-                      <input 
-                        type="checkbox" 
-                        className="sr-only" 
-                        checked={hasAcceptedTermsCheckbox}
-                        onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
-                      />
-                      <div className={`w-6 h-6 md:w-7 md:h-7 rounded-lg md:rounded-xl border-2 transition-all flex items-center justify-center ${
-                        hasAcceptedTermsCheckbox 
-                        ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-100' 
-                        : 'bg-white border-slate-300'
-                      }`}>
-                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
-                      </div>
+              <div className="w-full flex flex-col gap-4">
+                <div className="bg-slate-50/50 p-4 rounded-[1.5rem] border border-slate-100">
+                  <label className="flex items-center gap-4 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      className="sr-only" 
+                      checked={hasAcceptedTermsCheckbox}
+                      onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
+                    />
+                    <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600' : 'bg-white border-slate-300'}`}>
+                      {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
                     </div>
-                    <span className="text-[11px] md:text-sm font-black text-slate-600 select-none leading-tight">Li e aceito os Termos de Uso.</span>
+                    <span className="text-[11px] font-black text-slate-600 uppercase">Li e aceito os Termos</span>
                   </label>
                 </div>
                 <button 
                   disabled={!hasAcceptedTermsCheckbox}
                   onClick={handleAcceptTerms}
-                  className={`w-full py-4 md:py-6 rounded-[1rem] md:rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] md:text-xs transition-all shadow-2xl ${
-                    hasAcceptedTermsCheckbox 
-                    ? 'bg-orange-600 text-white shadow-orange-200 hover:bg-orange-700 hover:scale-[1.02] active:scale-[0.98]' 
-                    : 'bg-slate-100 text-slate-300 cursor-not-allowed border border-slate-200'
-                  }`}
+                  className={`w-full py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 text-white shadow-xl' : 'bg-slate-100 text-slate-300 cursor-not-allowed'}`}
                 >
                   Acessar Ferramenta
                 </button>
@@ -529,54 +483,42 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* MODAL DE DÚVIDAS AMPOLA */}
+      {/* MODAIS DE AJUDA */}
       {isHelpModalOpen && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-xl transition-all duration-300">
           <div className="bg-white w-full max-w-xl rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] relative overflow-hidden flex flex-col max-h-[90vh]">
-            <button onClick={() => setIsHelpModalOpen(false)} className="absolute top-8 right-8 p-3 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors z-20">
-              <X size={20} className="text-slate-600" />
+            <button onClick={() => setIsHelpModalOpen(false)} className="absolute top-8 right-8 p-3 bg-slate-100 rounded-full z-20">
+              <X size={20} />
             </button>
-            <div className="p-10 pb-6">
-              <h3 className="text-2xl font-black text-slate-800 mb-8 flex items-center gap-3"><HelpCircle className="text-orange-500" /> Guia de Referência</h3>
-              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl bg-slate-50 aspect-video flex items-center justify-center relative group min-h-[200px]">
-                 {imageLoading && <div className="absolute inset-0 flex items-center justify-center bg-slate-50 z-10"><Loader2 className="animate-spin text-orange-500" size={32} /></div>}
-                 <img src={referenceImageUrl} alt="Referência" className={`w-full h-full object-contain scale-[1.25] group-hover:scale-[1.3] transition-all duration-700 ${imageLoading ? 'opacity-0' : 'opacity-100'}`} onLoad={() => setImageLoading(false)} />
-                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent pointer-events-none"></div>
+            <div className="p-10 pb-6 text-center">
+              <h3 className="text-xl font-black text-slate-800 mb-8 flex items-center justify-center gap-3"><HelpCircle className="text-orange-500" /> Onde ver os valores?</h3>
+              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 bg-slate-50 aspect-video flex items-center justify-center relative min-h-[200px]">
+                 {imageLoading && <div className="absolute inset-0 flex items-center justify-center bg-slate-50 z-10"><Loader2 className="animate-spin text-orange-500" /></div>}
+                 <img src={referenceImageUrl} alt="Reference Guide" className={`w-full h-full object-contain ${imageLoading ? 'opacity-0' : 'opacity-100'}`} onLoad={() => setImageLoading(false)} />
               </div>
-              <p className="text-[10px] text-slate-400 mt-4 text-center font-black uppercase tracking-widest italic">Exemplo meramente ilustrativo</p>
             </div>
-            <div className="p-10 pt-4 overflow-y-auto">
-              <div className="space-y-6 text-slate-600 font-medium leading-relaxed">
-                <p>Observe o rótulo do seu medicamento. Geralmente a concentração é expressa como <span className="text-orange-600 font-black">X mg em Y ml</span>.</p>
-                <div className="bg-orange-50/50 p-6 rounded-[1.5rem] border-l-4 border-orange-500 italic font-bold text-slate-700">Exemplo: Se o frasco diz "15mg / 0.5ml", você deve inserir 15 no campo MG e 0.5 no campo ML.</div>
-              </div>
-              <button onClick={() => setIsHelpModalOpen(false)} className="w-full mt-10 py-5 bg-slate-900 text-white font-black rounded-2xl shadow-xl hover:bg-slate-800 transition-all uppercase tracking-[0.2em] text-[10px]">Voltar ao Cálculo</button>
+            <div className="p-10 pt-4 text-center">
+              <button onClick={() => setIsHelpModalOpen(false)} className="w-full py-5 bg-slate-900 text-white font-black rounded-2xl uppercase tracking-[0.2em] text-[10px]">Fechar</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* MODAL DE DÚVIDAS SERINGA */}
       {isSyringeHelpModalOpen && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-xl transition-all duration-300">
           <div className="bg-white w-full max-w-xl rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] relative overflow-hidden flex flex-col max-h-[90vh]">
-            <button onClick={() => setIsSyringeHelpModalOpen(false)} className="absolute top-8 right-8 p-3 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors z-20">
-              <X size={20} className="text-slate-600" />
+            <button onClick={() => setIsSyringeHelpModalOpen(false)} className="absolute top-8 right-8 p-3 bg-slate-100 rounded-full z-20">
+              <X size={20} />
             </button>
-            <div className="p-10 pb-6">
-              <h3 className="text-2xl font-black text-slate-800 mb-8 flex items-center gap-3"><HelpCircle className="text-orange-500" /> Qual é a sua seringa?</h3>
-              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl bg-slate-50 aspect-[4/5] flex items-center justify-center relative group min-h-[250px]">
-                 {imageLoading && <div className="absolute inset-0 flex items-center justify-center bg-slate-50 z-10"><Loader2 className="animate-spin text-orange-500" size={32} /></div>}
-                 <img src={syringeGuideUrl} alt="Guia de Seringas" className={`w-full h-full object-contain p-4 group-hover:scale-105 transition-all duration-700 ${imageLoading ? 'opacity-0' : 'opacity-100'}`} onLoad={() => setImageLoading(false)} />
+            <div className="p-10 pb-6 text-center">
+              <h3 className="text-xl font-black text-slate-800 mb-8 flex items-center justify-center gap-3"><HelpCircle className="text-orange-500" /> Tipos de Seringa</h3>
+              <div className="rounded-[2.5rem] overflow-hidden border border-slate-100 bg-slate-50 aspect-[4/5] flex items-center justify-center relative min-h-[250px]">
+                 {imageLoading && <div className="absolute inset-0 flex items-center justify-center bg-slate-50 z-10"><Loader2 className="animate-spin text-orange-500" /></div>}
+                 <img src={syringeGuideUrl} alt="Syringe Guide" className={`w-full h-full object-contain p-4 ${imageLoading ? 'opacity-0' : 'opacity-100'}`} onLoad={() => setImageLoading(false)} />
               </div>
-              <p className="text-[10px] text-slate-400 mt-4 text-center font-black uppercase tracking-widest italic">Compare o bico e as graduações</p>
             </div>
-            <div className="p-10 pt-4 overflow-y-auto">
-              <div className="space-y-4 text-slate-600 font-medium leading-relaxed">
-                <p>As seringas de insulina variam em capacidade total e na escala dos traços.</p>
-                <div className="bg-orange-50/50 p-6 rounded-[1.5rem] border-l-4 border-orange-500 italic font-bold text-slate-700">Identifique se sua seringa é de 30 UI, 50 UI ou 100 UI.</div>
-              </div>
-              <button onClick={() => setIsSyringeHelpModalOpen(false)} className="w-full mt-10 py-5 bg-slate-900 text-white font-black rounded-2xl shadow-xl hover:bg-slate-800 transition-all uppercase tracking-[0.2em] text-[10px]">Voltar ao Cálculo</button>
+            <div className="p-10 pt-4 text-center">
+              <button onClick={() => setIsSyringeHelpModalOpen(false)} className="w-full py-5 bg-slate-900 text-white font-black rounded-2xl uppercase tracking-[0.2em] text-[10px]">Fechar</button>
             </div>
           </div>
         </div>

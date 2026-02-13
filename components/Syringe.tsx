@@ -12,7 +12,7 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
   const height = 780;
   const width = 320; 
   const barrelWidth = 36;
-  const barrelX = 160; // Centralizado para permitir legendas em ambos os lados
+  const barrelX = 160; 
   const barrelYStart = 100;
   const scaleHeight = 560; 
   const barrelExtension = 40; 
@@ -36,7 +36,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
       else if (!isHalfUnit) tickLength = 12;
       else tickLength = 6;
 
-      // Traço da escala
       ticks.push(
         <line
           key={`tick-${i}`}
@@ -49,7 +48,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
         />
       );
 
-      // Números de contagem (1º, 2º...) - Voltaram para o lado ESQUERDO
       if (i > 0 && i <= currentUI) {
         const tickNumber = Math.round(i / tickStep);
         ticks.push(
@@ -69,7 +67,6 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
         );
       }
 
-      // Números da escala fixa (10, 20, 30...) - Lado DIREITO
       if (isLabeled && i > 0) {
         ticks.push(
           <text
@@ -181,21 +178,8 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
 
           {renderTicks()}
 
-          <ellipse
-            cx={barrelX + barrelWidth/2}
-            cy={height - 40}
-            rx="35"
-            ry="8"
-            fill="#f8fafc"
-            stroke="#cbd5e1"
-            strokeWidth="1.5"
-            className="transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)"
-            style={{ transform: `translateY(${plungerPos}px)`, transformOrigin: 'center top' }}
-          />
-
           {currentUI > 0 && (
             <g className="transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)" style={{ transform: `translateY(${plungerPos}px)` }}>
-              {/* Balão de dosagem posicionado mais à esquerda para não cobrir a contagem (1º, 2º...) */}
               <rect x={20} y={stopperCenterY - 14} width="70" height="28" rx="8" fill="#ea580c" className="shadow-lg" />
               <text x={55} y={stopperCenterY} textAnchor="middle" fill="white" fontSize="13" className="font-black" dominantBaseline="middle">
                 {currentUI} UI
