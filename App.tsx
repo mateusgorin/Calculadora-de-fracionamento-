@@ -343,19 +343,19 @@ const App: React.FC = () => {
           </div>
           <button 
             onClick={handleCopyPix}
-            className="bg-white px-6 py-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center gap-2 w-full max-w-[280px] hover:border-orange-200 transition-all group relative"
+            className="bg-white px-8 py-6 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col items-center gap-3 w-full max-w-[360px] hover:border-orange-200 hover:shadow-md transition-all group relative"
           >
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Chave PIX (E-mail)</span>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-700 select-all">mateusmirandaamaral@gmail.com</span>
+            <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Chave PIX (E-mail)</span>
+            <div className="flex items-center gap-3">
+              <span className="text-sm md:text-base font-bold text-slate-700 select-all">mateusmirandaamaral@gmail.com</span>
               {copied ? (
-                <Check size={14} className="text-emerald-500" />
+                <Check size={18} className="text-emerald-500" />
               ) : (
-                <Copy size={14} className="text-slate-300 group-hover:text-orange-500 transition-colors" />
+                <Copy size={18} className="text-slate-300 group-hover:text-orange-500 transition-colors" />
               )}
             </div>
             {copied && (
-              <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] font-bold px-3 py-1 rounded-full animate-in fade-in slide-in-from-bottom-2">
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs font-bold px-4 py-1.5 rounded-full animate-in fade-in slide-in-from-bottom-2">
                 Copiado!
               </span>
             )}
