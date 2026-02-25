@@ -9,14 +9,11 @@ import {
   X,
   HelpCircle,
   CheckCircle2,
-  Copy,
-  Check,
   Loader2,
   AlertCircle,
   ChevronDown,
   ChevronUp,
   BookOpen,
-  Heart,
   Activity
 } from 'lucide-react';
 
@@ -27,15 +24,13 @@ const App: React.FC = () => {
   const [targetDoseMg, setTargetDoseMg] = useState<string>("");
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [isSyringeHelpModalOpen, setIsSyringeHelpModalOpen] = useState(false);
-  const [pixCopied, setPixCopied] = useState(false);
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(true);
+  const [isPasswordVerified, setIsPasswordVerified] = useState(false);
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
   const [imageLoading, setImageLoading] = useState(true);
   const [isScienceOpen, setIsScienceOpen] = useState(false);
-  const [isSupportOpen, setIsSupportOpen] = useState(false);
   const [isLegalNoticeOpen, setIsLegalNoticeOpen] = useState(false);
-
-  const pixKey = "mateusmirandaamaral@gmail.com";
 
   const referenceImageUrl = "https://i.postimg.cc/zvTRZnJg/IMG-20260201-WA0049.jpg";
   const syringeGuideUrl = "https://i.postimg.cc/bvXN2Sj4/file-0000000094b871f5bf0a8a73aa2e41f6-(1).png";
@@ -48,16 +43,18 @@ const App: React.FC = () => {
     });
   }, []);
 
+  const handleVerifyPassword = () => {
+    if (passwordInput === "1989") {
+      setIsPasswordVerified(true);
+    } else {
+      alert("Senha incorreta!");
+    }
+  };
+
   const handleAcceptTerms = () => {
     if (hasAcceptedTermsCheckbox) {
       setIsEntryModalOpen(false);
     }
-  };
-
-  const copyPix = () => {
-    navigator.clipboard.writeText(pixKey);
-    setPixCopied(true);
-    setTimeout(() => setPixCopied(false), 2000);
   };
 
   const result = useMemo<CalculationResult>(() => {
@@ -369,132 +366,122 @@ const App: React.FC = () => {
             </div>
           )}
         </div>
+      </section>
 
-        {/* APOIO AO DESENVOLVEDOR ATUALIZADO */}
-        <div className="bg-orange-50 border border-orange-200 rounded-[2rem] overflow-hidden shadow-sm transition-all duration-300">
-          <button 
-            onClick={() => setIsSupportOpen(!isSupportOpen)}
-            className="w-full flex items-center justify-between p-6 text-left hover:bg-orange-100/50 transition-colors"
-          >
-            <div className="flex items-center gap-4">
-              <div className="bg-orange-100 p-2.5 rounded-xl">
-                <Heart className="text-orange-600" size={20} />
+      {/* MODAL DE ENTRADA (SENHA E TERMOS) */}
+      {isEntryModalOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-6 transition-opacity duration-500">
+          {!isPasswordVerified ? (
+            /* PASSO 1: SENHA */
+            <div className="bg-white w-full max-w-md rounded-[3rem] shadow-2xl border border-slate-100 p-10 md:p-14 flex flex-col items-center gap-8 animate-in fade-in zoom-in duration-300">
+              <div className="bg-orange-500 p-4 rounded-3xl shadow-lg shadow-orange-200">
+                <SyringeIcon className="text-white" size={32} />
               </div>
-              <span className="text-sm font-black text-orange-900 uppercase tracking-widest">
-                Apoio ao Desenvolvedor
-              </span>
-            </div>
-            {isSupportOpen ? <ChevronUp className="text-orange-400" /> : <ChevronDown className="text-orange-400" />}
-          </button>
-          {isSupportOpen && (
-            <div className="px-6 pb-8 pt-6 space-y-6 animate-in fade-in slide-in-from-top-2 duration-300">
-              <div className="text-slate-600 font-medium text-sm space-y-4">
-                <p>Olá, pessoal!</p>
-                <p>Me chamo Mateus Miranda e sou o desenvolvedor do aplicativo Calculadora de Fracionamento.</p>
-                <p>O aplicativo ainda está em desenvolvimento e, em breve, pretendo adicionar novas funcionalidades para torná-lo ainda mais prático e completo.</p>
-                <p>No momento, ele não possui um domínio próprio. Se você gostou do aplicativo e quiser colaborar com qualquer valor para ajudar no seu desenvolvimento, toda contribuição via Pix será recebida com muita gratidão.</p>
-                <p>A ideia é hospedar o aplicativo em um servidor de qualidade, registrar um domínio para facilitar o acesso e seguir evoluindo o projeto.</p>
-                <p className="font-bold">Sua contribuição faz toda a diferença para o crescimento deste projeto!</p>
+              <div className="text-center space-y-2">
+                <h2 className="text-2xl font-black text-slate-800 tracking-tight">Acesso Restrito</h2>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Digite a senha para continuar</p>
               </div>
-              
-              <div className="bg-white border border-orange-200 p-4 rounded-[1.8rem] flex items-center justify-between gap-4">
-                <div className="flex flex-col text-left overflow-hidden">
-                  <span className="text-[9px] font-black text-orange-400 uppercase tracking-widest mb-1">Chave Pix de Apoio</span>
-                  <span className="text-sm font-black text-slate-700 truncate">{pixKey}</span>
-                </div>
-                <button onClick={copyPix} className="p-4 bg-orange-50 rounded-2xl text-orange-600">
-                  {pixCopied ? <Check size={18} /> : <Copy size={18} />}
+              <div className="w-full space-y-4">
+                <input
+                  type="password"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleVerifyPassword()}
+                  placeholder="Senha de acesso"
+                  className="w-full px-6 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700 text-center text-xl tracking-widest"
+                  autoFocus
+                />
+                <button 
+                  onClick={handleVerifyPassword}
+                  className="w-full py-5 bg-orange-600 text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[11px] shadow-xl shadow-orange-200 active:scale-95 transition-all"
+                >
+                  Entrar
                 </button>
+              </div>
+            </div>
+          ) : (
+            /* PASSO 2: TERMOS */
+            <div className="bg-white w-full max-w-2xl h-auto max-h-[85vh] rounded-[3rem] shadow-2xl border border-slate-100 flex flex-col p-6 md:p-14 animate-in fade-in slide-in-from-bottom-4 duration-500 overflow-hidden relative">
+              <div className="flex flex-col items-center gap-6 flex-1 overflow-hidden">
+                <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight text-center flex items-center justify-center gap-3">
+                  ⚠️ Termos de Uso e Responsabilidades
+                </h2>
+                <div className="flex-1 overflow-y-auto pr-4 space-y-6 text-slate-600 text-[11px] md:text-[13px] leading-relaxed font-medium pb-8 text-left w-full">
+                   <div className="space-y-6">
+                     <p className="font-bold uppercase text-[10px] tracking-widest text-slate-400">TERMOS DE USO</p>
+                     <p>Ao acessar ou utilizar esta aplicação, o usuário declara que leu, compreendeu e concorda integralmente com os presentes Termos de Uso. Caso não concorde com qualquer condição aqui descrita, não deverá utilizar a ferramenta.</p>
+                     
+                     <p className="font-black text-slate-800">1. Finalidade da aplicação</p>
+                     <p>Esta aplicação possui finalidade exclusivamente educacional e informativa, atuando como auxílio matemático para cálculos relacionados ao fracionamento de medicamentos.</p>
+                     <p>A ferramenta não substitui, em hipótese alguma, a avaliação, prescrição, orientação ou decisão de um médico ou de qualquer outro profissional de saúde legalmente habilitado.</p>
+                     
+                     <p className="font-black text-slate-800">2. Não prestação de serviços de saúde</p>
+                     <p>O desenvolvedor não presta serviços médicos, farmacêuticos, de enfermagem ou de qualquer outra área da saúde, não realizando diagnóstico, prescrição, indicação de medicamentos ou definição de condutas clínicas.</p>
+                     <p>O uso desta aplicação não caracteriza relação profissional de saúde entre o usuário e o desenvolvedor.</p>
+                     
+                     <p className="font-black text-slate-800">3. Responsabilidade do usuário</p>
+                     <p>O usuário declara estar ciente de que:</p>
+                     <ul className="list-disc pl-5 space-y-2">
+                       <li>A dose prescrita, a concentração do medicamento, a forma de aplicação e o volume final devem ser confirmados com um profissional de saúde legalmente habilitado.</li>
+                       <li>Os resultados apresentados dependem exclusivamente da exatidão dos dados inseridos.</li>
+                       <li>É de sua responsabilidade verificar se os valores em mg e mL correspondem exatamente à ampola, frasco ou apresentação do medicamento utilizada.</li>
+                       <li>Qualquer decisão clínica tomada com base nos resultados é de inteira responsabilidade do profissional habilitado.</li>
+                     </ul>
+                     
+                     <p className="font-black text-slate-800">4. Limitação de responsabilidade</p>
+                     <p>O desenvolvedor não se responsabiliza por:</p>
+                     <ul className="list-disc pl-5 space-y-2">
+                       <li>Erros decorrentes do preenchimento incorreto dos dados pelo usuário.</li>
+                       <li>Interpretação inadequada dos resultados apresentados.</li>
+                       <li>Uso da ferramenta como única referência para decisões clínicas.</li>
+                       <li>Danos diretos, indiretos, incidentais ou consequenciais decorrentes do uso da aplicação.</li>
+                     </ul>
+                     <p>O uso da ferramenta ocorre por conta e risco do usuário, respeitadas as finalidades educacionais aqui descritas.</p>
+                     
+                     <p className="font-black text-slate-800">5. Público-alvo e uso adequado</p>
+                     <p>Esta aplicação é destinada exclusivamente a estudantes e profissionais da área da saúde, para fins de estudo, apoio matemático, conferência e organization de cálculos.</p>
+                     <p>O uso por pessoas leigas, sem acompanhamento profissional, não é recomendado.</p>
+                     
+                     <p className="font-black text-slate-800">6. Conformidade legal</p>
+                     <p>Esta aplicação não se enquadra como serviço de saúde, nos termos da legislação brasileira vigente, não realizando atos privativos de profissionais regulamentados, nem substituindo práticas assistenciais.</p>
+                     
+                     <p className="font-black text-slate-800">7. Proteção de dados e privacidade</p>
+                     <p>Esta aplicação não armazena, trata, compartilha ou comercializa dados pessoais ou dados sensíveis dos usuários.</p>
+                     <p>Caso futuras atualizações envolvam coleta de dados, uma Política de Privacidade específica será disponibilizada.</p>
+                     
+                     <p className="font-black text-slate-800">8. Alterações dos Termos</p>
+                     <p>O desenvolvedor poderá alterar estes Termos de Uso a qualquer momento. Recomenda-se que o usuário revise periodicamente este conteúdo. A continuidade do uso da aplicação após alterações implica concordância com os novos termos.</p>
+                     
+                     <p className="font-black text-slate-800">9. Aceitação dos Termos</p>
+                     <p>Ao utilizar a aplicação e/ou marcar a opção “Li e aceito os Termos de Uso”, o usuário declara estar plenamente ciente e de acordo com todas as condições estabelecidas.</p>
+                   </div>
+                </div>
+                <div className="w-full flex flex-col gap-4">
+                  <div className="bg-slate-50/50 p-4 rounded-[1.5rem] border border-slate-100">
+                    <label className="flex items-center gap-4 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only" 
+                        checked={hasAcceptedTermsCheckbox}
+                        onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
+                      />
+                      <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600' : 'bg-white border-slate-300'}`}>
+                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
+                      </div>
+                      <span className="text-[11px] font-black text-slate-600 uppercase">Li e aceito os Termos de Uso</span>
+                    </label>
+                  </div>
+                  <button 
+                    disabled={!hasAcceptedTermsCheckbox}
+                    onClick={handleAcceptTerms}
+                    className={`w-full py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 text-white shadow-xl' : 'bg-slate-100 text-slate-300 cursor-not-allowed'}`}
+                  >
+                    Acessar Ferramenta
+                  </button>
+                </div>
               </div>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* MODAL DE ENTRADA (TERMOS E RESPONSABILIDADES) */}
-      {isEntryModalOpen && (
-        <div className="fixed inset-0 z-[200] flex items-end justify-center bg-slate-900/60 backdrop-blur-md p-0 transition-opacity duration-500">
-          <div className="bg-white w-full max-w-2xl h-auto max-h-[85vh] rounded-t-[3rem] shadow-[0_-30px_100px_-20px_rgba(0,0,0,0.5)] border-t border-slate-100 flex flex-col p-6 md:p-14 transform transition-transform duration-500 translate-y-0 overflow-hidden relative">
-            <div className="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-4 shrink-0"></div>
-            <div className="flex flex-col items-center gap-6 flex-1 overflow-hidden">
-              <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight text-center flex items-center justify-center gap-3">
-                ⚠️ Termos de Uso e Responsabilidades
-              </h2>
-              <div className="flex-1 overflow-y-auto pr-4 space-y-6 text-slate-600 text-[11px] md:text-[13px] leading-relaxed font-medium pb-8 text-left w-full">
-                 <div className="space-y-6">
-                   <p className="font-bold uppercase text-[10px] tracking-widest text-slate-400">TERMOS DE USO</p>
-                   <p>Ao acessar ou utilizar esta aplicação, o usuário declara que leu, compreendeu e concorda integralmente com os presentes Termos de Uso. Caso não concorde com qualquer condição aqui descrita, não deverá utilizar a ferramenta.</p>
-                   
-                   <p className="font-black text-slate-800">1. Finalidade da aplicação</p>
-                   <p>Esta aplicação possui finalidade exclusivamente educacional e informativa, atuando como auxílio matemático para cálculos relacionados ao fracionamento de medicamentos.</p>
-                   <p>A ferramenta não substitui, em hipótese alguma, a avaliação, prescrição, orientação ou decisão de um médico ou de qualquer outro profissional de saúde legalmente habilitado.</p>
-                   
-                   <p className="font-black text-slate-800">2. Não prestação de serviços de saúde</p>
-                   <p>O desenvolvedor não presta serviços médicos, farmacêuticos, de enfermagem ou de qualquer outra área da saúde, não realizando diagnóstico, prescrição, indicação de medicamentos ou definição de condutas clínicas.</p>
-                   <p>O uso desta aplicação não caracteriza relação profissional de saúde entre o usuário e o desenvolvedor.</p>
-                   
-                   <p className="font-black text-slate-800">3. Responsabilidade do usuário</p>
-                   <p>O usuário declara estar ciente de que:</p>
-                   <ul className="list-disc pl-5 space-y-2">
-                     <li>A dose prescrita, a concentração do medicamento, a forma de aplicação e o volume final devem ser confirmados com um profissional de saúde legalmente habilitado.</li>
-                     <li>Os resultados apresentados dependem exclusivamente da exatidão dos dados inseridos.</li>
-                     <li>É de sua responsabilidade verificar se os valores em mg e mL correspondem exatamente à ampola, frasco ou apresentação do medicamento utilizada.</li>
-                     <li>Qualquer decisão clínica tomada com base nos resultados é de inteira responsabilidade do profissional habilitado.</li>
-                   </ul>
-                   
-                   <p className="font-black text-slate-800">4. Limitação de responsabilidade</p>
-                   <p>O desenvolvedor não se responsabiliza por:</p>
-                   <ul className="list-disc pl-5 space-y-2">
-                     <li>Erros decorrentes do preenchimento incorreto dos dados pelo usuário.</li>
-                     <li>Interpretação inadequada dos resultados apresentados.</li>
-                     <li>Uso da ferramenta como única referência para decisões clínicas.</li>
-                     <li>Danos diretos, indiretos, incidentais ou consequenciais decorrentes do uso da aplicação.</li>
-                   </ul>
-                   <p>O uso da ferramenta ocorre por conta e risco do usuário, respeitadas as finalidades educacionais aqui descritas.</p>
-                   
-                   <p className="font-black text-slate-800">5. Público-alvo e uso adequado</p>
-                   <p>Esta aplicação é destinada exclusivamente a estudantes e profissionais da área da saúde, para fins de estudo, apoio matemático, conferência e organization de cálculos.</p>
-                   <p>O uso por pessoas leigas, sem acompanhamento profissional, não é recomendado.</p>
-                   
-                   <p className="font-black text-slate-800">6. Conformidade legal</p>
-                   <p>Esta aplicação não se enquadra como serviço de saúde, nos termos da legislação brasileira vigente, não realizando atos privativos de profissionais regulamentados, nem substituindo práticas assistenciais.</p>
-                   
-                   <p className="font-black text-slate-800">7. Proteção de dados e privacidade</p>
-                   <p>Esta aplicação não armazena, trata, compartilha ou comercializa dados pessoais ou dados sensíveis dos usuários.</p>
-                   <p>Caso futuras atualizações envolvam coleta de dados, uma Política de Privacidade específica será disponibilizada.</p>
-                   
-                   <p className="font-black text-slate-800">8. Alterações dos Termos</p>
-                   <p>O desenvolvedor poderá alterar estes Termos de Uso a qualquer momento. Recomenda-se que o usuário revise periodicamente este conteúdo. A continuidade do uso da aplicação após alterações implica concordância com os novos termos.</p>
-                   
-                   <p className="font-black text-slate-800">9. Aceitação dos Termos</p>
-                   <p>Ao utilizar a aplicação e/ou marcar a opção “Li e aceito os Termos de Uso”, o usuário declara estar plenamente ciente e de acordo com todas as condições estabelecidas.</p>
-                 </div>
-              </div>
-              <div className="w-full flex flex-col gap-4">
-                <div className="bg-slate-50/50 p-4 rounded-[1.5rem] border border-slate-100">
-                  <label className="flex items-center gap-4 cursor-pointer">
-                    <input 
-                      type="checkbox" 
-                      className="sr-only" 
-                      checked={hasAcceptedTermsCheckbox}
-                      onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
-                    />
-                    <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600' : 'bg-white border-slate-300'}`}>
-                      {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
-                    </div>
-                    <span className="text-[11px] font-black text-slate-600 uppercase">Li e aceito os Termos de Uso</span>
-                  </label>
-                </div>
-                <button 
-                  disabled={!hasAcceptedTermsCheckbox}
-                  onClick={handleAcceptTerms}
-                  className={`w-full py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 text-white shadow-xl' : 'bg-slate-100 text-slate-300 cursor-not-allowed'}`}
-                >
-                  Acessar Ferramenta
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       )}
 
