@@ -11,7 +11,11 @@ import {
   ChevronUp,
   BookOpen,
   Activity,
-  Download
+  Download,
+  Heart,
+  Coffee,
+  Copy,
+  Check
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -23,6 +27,7 @@ const App: React.FC = () => {
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
   const [isScienceOpen, setIsScienceOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -40,6 +45,12 @@ const App: React.FC = () => {
     if (outcome === 'accepted') {
       setDeferredPrompt(null);
     }
+  };
+
+  const handleCopyPix = () => {
+    navigator.clipboard.writeText("mateusmirandaamaral@gmail.com");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const handleAcceptTerms = () => {
@@ -319,17 +330,58 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* MODAL DE ENTRADA (AVISO LEGAL) */}
+      <footer className="max-w-2xl mx-auto px-6 mt-24 pb-12">
+        <div className="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-8 md:p-10 flex flex-col items-center text-center gap-6">
+          <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+            <Heart className="text-rose-500 animate-pulse" size={24} />
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">Apoie o Desenvolvedor</h3>
+            <p className="text-xs text-slate-500 font-medium leading-relaxed max-w-xs mx-auto">
+              Se esta ferramenta matemática foi útil para você, considere apoiar a manutenção e criação de novos projetos.
+            </p>
+          </div>
+          <button 
+            onClick={handleCopyPix}
+            className="bg-white px-6 py-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center gap-2 w-full max-w-[280px] hover:border-orange-200 transition-all group relative"
+          >
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Chave PIX (E-mail)</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-700 select-all">mateusmirandaamaral@gmail.com</span>
+              {copied ? (
+                <Check size={14} className="text-emerald-500" />
+              ) : (
+                <Copy size={14} className="text-slate-300 group-hover:text-orange-500 transition-colors" />
+              )}
+            </div>
+            {copied && (
+              <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] font-bold px-3 py-1 rounded-full animate-in fade-in slide-in-from-bottom-2">
+                Copiado!
+              </span>
+            )}
+          </button>
+          <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+            <Coffee size={12} />
+            <span>Feito com dedicação</span>
+          </div>
+        </div>
+      </footer>
+
+      {/* MODAL DE ENTRADA (AVISO LEGAL) - FULL SCREEN */}
       {isEntryModalOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-6 transition-opacity duration-500">
-          <div className="bg-white w-full max-w-2xl h-auto max-h-[85vh] rounded-[3rem] shadow-2xl border border-slate-100 flex flex-col p-6 md:p-14 animate-in fade-in slide-in-from-bottom-4 duration-500 overflow-hidden relative">
-            <div className="flex flex-col items-center gap-6 flex-1 overflow-hidden">
-              <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight text-center flex items-center justify-center gap-3">
-                ⚠️ Aviso Legal e Responsabilidades
+        <div className="fixed inset-0 z-[200] bg-white overflow-y-auto animate-in fade-in duration-500">
+          <div className="min-h-screen w-full max-w-2xl mx-auto flex flex-col items-center justify-center p-8 md:p-14 gap-10">
+            <div className="flex flex-col items-center gap-8 w-full">
+              <div className="bg-orange-500 p-4 rounded-3xl shadow-lg shadow-orange-200">
+                <Ruler className="text-white" size={32} />
+              </div>
+              
+              <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight text-center flex items-center justify-center gap-3">
+                Aviso legal
               </h2>
-              <div className="flex-1 overflow-y-auto pr-4 space-y-6 text-slate-600 text-[11px] md:text-[13px] leading-relaxed font-medium pb-8 text-left w-full">
+              
+              <div className="space-y-8 text-slate-600 text-sm md:text-base leading-relaxed font-medium text-center w-full">
                 <div className="space-y-6">
-                  <p className="font-bold uppercase text-[10px] tracking-widest text-slate-400">AVISO LEGAL</p>
                   <p>Esta aplicação é uma ferramenta de apoio matemático, com finalidade educacional, destinada exclusivamente ao cálculo de proporções e conversões entre unidades e escalas numéricas.</p>
                   <p>A ferramenta não realiza recomendações, orientações de uso, instruções técnicas ou qualquer tipo de indicação prática, limitando-se ao processamento matemático de valores informados manualmente pelo usuário.</p>
                   <p>A definição dos valores, proporções e parâmetros utilizados é de inteira responsabilidade do usuário, bem como a verificação da exatidão e adequação dos dados inseridos.</p>
@@ -337,8 +389,9 @@ const App: React.FC = () => {
                   <p>Esta aplicação não se caracteriza como serviço especializado, sendo seu uso de responsabilidade exclusiva do usuário, restrito às finalidades de visualização e cálculo matemático aqui descritas.</p>
                 </div>
               </div>
-              <div className="w-full flex flex-col gap-4">
-                <div className="bg-slate-50/50 p-4 rounded-[1.5rem] border border-slate-100">
+
+              <div className="w-full flex flex-col gap-6 max-w-md">
+                <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 shadow-sm">
                   <label className="flex items-center gap-4 cursor-pointer">
                     <input 
                       type="checkbox" 
@@ -346,16 +399,17 @@ const App: React.FC = () => {
                       checked={hasAcceptedTermsCheckbox}
                       onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
                     />
-                    <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600' : 'bg-white border-slate-300'}`}>
-                      {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
+                    <div className={`w-8 h-8 rounded-xl border-2 flex items-center justify-center transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-200' : 'bg-white border-slate-300'}`}>
+                      {hasAcceptedTermsCheckbox && <CheckCircle2 size={20} className="text-white" />}
                     </div>
-                    <span className="text-[11px] font-black text-slate-600 uppercase">Li e aceito o Aviso Legal</span>
+                    <span className="text-xs md:text-sm font-black text-slate-700 uppercase tracking-wide">Li e aceito o Aviso Legal</span>
                   </label>
                 </div>
+                
                 <button 
                   disabled={!hasAcceptedTermsCheckbox}
                   onClick={handleAcceptTerms}
-                  className={`w-full py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 text-white shadow-xl' : 'bg-slate-100 text-slate-300 cursor-not-allowed'}`}
+                  className={`w-full py-6 rounded-3xl font-black uppercase tracking-widest text-xs md:text-sm transition-all active:scale-[0.98] ${hasAcceptedTermsCheckbox ? 'bg-orange-600 text-white shadow-2xl shadow-orange-200 hover:bg-orange-700' : 'bg-slate-100 text-slate-300 cursor-not-allowed'}`}
                 >
                   Acessar Ferramenta
                 </button>
