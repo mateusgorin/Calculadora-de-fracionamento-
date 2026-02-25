@@ -1,14 +1,14 @@
 
 import React from 'react';
-import { Droplet } from 'lucide-react';
-import { SyringeCapacity } from '../types';
+import { Ruler } from 'lucide-react';
+import { ScaleCapacity } from '../types';
 
-interface SyringeProps {
-  capacity: SyringeCapacity;
-  currentUI: number;
+interface ScaleProps {
+  capacity: ScaleCapacity;
+  currentUnits: number;
 }
 
-const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
+const Scale: React.FC<ScaleProps> = ({ capacity, currentUnits }) => {
   const height = 780;
   const width = 320; 
   const barrelWidth = 36;
@@ -17,19 +17,19 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
   const scaleHeight = 560; 
   const barrelExtension = 40; 
   const totalBarrelHeight = scaleHeight + barrelExtension;
-  const maxUI = capacity;
-  const fillPercentage = Math.min(100, Math.max(0, (currentUI / maxUI) * 100));
+  const maxUnits = capacity;
+  const fillPercentage = Math.min(100, Math.max(0, (currentUnits / maxUnits) * 100));
   const plungerPos = (fillPercentage / 100) * scaleHeight;
 
   const renderTicks = () => {
     const ticks = [];
-    const tickStep = maxUI === 100 ? 2 : (maxUI === 30 ? 0.5 : 1);
-    const labelStep = maxUI === 100 ? 10 : 5;
+    const tickStep = maxUnits === 100 ? 2 : (maxUnits === 30 ? 0.5 : 1);
+    const labelStep = maxUnits === 100 ? 10 : 5;
 
-    for (let i = 0; i <= maxUI; i += tickStep) {
-      const y = barrelYStart + (i / maxUI) * scaleHeight;
+    for (let i = 0; i <= maxUnits; i += tickStep) {
+      const y = barrelYStart + (i / maxUnits) * scaleHeight;
       const isLabeled = i % labelStep === 0; 
-      const isHalfUnit = maxUI === 30 && i % 1 !== 0;
+      const isHalfUnit = maxUnits === 30 && i % 1 !== 0;
       
       let tickLength = 8;
       if (isLabeled) tickLength = 16;
@@ -48,7 +48,7 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
         />
       );
 
-      if (i > 0 && i <= currentUI) {
+      if (i > 0 && i <= currentUnits) {
         const tickNumber = Math.round(i / tickStep);
         ticks.push(
           <text
@@ -89,8 +89,8 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
   };
 
   const stopperCenterY = barrelYStart;
-  const tickValue = maxUI === 100 ? 2 : (maxUI === 30 ? 0.5 : 1);
-  const totalTicksCount = currentUI / tickValue;
+  const tickValue = maxUnits === 100 ? 2 : (maxUnits === 30 ? 0.5 : 1);
+  const totalTicksCount = currentUnits / tickValue;
 
   return (
     <div className="flex flex-col items-center justify-center p-8 bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 w-full group">
@@ -178,11 +178,11 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
 
           {renderTicks()}
 
-          {currentUI > 0 && (
+          {currentUnits > 0 && (
             <g className="transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)" style={{ transform: `translateY(${plungerPos}px)` }}>
               <rect x={20} y={stopperCenterY - 14} width="70" height="28" rx="8" fill="#ea580c" className="shadow-lg" />
               <text x={55} y={stopperCenterY} textAnchor="middle" fill="white" fontSize="13" className="font-black" dominantBaseline="middle">
-                {currentUI} UI
+                {currentUnits} U
               </text>
             </g>
           )}
@@ -192,10 +192,10 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
       <div className="mt-8 flex flex-col items-center gap-6 w-full">
         <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-6 rounded-[2rem] w-full text-center shadow-xl shadow-orange-200 border border-orange-500 relative overflow-hidden group/guide">
           <div className="absolute top-0 right-0 p-4 opacity-10 text-white pointer-events-none group-hover/guide:scale-110 transition-transform duration-500">
-            <Droplet size={60} />
+            <Ruler size={60} />
           </div>
           
-          <p className="text-[10px] font-black text-orange-200 uppercase tracking-[0.2em] mb-4">Guia de Contagem</p>
+          <p className="text-[10px] font-black text-orange-200 uppercase tracking-[0.2em] mb-4">Guia de Leitura da Escala</p>
           
           <div className="flex flex-col items-center justify-center gap-1 mb-4">
             <span className="text-[11px] font-bold text-orange-100 uppercase tracking-tight">Conte</span>
@@ -203,26 +203,26 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
               <span className="text-5xl font-black text-white leading-none">
                 {totalTicksCount.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}
               </span>
-              <span className="text-xl font-black text-orange-200 uppercase">traços</span>
+              <span className="text-xl font-black text-orange-200 uppercase">divisões</span>
             </div>
           </div>
 
           <div className="bg-orange-800/30 backdrop-blur-sm px-4 py-2.5 rounded-2xl border border-orange-500/30 inline-block w-full">
             <p className="text-[11px] font-black text-orange-100 uppercase tracking-widest">
-              Escala: 1 traço = {tickValue} UI
+              Escala: 1 divisão = {tickValue} U
             </p>
           </div>
         </div>
         
         <div className="flex flex-col items-center gap-4 w-full">
           <div className="flex items-center gap-3 bg-slate-900 px-8 py-3 rounded-full shadow-lg border border-slate-800 justify-center w-fit">
-            <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">U-100</span>
+            <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Padrão 100</span>
             <div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
-            <span className="text-[11px] font-black text-white tracking-widest uppercase">{capacity} UI</span>
+            <span className="text-[11px] font-black text-white tracking-widest uppercase">{capacity} U</span>
           </div>
           
           <p className="text-[9px] text-slate-400 leading-relaxed uppercase font-black tracking-wider italic text-center opacity-80 max-w-[280px]">
-            Representação visual auxiliar. Confirme a dosagem com o seu médico ou farmacêutico.
+            Representação visual auxiliar. Confirme a proporção com a especificação técnica.
           </p>
         </div>
       </div>
@@ -230,4 +230,4 @@ const Syringe: React.FC<SyringeProps> = ({ capacity, currentUI }) => {
   );
 };
 
-export default Syringe;
+export default Scale;

@@ -1,5 +1,5 @@
 {
-  "name": "Calculadora de fracionamento",
-  "description": "Uma ferramenta visual para calcular e visualizar dosagens de medicamentos em seringas de insulina (UI) baseada na concentração de mg/ml.",
+  "name": "Calculadora de Proporções e Escalas",
+  "description": "Ferramenta educacional para cálculo de conversão entre massa, volume e escalas de medição linear.",
   "requestFramePermissions": []
 }
