@@ -256,7 +256,7 @@ const App: React.FC = () => {
         </div>
 
         <div className="w-full flex justify-center py-10">
-          <div className="w-full max-w-[360px]">
+          <div className="w-full max-w-[400px]">
             <Scale capacity={scaleCapacity} currentUnits={result.units} />
           </div>
         </div>

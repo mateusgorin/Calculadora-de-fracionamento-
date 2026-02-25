@@ -12,7 +12,7 @@ const Scale: React.FC<ScaleProps> = ({ capacity, currentUnits }) => {
   const height = 780;
   const width = 320; 
   const barrelWidth = 36;
-  const barrelX = 160; 
+  const barrelX = 142; 
   const barrelYStart = 100;
   const scaleHeight = 560; 
   const barrelExtension = 40; 
@@ -94,8 +94,8 @@ const Scale: React.FC<ScaleProps> = ({ capacity, currentUnits }) => {
 
   return (
     <div className="flex flex-col items-center justify-center p-8 bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 w-full group">
-      <div className="relative overflow-visible">
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="drop-shadow-xl overflow-visible">
+      <div className="relative w-full max-w-[320px] overflow-visible">
+        <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto drop-shadow-xl overflow-visible">
           <defs>
             <linearGradient id="barrelGradient" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#f8fafc" />
@@ -180,8 +180,8 @@ const Scale: React.FC<ScaleProps> = ({ capacity, currentUnits }) => {
 
           {currentUnits > 0 && (
             <g className="transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)" style={{ transform: `translateY(${plungerPos}px)` }}>
-              <rect x={20} y={stopperCenterY - 14} width="70" height="28" rx="8" fill="#ea580c" className="shadow-lg" />
-              <text x={55} y={stopperCenterY} textAnchor="middle" fill="white" fontSize="13" className="font-black" dominantBaseline="middle">
+              <rect x={barrelX - 140} y={stopperCenterY - 14} width="70" height="28" rx="8" fill="#ea580c" className="shadow-lg" />
+              <text x={barrelX - 105} y={stopperCenterY} textAnchor="middle" fill="white" fontSize="13" className="font-black" dominantBaseline="middle">
                 {currentUnits} U
               </text>
             </g>
