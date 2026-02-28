@@ -1,5 +1,6 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { CalculationResult, ScaleCapacity } from './types.ts';
 import Scale from './components/Scale.tsx';
 import { 
@@ -97,20 +98,43 @@ const App: React.FC = () => {
               <h1 className="text-xl font-black text-slate-800 tracking-tight">
                 Calculadora de Proporções
               </h1>
-              {deferredPrompt && (
-                <button 
-                  onClick={handleInstallClick}
-                  className="flex items-center gap-1.5 text-[10px] font-black text-orange-600 uppercase tracking-widest hover:text-orange-700 transition-colors mt-0.5"
-                >
-                  <Download size={12} />
-                  Instalar como Aplicativo
-                </button>
-              )}
             </div>
           </div>
-          <div className="hidden sm:block">
-            <div className="bg-slate-50 px-4 py-2 rounded-full border border-slate-100 text-[10px] font-black uppercase text-slate-400 tracking-widest">
-              Escala Padrão 100U
+          <div className="flex items-center gap-3">
+            <AnimatePresence>
+              {deferredPrompt && (
+                <motion.button 
+                  initial={{ opacity: 0, scale: 0.8, x: 20 }}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: 1, 
+                    x: 0,
+                    y: [0, -4, 0]
+                  }}
+                  transition={{
+                    y: {
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    },
+                    opacity: { duration: 0.3 },
+                    scale: { duration: 0.3 }
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleInstallClick}
+                  className="flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-orange-200 hover:bg-orange-600 transition-colors"
+                >
+                  <Download size={14} className="animate-bounce" />
+                  <span className="hidden sm:inline">Instalar App</span>
+                  <span className="sm:hidden">Instalar</span>
+                </motion.button>
+              )}
+            </AnimatePresence>
+            <div className="hidden md:block">
+              <div className="bg-slate-50 px-4 py-2 rounded-full border border-slate-100 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                Escala Padrão 100U
+              </div>
             </div>
           </div>
         </div>
