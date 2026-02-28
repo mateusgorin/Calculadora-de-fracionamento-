@@ -31,7 +31,6 @@ const App: React.FC = () => {
     return true;
   });
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
-  const [dontShowAgain, setDontShowAgain] = useState(false);
   const [isScienceOpen, setIsScienceOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [copied, setCopied] = useState(false);
@@ -62,17 +61,15 @@ const App: React.FC = () => {
 
   const handleAcceptTerms = () => {
     if (hasAcceptedTermsCheckbox) {
-      if (dontShowAgain) {
-        localStorage.setItem('hideLegalNotice', 'true');
-      }
+      localStorage.setItem('hideLegalNotice', 'true');
       setIsEntryModalOpen(false);
     }
   };
 
   const result = useMemo<CalculationResult>(() => {
-    const tMass = parseFloat(totalMass) || 0;
-    const tVol = parseFloat(totalVolume) || 0;
-    const dMass = parseFloat(targetMass) || 0;
+    const tMass = parseFloat(totalMass.replace(',', '.')) || 0;
+    const tVol = parseFloat(totalVolume.replace(',', '.')) || 0;
+    const dMass = parseFloat(targetMass.replace(',', '.')) || 0;
 
     if (tVol === 0 || tMass === 0) {
       return { units: 0, volume: 0, ratio: 0 };
@@ -167,7 +164,7 @@ const App: React.FC = () => {
                     type="text"
                     inputMode="decimal"
                     value={targetMass}
-                    onChange={(e) => setTargetMass(e.target.value.replace(',', '.'))}
+                    onChange={(e) => setTargetMass(e.target.value)}
                     placeholder="0.0"
                     className="w-full pl-14 pr-14 py-6 bg-slate-50/50 border-2 border-slate-100 rounded-[1.8rem] focus:border-orange-500 focus:bg-white focus:shadow-xl focus:shadow-orange-50 outline-none transition-all text-4xl font-black text-slate-800 text-center"
                   />
@@ -184,7 +181,7 @@ const App: React.FC = () => {
                       type="text"
                       inputMode="decimal"
                       value={totalMass}
-                      onChange={(e) => setTotalMass(e.target.value.replace(',', '.'))}
+                      onChange={(e) => setTotalMass(e.target.value)}
                       placeholder="0"
                       className="w-full px-6 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700 text-center"
                     />
@@ -196,7 +193,7 @@ const App: React.FC = () => {
                       type="text"
                       inputMode="decimal"
                       value={totalVolume}
-                      onChange={(e) => setTotalVolume(e.target.value.replace(',', '.'))}
+                      onChange={(e) => setTotalVolume(e.target.value)}
                       placeholder="0.0"
                       className="w-full px-6 py-4 bg-slate-50/50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 focus:bg-white outline-none transition-all font-bold text-slate-700 text-center"
                     />
@@ -247,7 +244,7 @@ const App: React.FC = () => {
                 <p className="text-slate-400 text-[10px] font-black uppercase mb-4 tracking-widest">Nível na Escala:</p>
                 <div className="flex items-baseline justify-center gap-4">
                   <span className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-400 to-orange-600 leading-none drop-shadow-sm">
-                    {result.units}
+                    {result.units.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                   </span>
                   <span className="text-2xl font-black text-slate-400 uppercase tracking-tighter">U</span>
                 </div>
@@ -264,7 +261,7 @@ const App: React.FC = () => {
                   <span className="text-orange-400 text-[9px] font-black uppercase tracking-[0.1em]">Divisões da Escala</span>
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-white font-black text-3xl md:text-4xl leading-none">
-                      {totalTicks.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}
+                      {totalTicks.toLocaleString('en-US', { maximumFractionDigits: 1 })}
                     </span>
                   </div>
                   <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">Contar divisões</span>
@@ -274,7 +271,7 @@ const App: React.FC = () => {
                   <span className="text-sky-400 text-[9px] font-black uppercase tracking-[0.1em]">Volume Calculado</span>
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-white font-black text-xl md:text-2xl leading-none">
-                      {result.volume.toFixed(3)}
+                      {result.volume.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}
                     </span>
                     <span className="text-[10px] font-black text-slate-500 uppercase">vol</span>
                   </div>
@@ -400,33 +397,39 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      {/* MODAL DE ENTRADA (AVISO LEGAL) - SEMI-TRANSPARENTE COM DESFOQUE */}
+      {/* MODAL DE ENTRADA (AVISO LEGAL) - BOTTOM SHEET SEMI-TRANSPARENTE */}
       <AnimatePresence>
         {isEntryModalOpen && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 md:p-10"
+            className="fixed inset-0 z-[200] bg-slate-900/40 backdrop-blur-sm flex items-end justify-center"
           >
             <motion.div 
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="bg-white w-full h-full max-w-3xl max-h-[85vh] rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col relative border border-white/20"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="bg-white w-full max-w-3xl h-[60vh] rounded-t-[2.5rem] shadow-2xl overflow-hidden flex flex-col relative border-t border-white/20"
             >
-              <div className="flex-1 overflow-y-auto p-8 md:p-12">
-                <div className="flex flex-col items-center gap-4 w-full mb-10">
+              {/* Handle bar for bottom sheet feel */}
+              <div className="w-full flex justify-center pt-4 pb-2">
+                <div className="w-12 h-1.5 bg-slate-200 rounded-full" />
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-8 pb-8 md:px-12">
+                <div className="flex flex-col items-center gap-4 w-full mb-8">
                   <div className="bg-orange-500 p-3 rounded-2xl shadow-lg shadow-orange-200">
-                    <Ruler className="text-white" size={28} />
+                    <Ruler className="text-white" size={24} />
                   </div>
                   
-                  <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight text-center">
+                  <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight text-center">
                     Aviso legal
                   </h2>
                 </div>
                 
-                <div className="space-y-6 text-slate-600 text-sm md:text-base leading-relaxed font-medium text-center max-w-xl mx-auto">
+                <div className="space-y-5 text-slate-600 text-sm md:text-base leading-relaxed font-medium text-center max-w-xl mx-auto">
                   <p>Esta aplicação é uma ferramenta de apoio matemático, com finalidade educacional, destinada exclusivamente ao cálculo de proporções e conversões entre unidades e escalas numéricas.</p>
                   <p>A ferramenta não realiza recomendações, orientações de uso, instruções técnicas ou qualquer tipo de indicação prática, limitando-se ao processamento matemático de valores informados manualmente pelo usuário.</p>
                   <p>A definição dos valores, proporções e parâmetros utilizados é de inteira responsabilidade do usuário, bem como a verificação da exatidão e adequação dos dados inseridos.</p>
@@ -435,35 +438,20 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-8 md:p-12 bg-slate-50/80 backdrop-blur-sm border-t border-slate-100 w-full">
+              <div className="p-8 md:p-10 bg-slate-50/80 backdrop-blur-sm border-t border-slate-100 w-full">
                 <div className="w-full flex flex-col gap-4 max-w-md mx-auto">
-                  <div className="flex flex-col gap-3">
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="checkbox" 
-                        className="sr-only" 
-                        checked={hasAcceptedTermsCheckbox}
-                        onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
-                      />
-                      <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-200' : 'bg-white border-slate-300 group-hover:border-orange-400'}`}>
-                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
-                      </div>
-                      <span className="text-[11px] md:text-xs font-black text-slate-700 uppercase tracking-wide">Li e aceito o Aviso Legal</span>
-                    </label>
-
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="checkbox" 
-                        className="sr-only" 
-                        checked={dontShowAgain}
-                        onChange={(e) => setDontShowAgain(e.target.checked)}
-                      />
-                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${dontShowAgain ? 'bg-slate-600 border-slate-600' : 'bg-white border-slate-300 group-hover:border-slate-400'}`}>
-                        {dontShowAgain && <Check size={14} className="text-white" />}
-                      </div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Não mostrar este aviso novamente</span>
-                    </label>
-                  </div>
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <input 
+                      type="checkbox" 
+                      className="sr-only" 
+                      checked={hasAcceptedTermsCheckbox}
+                      onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
+                    />
+                    <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-200' : 'bg-white border-slate-300 group-hover:border-orange-400'}`}>
+                      {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
+                    </div>
+                    <span className="text-[11px] md:text-xs font-black text-slate-700 uppercase tracking-wide">Li e aceito o Aviso Legal</span>
+                  </label>
                   
                   <button 
                     disabled={!hasAcceptedTermsCheckbox}
