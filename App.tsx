@@ -24,8 +24,14 @@ const App: React.FC = () => {
   const [totalMass, setTotalMass] = useState<string>("");
   const [totalVolume, setTotalVolume] = useState<string>("");
   const [targetMass, setTargetMass] = useState<string>("");
-  const [isEntryModalOpen, setIsEntryModalOpen] = useState(true);
+  const [isEntryModalOpen, setIsEntryModalOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('hideLegalNotice') !== 'true';
+    }
+    return true;
+  });
   const [hasAcceptedTermsCheckbox, setHasAcceptedTermsCheckbox] = useState(false);
+  const [dontShowAgain, setDontShowAgain] = useState(false);
   const [isScienceOpen, setIsScienceOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [copied, setCopied] = useState(false);
@@ -56,6 +62,9 @@ const App: React.FC = () => {
 
   const handleAcceptTerms = () => {
     if (hasAcceptedTermsCheckbox) {
+      if (dontShowAgain) {
+        localStorage.setItem('hideLegalNotice', 'true');
+      }
       setIsEntryModalOpen(false);
     }
   };
@@ -391,57 +400,84 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      {/* MODAL DE ENTRADA (AVISO LEGAL) - FULL SCREEN NO SCROLL */}
-      {isEntryModalOpen && (
-        <div className="fixed inset-0 z-[200] bg-white overflow-hidden animate-in fade-in duration-500">
-          <div className="h-[100dvh] w-full max-w-2xl mx-auto flex flex-col items-center justify-between p-6 py-12 md:p-12">
-            <div className="flex flex-col items-center gap-4 w-full">
-              <div className="bg-orange-500 p-3 rounded-2xl shadow-lg shadow-orange-200">
-                <Ruler className="text-white" size={28} />
-              </div>
-              
-              <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight text-center">
-                Aviso legal
-              </h2>
-            </div>
-            
-            <div className="flex-1 flex items-center w-full max-w-xl">
-              <div className="space-y-4 text-slate-600 text-xs md:text-sm leading-relaxed font-medium text-center w-full">
-                <p>Esta aplicação é uma ferramenta de apoio matemático, com finalidade educacional, destinada exclusivamente ao cálculo de proporções e conversões entre unidades e escalas numéricas.</p>
-                <p>A ferramenta não realiza recomendações, orientações de uso, instruções técnicas ou qualquer tipo de indicação prática, limitando-se ao processamento matemático de valores informados manualmente pelo usuário.</p>
-                <p>A definição dos valores, proporções e parâmetros utilizados é de inteira responsabilidade do usuário, bem como a verificação da exatidão e adequação dos dados inseridos.</p>
-                <p>Os resultados apresentados representam apenas relações matemáticas e não devem ser utilizados como única referência para qualquer finalidade prática sem validação independente.</p>
-                <p>Esta aplicação não se caracteriza como serviço especializado, sendo seu uso de responsabilidade exclusiva do usuário, restrito às finalidades de visualização e cálculo matemático aqui descritas.</p>
-              </div>
-            </div>
-
-            <div className="w-full flex flex-col gap-4 max-w-md">
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 shadow-sm">
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    className="sr-only" 
-                    checked={hasAcceptedTermsCheckbox}
-                    onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
-                  />
-                  <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-200' : 'bg-white border-slate-300'}`}>
-                    {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
+      {/* MODAL DE ENTRADA (AVISO LEGAL) - SEMI-TRANSPARENTE COM DESFOQUE */}
+      <AnimatePresence>
+        {isEntryModalOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 md:p-10"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-white w-full h-full max-w-3xl max-h-[85vh] rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col relative border border-white/20"
+            >
+              <div className="flex-1 overflow-y-auto p-8 md:p-12">
+                <div className="flex flex-col items-center gap-4 w-full mb-10">
+                  <div className="bg-orange-500 p-3 rounded-2xl shadow-lg shadow-orange-200">
+                    <Ruler className="text-white" size={28} />
                   </div>
-                  <span className="text-[11px] md:text-xs font-black text-slate-700 uppercase tracking-wide">Li e aceito o Aviso Legal</span>
-                </label>
+                  
+                  <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight text-center">
+                    Aviso legal
+                  </h2>
+                </div>
+                
+                <div className="space-y-6 text-slate-600 text-sm md:text-base leading-relaxed font-medium text-center max-w-xl mx-auto">
+                  <p>Esta aplicação é uma ferramenta de apoio matemático, com finalidade educacional, destinada exclusivamente ao cálculo de proporções e conversões entre unidades e escalas numéricas.</p>
+                  <p>A ferramenta não realiza recomendações, orientações de uso, instruções técnicas ou qualquer tipo de indicação prática, limitando-se ao processamento matemático de valores informados manualmente pelo usuário.</p>
+                  <p>A definição dos valores, proporções e parâmetros utilizados é de inteira responsabilidade do usuário, bem como a verificação da exatidão e adequação dos dados inseridos.</p>
+                  <p>Os resultados apresentados representam apenas relações matemáticas e não devem ser utilizados como única referência para qualquer finalidade prática sem validação independente.</p>
+                  <p>Esta aplicação não se caracteriza como serviço especializado, sendo seu uso de responsabilidade exclusiva do usuário, restrito às finalidades de visualização e cálculo matemático aqui descritas.</p>
+                </div>
               </div>
-              
-              <button 
-                disabled={!hasAcceptedTermsCheckbox}
-                onClick={handleAcceptTerms}
-                className={`w-full py-5 rounded-2xl font-black uppercase tracking-widest text-[11px] md:text-xs transition-all active:scale-[0.98] ${hasAcceptedTermsCheckbox ? 'bg-orange-600 text-white shadow-2xl shadow-orange-200 hover:bg-orange-700' : 'bg-slate-100 text-slate-300 cursor-not-allowed'}`}
-              >
-                Acessar Ferramenta
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
+              <div className="p-8 md:p-12 bg-slate-50/80 backdrop-blur-sm border-t border-slate-100 w-full">
+                <div className="w-full flex flex-col gap-4 max-w-md mx-auto">
+                  <div className="flex flex-col gap-3">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only" 
+                        checked={hasAcceptedTermsCheckbox}
+                        onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
+                      />
+                      <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-200' : 'bg-white border-slate-300 group-hover:border-orange-400'}`}>
+                        {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
+                      </div>
+                      <span className="text-[11px] md:text-xs font-black text-slate-700 uppercase tracking-wide">Li e aceito o Aviso Legal</span>
+                    </label>
+
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only" 
+                        checked={dontShowAgain}
+                        onChange={(e) => setDontShowAgain(e.target.checked)}
+                      />
+                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${dontShowAgain ? 'bg-slate-600 border-slate-600' : 'bg-white border-slate-300 group-hover:border-slate-400'}`}>
+                        {dontShowAgain && <Check size={14} className="text-white" />}
+                      </div>
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Não mostrar este aviso novamente</span>
+                    </label>
+                  </div>
+                  
+                  <button 
+                    disabled={!hasAcceptedTermsCheckbox}
+                    onClick={handleAcceptTerms}
+                    className={`w-full py-5 rounded-2xl font-black uppercase tracking-widest text-[11px] md:text-xs transition-all active:scale-[0.98] ${hasAcceptedTermsCheckbox ? 'bg-orange-600 text-white shadow-2xl shadow-orange-200 hover:bg-orange-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
+                  >
+                    Acessar Ferramenta
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
