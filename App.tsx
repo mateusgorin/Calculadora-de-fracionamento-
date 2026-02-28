@@ -337,7 +337,7 @@ const App: React.FC = () => {
           </div>
           <div className="space-y-1">
             <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">Apoie o Desenvolvedor</h3>
-            <p className="text-[11px] text-slate-500 font-medium leading-relaxed max-w-xs mx-auto">
+            <p className="text-[12px] text-slate-500 font-medium leading-relaxed max-w-xs mx-auto">
               Se esta ferramenta matemática foi útil para você, considere apoiar a manutenção e criação de novos projetos.
             </p>
           </div>
