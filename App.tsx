@@ -93,7 +93,7 @@ const App: React.FC = () => {
   const totalTicks = result.units / tickValue;
 
   return (
-    <div className={`min-h-screen bg-[#fcfdfe] pb-20 w-full overflow-x-hidden ${isEntryModalOpen ? 'max-h-screen overflow-hidden' : ''}`}>
+    <div className={`min-h-screen bg-[#fcfdfe] pb-8 w-full overflow-x-hidden ${isEntryModalOpen ? 'max-h-screen overflow-hidden' : ''}`}>
       <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50 w-full">
         <div className="max-w-4xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -360,7 +360,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      <footer className="max-w-2xl mx-auto px-6 mt-6 pb-12">
+      <footer className="max-w-2xl mx-auto px-6 mt-6 pb-6">
         <div className="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-6 md:p-8 flex flex-col items-center text-center gap-4">
           <div className="bg-white p-3 rounded-2xl shadow-sm border border-slate-100">
             <Heart className="text-rose-500 animate-pulse" size={20} />
