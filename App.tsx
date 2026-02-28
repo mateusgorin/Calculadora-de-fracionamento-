@@ -390,9 +390,21 @@ const App: React.FC = () => {
               </span>
             )}
           </button>
-          <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
-            <Coffee size={12} />
-            <span>Feito com dedicação</span>
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+              <Coffee size={12} />
+              <span>Feito com dedicação</span>
+            </div>
+            <div className="h-px w-8 bg-slate-200" />
+            <a 
+              href="https://www.gorinsolucoes.com.br" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center gap-1 transition-all hover:scale-105"
+            >
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.15em]">Desenvolvido por</span>
+              <span className="text-xs font-black text-slate-700 uppercase tracking-widest group-hover:text-orange-600 transition-colors">Gorin Soluções</span>
+            </a>
           </div>
         </div>
       </footer>
