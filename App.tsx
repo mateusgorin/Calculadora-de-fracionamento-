@@ -26,7 +26,7 @@ const App: React.FC = () => {
   const [targetMass, setTargetMass] = useState<string>("");
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('hideLegalNotice') !== 'true';
+      return localStorage.getItem('hasAcceptedTerms') !== 'true';
     }
     return true;
   });
@@ -61,8 +61,8 @@ const App: React.FC = () => {
 
   const handleAcceptTerms = () => {
     if (hasAcceptedTermsCheckbox) {
-      localStorage.setItem('hideLegalNotice', 'true');
       setIsEntryModalOpen(false);
+      localStorage.setItem('hasAcceptedTerms', 'true');
     }
   };
 
@@ -132,8 +132,8 @@ const App: React.FC = () => {
                   className="flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-orange-200 hover:bg-orange-600 transition-colors"
                 >
                   <Download size={14} className="animate-bounce" />
-                  <span className="hidden sm:inline">Instalar App</span>
-                  <span className="sm:hidden">Instalar</span>
+                  <span className="hidden sm:inline">Instalar aplicativo</span>
+                  <span className="sm:hidden">Instalar aplicativo</span>
                 </motion.button>
               )}
             </AnimatePresence>
@@ -404,7 +404,7 @@ const App: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-slate-900/40 backdrop-blur-sm flex items-end justify-center"
+            className="fixed inset-0 z-[200] bg-slate-900/15 backdrop-blur-[6px] flex items-end justify-center"
           >
             <motion.div 
               initial={{ y: "100%" }}
@@ -438,7 +438,7 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-8 md:p-10 bg-slate-50/80 backdrop-blur-sm border-t border-slate-100 w-full">
+              <div className="p-8 md:p-10 bg-slate-50 border-t border-slate-100 w-full">
                 <div className="w-full flex flex-col gap-4 max-w-md mx-auto">
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <input 
