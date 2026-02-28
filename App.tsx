@@ -116,11 +116,11 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 mt-12 flex flex-col items-center gap-12">
+      <main className="max-w-4xl mx-auto px-6 mt-6 flex flex-col items-center gap-6">
         
-        <div className="w-full space-y-8 max-w-2xl">
+        <div className="w-full space-y-6 max-w-2xl">
           
-          <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 relative overflow-hidden">
+          <div className="bg-white p-8 rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 relative overflow-hidden">
             <div className="flex items-center gap-3 mb-10 border-b border-slate-50 pb-6">
               <div className="w-1.5 h-6 bg-orange-500 rounded-full"></div>
               <h2 className="text-xl font-black text-slate-800">Parâmetros de Cálculo</h2>
@@ -193,7 +193,7 @@ const App: React.FC = () => {
           </div>
 
           {/* RESULTADO DA PROPORÇÃO ATUALIZADO */}
-          <div className="bg-gradient-to-br from-slate-900 to-slate-950 p-10 rounded-[3rem] shadow-2xl text-white relative overflow-hidden group">
+          <div className="bg-gradient-to-br from-slate-900 to-slate-950 p-8 rounded-[3rem] shadow-2xl text-white relative overflow-hidden group">
             <div className="absolute -top-10 -right-10 opacity-[0.03] text-orange-500 transition-transform duration-1000 group-hover:scale-110">
               <Droplet size={260} />
             </div>
@@ -255,7 +255,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <div className="w-full flex justify-center py-6">
+        <div className="w-full flex justify-center">
           <div className="w-full max-w-[400px]">
             <Scale capacity={scaleCapacity} currentUnits={result.units} />
           </div>
@@ -263,7 +263,7 @@ const App: React.FC = () => {
 
       </main>
 
-      <section className="max-w-2xl mx-auto px-6 mt-6 space-y-8">
+      <section className="max-w-2xl mx-auto px-6 mt-6 space-y-6">
         {/* FUNDAMENTAÇÃO E MÉTODO DE CÁLCULO */}
         <div className="bg-indigo-50 border border-indigo-200 rounded-[2rem] overflow-hidden shadow-sm transition-all duration-300">
           <button 
@@ -330,7 +330,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      <footer className="max-w-2xl mx-auto px-6 mt-8 pb-12">
+      <footer className="max-w-2xl mx-auto px-6 mt-6 pb-12">
         <div className="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-6 md:p-8 flex flex-col items-center text-center gap-4">
           <div className="bg-white p-3 rounded-2xl shadow-sm border border-slate-100">
             <Heart className="text-rose-500 animate-pulse" size={20} />
@@ -370,48 +370,50 @@ const App: React.FC = () => {
       {/* MODAL DE ENTRADA (AVISO LEGAL) - FULL SCREEN NO SCROLL */}
       {isEntryModalOpen && (
         <div className="fixed inset-0 z-[200] bg-white overflow-hidden animate-in fade-in duration-500">
-          <div className="h-full w-full max-w-3xl mx-auto flex flex-col items-center justify-center p-4 md:p-10">
-            <div className="flex flex-col items-center gap-2.5 w-full max-h-full overflow-hidden">
-              <div className="bg-orange-500 p-2.5 rounded-2xl shadow-lg shadow-orange-200">
-                <Ruler className="text-white" size={24} />
+          <div className="h-[100dvh] w-full max-w-2xl mx-auto flex flex-col items-center justify-between p-6 py-12 md:p-12">
+            <div className="flex flex-col items-center gap-4 w-full">
+              <div className="bg-orange-500 p-3 rounded-2xl shadow-lg shadow-orange-200">
+                <Ruler className="text-white" size={28} />
               </div>
               
-              <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight text-center">
+              <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight text-center">
                 Aviso legal
               </h2>
-              
-              <div className="space-y-2 text-slate-600 text-xs md:text-sm leading-relaxed font-medium text-center w-full max-w-2xl">
+            </div>
+            
+            <div className="flex-1 flex items-center w-full max-w-xl">
+              <div className="space-y-4 text-slate-600 text-xs md:text-sm leading-relaxed font-medium text-center w-full">
                 <p>Esta aplicação é uma ferramenta de apoio matemático, com finalidade educacional, destinada exclusivamente ao cálculo de proporções e conversões entre unidades e escalas numéricas.</p>
                 <p>A ferramenta não realiza recomendações, orientações de uso, instruções técnicas ou qualquer tipo de indicação prática, limitando-se ao processamento matemático de valores informados manualmente pelo usuário.</p>
                 <p>A definição dos valores, proporções e parâmetros utilizados é de inteira responsabilidade do usuário, bem como a verificação da exatidão e adequação dos dados inseridos.</p>
                 <p>Os resultados apresentados representam apenas relações matemáticas e não devem ser utilizados como única referência para qualquer finalidade prática sem validação independente.</p>
                 <p>Esta aplicação não se caracteriza como serviço especializado, sendo seu uso de responsabilidade exclusiva do usuário, restrito às finalidades de visualização e cálculo matemático aqui descritas.</p>
               </div>
+            </div>
 
-              <div className="w-full flex flex-col gap-2.5 max-w-md mt-2">
-                <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 shadow-sm">
-                  <label className="flex items-center gap-2.5 cursor-pointer">
-                    <input 
-                      type="checkbox" 
-                      className="sr-only" 
-                      checked={hasAcceptedTermsCheckbox}
-                      onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
-                    />
-                    <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-200' : 'bg-white border-slate-300'}`}>
-                      {hasAcceptedTermsCheckbox && <CheckCircle2 size={14} className="text-white" />}
-                    </div>
-                    <span className="text-[10px] md:text-xs font-black text-slate-700 uppercase tracking-wide">Li e aceito o Aviso Legal</span>
-                  </label>
-                </div>
-                
-                <button 
-                  disabled={!hasAcceptedTermsCheckbox}
-                  onClick={handleAcceptTerms}
-                  className={`w-full py-4 rounded-xl font-black uppercase tracking-widest text-[10px] md:text-xs transition-all active:scale-[0.98] ${hasAcceptedTermsCheckbox ? 'bg-orange-600 text-white shadow-2xl shadow-orange-200 hover:bg-orange-700' : 'bg-slate-100 text-slate-300 cursor-not-allowed'}`}
-                >
-                  Acessar Ferramenta
-                </button>
+            <div className="w-full flex flex-col gap-4 max-w-md">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 shadow-sm">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only" 
+                    checked={hasAcceptedTermsCheckbox}
+                    onChange={(e) => setHasAcceptedTermsCheckbox(e.target.checked)}
+                  />
+                  <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${hasAcceptedTermsCheckbox ? 'bg-orange-600 border-orange-600 shadow-lg shadow-orange-200' : 'bg-white border-slate-300'}`}>
+                    {hasAcceptedTermsCheckbox && <CheckCircle2 size={16} className="text-white" />}
+                  </div>
+                  <span className="text-[11px] md:text-xs font-black text-slate-700 uppercase tracking-wide">Li e aceito o Aviso Legal</span>
+                </label>
               </div>
+              
+              <button 
+                disabled={!hasAcceptedTermsCheckbox}
+                onClick={handleAcceptTerms}
+                className={`w-full py-5 rounded-2xl font-black uppercase tracking-widest text-[11px] md:text-xs transition-all active:scale-[0.98] ${hasAcceptedTermsCheckbox ? 'bg-orange-600 text-white shadow-2xl shadow-orange-200 hover:bg-orange-700' : 'bg-slate-100 text-slate-300 cursor-not-allowed'}`}
+              >
+                Acessar Ferramenta
+              </button>
             </div>
           </div>
         </div>

@@ -93,7 +93,7 @@ const Scale: React.FC<ScaleProps> = ({ capacity, currentUnits }) => {
   const totalTicksCount = currentUnits / tickValue;
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 w-full group">
+    <div className="flex flex-col items-center justify-center p-6 bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 w-full group">
       <div className="relative w-full max-w-[320px] overflow-visible">
         <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto drop-shadow-xl overflow-visible">
           <defs>
@@ -189,7 +189,7 @@ const Scale: React.FC<ScaleProps> = ({ capacity, currentUnits }) => {
         </svg>
       </div>
 
-      <div className="mt-8 flex flex-col items-center gap-6 w-full">
+      <div className="mt-6 flex flex-col items-center gap-6 w-full">
         <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-6 rounded-[2rem] w-full text-center shadow-xl shadow-orange-200 border border-orange-500 relative overflow-hidden group/guide">
           <div className="absolute top-0 right-0 p-4 opacity-10 text-white pointer-events-none group-hover/guide:scale-110 transition-transform duration-500">
             <Ruler size={60} />
